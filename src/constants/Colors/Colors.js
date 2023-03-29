@@ -1,5 +1,11 @@
 export const COLORS = {
-  blue_01: "#D0D6F2",
-  blue_02: "rgba(145, 155, 204, 0.3)",
-  blue_03: "#919BCC",
+  Background: "#E7EBFF",
+  LowAccent: " #D0D6F2",
+  Accent: "#919BCC",
+  AccentDisabled: "#AEAEAE",
+  Gray: "#E9E9E9",
+  Black: "#222222",
+  White: "#FFFFFF",
+  GrayText: "#AFAFAF",
+  StatusbarText: "#272222",
 };
