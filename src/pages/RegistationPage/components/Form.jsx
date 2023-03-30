@@ -130,8 +130,11 @@ const Form = ({ navigation }) => {
                   onPress={handleSubmit}
                   mode="contained-tonal"
                   style={styles.postButton}
+                  contentStyle={{
+                    paddingVertical: 10,
+                  }}
                 >
-                  <Text style={{ color: COLORS.White }}>
+                  <Text style={{ fontSize: 14, color: COLORS.White }}>
                     Зарегистрироваться
                   </Text>
                 </Button>
@@ -143,8 +146,11 @@ const Form = ({ navigation }) => {
                   style={styles.postButton}
                   labelStyle={{ color: COLORS.White }}
                   loading={true}
+                  contentStyle={{
+                    paddingVertical: 10,
+                  }}
                 >
-                  <Text style={{ color: COLORS.White }}>
+                  <Text style={{ fontSize: 14, color: COLORS.White }}>
                     Зарегистрироваться
                   </Text>
                 </Button>
@@ -152,6 +158,9 @@ const Form = ({ navigation }) => {
               <Button
                 onPress={() => navigation.goBack()}
                 mode="contained-tonal"
+                contentStyle={{
+                  paddingVertical: 10,
+                }}
                 style={{
                   marginTop: 15,
                   backgroundColor: COLORS.Gray,
@@ -165,7 +174,9 @@ const Form = ({ navigation }) => {
                   textAlign: "center",
                 }}
               >
-                <Text style={{ color: COLORS.Accent }}>Назад</Text>
+                <Text style={{ fontSize: 14, color: COLORS.Accent }}>
+                  Назад
+                </Text>
               </Button>
             </>
           )}

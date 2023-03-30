@@ -4,7 +4,7 @@ import { ActivityIndicator, Button } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RegistatrionPage } from "./src/pages/RegistationPage/RegistatrionPage";
-import { SignIn } from "./src/pages/SignIn/SignIn";
+import { SignInPage } from "./src/pages/SignInPage/SignInPage";
 import { useFonts } from "expo-font";
 import { COLORS } from "./src/constants/Colors/Colors";
 export default function App() {
@@ -24,12 +24,12 @@ export default function App() {
           {/* Начальная страница(Страница входа) ее пилит олександер */}
           <Stack.Screen
             name="SignIn"
-            component={SignIn}
+            component={SignInPage}
             options={{ title: "Страница Входа", headerShown: false }}
           />
           {/* Страница регистрации */}
           <Stack.Screen
-            name="SignOut"
+            name="SignUp"
             component={RegistatrionPage}
             options={{ title: "Страница Входа", headerShown: false }}
           />
