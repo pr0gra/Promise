@@ -19,6 +19,7 @@ const validationSchema = yup.object().shape({
 });
 
 const Form = ({ navigation }) => {
+  const [Loading, setLoading] = useState(false);
   return (
     <View style={styles.formContainer}>
       <ScrollView>
@@ -30,7 +31,13 @@ const Form = ({ navigation }) => {
             password: "",
             confirmPassword: "",
           }}
-          onSubmit={(values) => console.log(values)}
+          onSubmit={(values) => {
+            setLoading(true);
+            console.log(values);
+            setTimeout(() => {
+              setLoading(false);
+            }, 1000);
+          }}
           validationSchema={validationSchema}
         >
           {({
@@ -44,82 +51,104 @@ const Form = ({ navigation }) => {
             <>
               <View style={styles.inputContainer}>
                 <TextInput
-                  style={[styles.inputStyles]}
+                  style={[
+                    styles.inputStyles,
+                    touched.firstName && errors.firstName && styles.wrongInput,
+                  ]}
                   placeholder="Имя"
                   value={values.firstName}
                   onBlur={handleBlur("firstName")}
                   onChangeText={handleChange("firstName")}
                 />
 
-                {touched.firstName && errors.firstName && (
+                {/* {touched.firstName && errors.firstName && (
                   <Text>{errors.firstName}</Text>
-                )}
+                )} */}
 
                 <TextInput
-                  style={[styles.inputStyles]}
+                  style={[
+                    styles.inputStyles,
+                    touched.lastName && errors.lastName && styles.wrongInput,
+                  ]}
                   onChangeText={handleChange("lastName")}
                   onBlur={handleBlur("lastName")}
                   value={values.lastName}
                   placeholder="Фамилия"
                 />
-                {touched.lastName && errors.lastName && (
+                {/* {touched.lastName && errors.lastName && (
                   <Text>{errors.lastName}</Text>
-                )}
+                )} */}
 
                 <TextInput
-                  style={[styles.inputStyles]}
+                  style={[
+                    styles.inputStyles,
+                    touched.email && errors.email && styles.wrongInput,
+                  ]}
                   onChangeText={handleChange("email")}
                   onBlur={handleBlur("email")}
                   value={values.email}
                   placeholder="email"
                   keyboardType="email-address"
                 />
-                {touched.email && errors.email && <Text>{errors.email}</Text>}
+                {/* {touched.email && errors.email && <Text>{errors.email}</Text>} */}
 
                 <TextInput
-                  style={[styles.inputStyles]}
+                  style={[
+                    styles.inputStyles,
+                    touched.password && errors.password && styles.wrongInput,
+                  ]}
                   onChangeText={handleChange("password")}
                   onBlur={handleBlur("password")}
                   value={values.password}
                   placeholder="Пароль"
                   secureTextEntry={true}
                 />
-                {touched.password && errors.password && (
+                {/* {touched.password && errors.password && (
                   <Text>{errors.password}</Text>
-                )}
+                )} */}
 
                 <TextInput
-                  style={[styles.inputStyles]}
+                  style={[
+                    styles.inputStyles,
+                    touched.confirmPassword &&
+                      errors.confirmPassword &&
+                      styles.wrongInput,
+                  ]}
                   onChangeText={handleChange("confirmPassword")}
                   onBlur={handleBlur("confirmPassword")}
                   value={values.confirmPassword}
                   placeholder="Повторите пароль"
                   secureTextEntry={true}
                 />
-                {touched.confirmPassword && errors.confirmPassword && (
+                {/* {touched.confirmPassword && errors.confirmPassword && (
                   <Text>{errors.confirmPassword}</Text>
-                )}
+                )} */}
               </View>
-              <Button
-                title="Submit"
-                onPress={handleSubmit}
-                mode="contained-tonal"
-                style={{
-                  backgroundColor: COLORS.Accent,
-                  marginTop: 30,
-                  paddingVertical: 6,
-                  fontSize: 12,
-                  //   fontFamily: "Roboto Flex",
-                  fontStyle: "normal",
-                  fontWeight: 600,
-                  lineHeight: 16,
-                  textAlign: "center",
-                  borderRadius: 10,
-                }}
-              >
-                {/* добавить в аргументы loading при отправке формы */}
-                <Text style={{ color: COLORS.White }}>Зарегистрироваться</Text>
-              </Button>
+              {!Loading ? (
+                <Button
+                  title="Submit"
+                  onPress={handleSubmit}
+                  mode="contained-tonal"
+                  style={styles.postButton}
+                >
+                  <Text style={{ color: COLORS.White }}>
+                    Зарегистрироваться
+                  </Text>
+                </Button>
+              ) : (
+                <Button
+                  title="Submit"
+                  onPress={handleSubmit}
+                  mode="contained-tonal"
+                  style={styles.postButton}
+                  labelStyle={{ color: COLORS.White }}
+                  loading={true}
+                >
+                  <Text style={{ color: COLORS.White }}>
+                    Зарегистрироваться
+                  </Text>
+                </Button>
+              )}
               <Button
                 onPress={() => navigation.goBack()}
                 mode="contained-tonal"
@@ -127,16 +156,16 @@ const Form = ({ navigation }) => {
                   marginTop: 15,
                   backgroundColor: COLORS.Gray,
                   borderRadius: 10,
-                  paddingVertical: 6,
+
                   fontSize: 12,
-                  //   fontFamily: "Roboto Flex",
+                  fontFamily: "Roboto-flex",
                   fontStyle: "normal",
                   fontWeight: 600,
                   lineHeight: 16,
                   textAlign: "center",
                 }}
               >
-                <Text>Назад</Text>
+                <Text style={{ color: COLORS.Accent }}>Назад</Text>
               </Button>
             </>
           )}
@@ -167,13 +196,28 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     color: COLORS.GrayText,
-    // fontFamily: "Roboto Flex",
+    fontFamily: "Roboto-flex",
     fontStyle: "normal",
-    height: 45,
+    height: 53,
     fontSize: 13,
     lineHeight: 15,
     borderColor: COLORS.GrayText,
     borderWidth: 1,
+    borderRadius: 10,
+  },
+  wrongInput: {
+    borderColor: "red",
+  },
+  postButton: {
+    backgroundColor: COLORS.Accent,
+    marginTop: 30,
+
+    fontSize: 12,
+    fontFamily: "Roboto-flex",
+    fontStyle: "normal",
+    fontWeight: 600,
+    lineHeight: 16,
+    textAlign: "center",
     borderRadius: 10,
   },
 });

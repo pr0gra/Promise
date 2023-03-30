@@ -13,9 +13,7 @@ export const RegistatrionPage = ({ navigation }) => {
         justifyContent: "flex-end",
       }}
     >
-      <Text style={[Styles.pageTitle, { marginLeft: 30, marginBottom: 20 }]}>
-        Регистрация
-      </Text>
+      <Text style={Styles.pageTitle}>Регистрация</Text>
       <Form navigation={navigation} />
     </View>
   );
