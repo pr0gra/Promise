@@ -32,8 +32,8 @@ export const GlobalStyles = {
     fontSize: 32,
     lineHeight: 38,
     color: COLORS.Accent,
-    marginLeft: 30,
-    marginBottom: 20,
+    // marginLeft: 30,
+    // marginBottom: 20,
   },
 
   inputStyles: {
@@ -42,7 +42,7 @@ export const GlobalStyles = {
     paddingBottom: 15,
     paddingLeft: 20,
     paddingRight: 20,
-    color: COLORS.GrayText,
+    color: COLORS.Black,
     fontFamily: "Roboto-flex",
     fontStyle: "normal",
     height: 53,
@@ -62,5 +62,14 @@ export const GlobalStyles = {
     backgroundColor: COLORS.Background,
     flex: 1,
     justifyContent: "flex-end",
+  },
+  inputsContainer: {
+    paddingRight: 20,
+    paddingBottom: 30,
+    paddingTop: 30,
+    paddingLeft: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    backgroundColor: COLORS.White,
   },
 };

@@ -7,6 +7,8 @@ import { RegistatrionPage } from "./src/pages/RegistationPage/RegistatrionPage";
 import { SignInPage } from "./src/pages/SignInPage/SignInPage";
 import { useFonts } from "expo-font";
 import { COLORS } from "./src/constants/Colors/Colors";
+import { WelcomePage } from "./src/pages/WelcomePage/WelcomePage";
+import MySplashScreen from "./src/pages/SplashScreen/SplashScreen";
 export default function App() {
   const Stack = createNativeStackNavigator();
   const [fontsLoaded] = useFonts({
@@ -20,8 +22,10 @@ export default function App() {
     fontsLoaded && (
       <NavigationContainer>
         {/* initialRouteName изменить на SignIn */}
+        {/* <Stack.Navigator initialRouteName="SignIn"> */}
         <Stack.Navigator initialRouteName="SignIn">
           {/* Начальная страница(Страница входа) ее пилит олександер */}
+
           <Stack.Screen
             name="SignIn"
             component={SignInPage}
@@ -32,6 +36,12 @@ export default function App() {
             name="SignUp"
             component={RegistatrionPage}
             options={{ title: "Страница Входа", headerShown: false }}
+          />
+          {/* welcompe page */}
+          <Stack.Screen
+            name="Welcome"
+            component={WelcomePage}
+            options={{ title: "Приветственная страница", headerShown: false }}
           />
         </Stack.Navigator>
       </NavigationContainer>

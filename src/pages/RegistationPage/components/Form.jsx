@@ -36,6 +36,7 @@ const Form = ({ navigation }) => {
             console.log(values);
             setTimeout(() => {
               setLoading(false);
+              navigation.navigate("SignIn");
             }, 1000);
           }}
           validationSchema={validationSchema}
