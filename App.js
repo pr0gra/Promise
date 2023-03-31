@@ -8,7 +8,7 @@ import { SignInPage } from "./src/pages/SignInPage/SignInPage";
 import { useFonts } from "expo-font";
 import { COLORS } from "./src/constants/Colors/Colors";
 import { WelcomePage } from "./src/pages/WelcomePage/WelcomePage";
-import MySplashScreen from "./src/pages/SplashScreen/SplashScreen";
+
 export default function App() {
   const Stack = createNativeStackNavigator();
   const [fontsLoaded] = useFonts({
