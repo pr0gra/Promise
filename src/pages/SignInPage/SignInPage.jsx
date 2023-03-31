@@ -29,6 +29,9 @@ export const SignInPage = ({ navigation }) => {
 
   const handleSubmit = (values) => {
     //Тестовый обработчик
+    setTimeout(() => {
+      navigation.navigate("Welcome");
+    }, 1000);
     console.log(values);
   };
 
@@ -36,30 +39,31 @@ export const SignInPage = ({ navigation }) => {
     <View style={[GlobalStyles.viewBasic]}>
       <View
         style={{
-          justifyContent: "center",
-          height: "20%",
-          alignItems: "center",
-          flexDirection: "column",
+          //я крч понял как отцентровать эту блядскую ракету, этот view заполнил все свободное простронство, азначит теперь это свободный контейнер для ПРЯМОУГОЛЬНОЙ(Из-за тени) картинки
+          flex: 1,
+          // justifyContent: "center",
+          // height: "20%",
+          // alignItems: "center",
+          // flexDirection: "column",
         }}
       >
         <Image
-          style={{ height: 400, width: 400 }}
+          // style={{ height: 400, width: 400 }}
+          style={{
+            //я заполнил ей все пространство
+            flex: 1,
+            marginBottom: -150,
+          }}
           source={require("../../../assets/images/rocket-illustration-3d-render.png")}
         />
       </View>
-      <Text style={GlobalStyles.pageTitle}>Вход</Text>
-
-      <View
-        style={{
-          paddingRight: 20,
-          paddingBottom: 30,
-          paddingTop: 30,
-          paddingLeft: 20,
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-          backgroundColor: COLORS.White,
-        }}
+      <Text
+        style={[GlobalStyles.pageTitle, { marginLeft: 30, marginBottom: 20 }]}
       >
+        Вход
+      </Text>
+
+      <View style={GlobalStyles.inputsContainer}>
         <View style={{ gap: 20 }}>
           <TouchableWithoutFeedback
             onPress={Keyboard.dismiss}
