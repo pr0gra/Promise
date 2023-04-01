@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, TextInput, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, TextInput } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { GlobalStyles } from "../../../constants/GlobalStyles";
 import { COLORS } from "../../../constants/Colors/Colors";
@@ -47,8 +47,9 @@ export const FormSection = ({ navigation }) => {
     // отправка formData на сервер
   };
   return (
-    <ScrollView style={{ maxHeight: 550 }}>
-      <View>
+    <View>
+      <ScrollView style={{ maxHeight: 550 }}>
+        {/* <View> */}
         <View style={{ gap: 20 }}>
           <TextInput
             label="Расскажи о себе"
@@ -64,7 +65,7 @@ export const FormSection = ({ navigation }) => {
             ]}
           />
           <TextInput
-            label="Город"
+            // label="Город"
             placeholder="Город"
             value={city}
             onChangeText={handleCityChange}
@@ -99,36 +100,37 @@ export const FormSection = ({ navigation }) => {
             value={email}
             onChangeText={handleEmailChange}
             style={[GlobalStyles.inputStyles]}
+            selectionColor={COLORS.Accent}
           />
         </View>
-
-        <View style={[styles.buttonContainer, { marginTop: 30 }]}>
-          <Button
-            style={[GlobalStyles.transparentButton, styles.button]}
-            onPress={() => navigation.goBack()}
-            contentStyle={{
-              paddingVertical: 10,
-            }}
-          >
-            <Text style={[{ color: COLORS.Accent }, styles.textButton]}>
-              Позже
-            </Text>
-          </Button>
-          <Button
-            style={[GlobalStyles.boldButton, styles.button, styles.textButton]}
-            onPress={handleSubmit}
-            mode="tonal"
-            contentStyle={{
-              paddingVertical: 10,
-            }}
-          >
-            <Text style={[{ color: COLORS.White }, styles.textButton]}>
-              Сохранить
-            </Text>
-          </Button>
-        </View>
+        {/* </View> */}
+      </ScrollView>
+      <View style={[styles.buttonContainer, { marginTop: 30 }]}>
+        <Button
+          style={[GlobalStyles.transparentButton, styles.button]}
+          onPress={() => navigation.goBack()}
+          contentStyle={{
+            paddingVertical: 10,
+          }}
+        >
+          <Text style={[{ color: COLORS.Accent }, styles.textButton]}>
+            Позже
+          </Text>
+        </Button>
+        <Button
+          style={[GlobalStyles.boldButton, styles.button, styles.textButton]}
+          onPress={handleSubmit}
+          mode="tonal"
+          contentStyle={{
+            paddingVertical: 10,
+          }}
+        >
+          <Text style={[{ color: COLORS.White }, styles.textButton]}>
+            Сохранить
+          </Text>
+        </Button>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

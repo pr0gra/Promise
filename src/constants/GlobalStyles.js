@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { COLORS } from "./Colors/Colors.js";
 import { Platform, PlatformIOSStatic } from "react-native";
+import { FONTS } from "../constants/FONTS/FONTS.js";
 export const GlobalStyles = {
   boldButton: {
     backgroundColor: COLORS.Accent,
@@ -26,11 +27,7 @@ export const GlobalStyles = {
   },
 
   pageTitle: {
-    fontFamily: "Roboto-flex",
-    fontStyle: "normal",
-    fontWeight: "900",
-    fontSize: 32,
-    lineHeight: 38,
+    ...FONTS.sectionHeader,
     color: COLORS.Accent,
   },
 

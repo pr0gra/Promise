@@ -6,10 +6,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RegistatrionPage } from "./src/pages/RegistationPage/RegistatrionPage";
 import { SignInPage } from "./src/pages/SignInPage/SignInPage";
 import { useFonts } from "expo-font";
-import { COLORS } from "./src/constants/Colors/Colors";
+import { TextInput } from "react-native";
 import { WelcomePage } from "./src/pages/WelcomePage/WelcomePage";
+import { COLORS } from "./src/constants/Colors/Colors";
 
 export default function App() {
+  console.log(TextInput.defaultProps);
   const Stack = createNativeStackNavigator();
   const [fontsLoaded] = useFonts({
     "Roboto-flex": require("./assets/fonts/RobotoFlex-Regular.ttf"),
