@@ -16,6 +16,17 @@ import { COLORS } from "../../constants/Colors/Colors";
 import { GlobalStyles } from "../../constants/GlobalStyles";
 
 export const SignInPage = ({ navigation }) => {
+  const login = async () => {
+    try {
+      const result = await VKLogin.login(["email"]);
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Вызов функции для авторизации пользователя
+
   const validationSchema = yup.object().shape({
     email: yup
       .string()
@@ -39,18 +50,11 @@ export const SignInPage = ({ navigation }) => {
     <View style={[GlobalStyles.viewBasic]}>
       <View
         style={{
-          //я крч понял как отцентровать эту блядскую ракету, этот view заполнил все свободное простронство, азначит теперь это свободный контейнер для ПРЯМОУГОЛЬНОЙ(Из-за тени) картинки
           flex: 1,
-          // justifyContent: "center",
-          // height: "20%",
-          // alignItems: "center",
-          // flexDirection: "column",
         }}
       >
         <Image
-          // style={{ height: 400, width: 400 }}
           style={{
-            //я заполнил ей все пространство
             flex: 1,
             marginBottom: -150,
           }}
@@ -157,7 +161,9 @@ export const SignInPage = ({ navigation }) => {
             >
               <Image source={require("../../../assets/icons/Google.png")} />
 
-              <Image source={require("../../../assets/icons/VK.png")} />
+              <TouchableWithoutFeedback onPress={login}>
+                <Image source={require("../../../assets/icons/VK.png")} />
+              </TouchableWithoutFeedback>
             </View>
           </View>
 

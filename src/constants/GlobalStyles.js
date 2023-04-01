@@ -32,8 +32,6 @@ export const GlobalStyles = {
     fontSize: 32,
     lineHeight: 38,
     color: COLORS.Accent,
-    // marginLeft: 30,
-    // marginBottom: 20,
   },
 
   inputStyles: {
