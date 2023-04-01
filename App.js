@@ -13,7 +13,7 @@ import { COLORS } from "./src/constants/Colors/Colors";
 export default function App() {
   const Stack = createNativeStackNavigator();
   const [fontsLoaded] = useFonts({
-    "Roboto-flex": require("./assets/fonts/RobotoFlex-Regular.ttf"),
+    "Roboto-flex": require("./assets/fonts/RobotoFlex.ttf"),
   });
   if (!fontsLoaded) {
     return <ActivityIndicator animating={true} color={COLORS.Accent} />;

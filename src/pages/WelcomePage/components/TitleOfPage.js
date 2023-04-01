@@ -2,6 +2,7 @@ import React from "react";
 import { Text, View, Image } from "react-native";
 import { GlobalStyles } from "../../../constants/GlobalStyles";
 import { COLORS } from "../../../constants/Colors/Colors";
+import { FONTS } from "../../../constants/FONTS/FONTS";
 
 export const TitleOfPage = ({ name }) => {
   return (
@@ -14,14 +15,22 @@ export const TitleOfPage = ({ name }) => {
         alignItems: "center",
         gap: 10,
         justifyContent: "space-between",
+        maxWidth: "100%",
       }}
     >
       <Text
-        style={[GlobalStyles.pageTitle]}
+        style={[
+          {
+            ...FONTS.smallerSectionHeader,
+            color: COLORS.Accent,
+            maxWidth: 225,
+          },
+        ]}
         lineBreakMode="break-all"
         numberOfLines={5}
       >
-        Здравствуйте, {name}!
+        Здравствуйте, {"\n"}
+        {name}!
       </Text>
       <View
         style={{
