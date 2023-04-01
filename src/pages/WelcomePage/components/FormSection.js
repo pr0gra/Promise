@@ -59,6 +59,7 @@ export const FormSection = ({ navigation }) => {
             multiline
             numberOfLines={4}
             textAlignVertical="top"
+            selectionColor={COLORS.Accent}
             style={[
               GlobalStyles.inputStyles,
               { height: "auto", textAlign: "auto" },
@@ -70,6 +71,7 @@ export const FormSection = ({ navigation }) => {
             value={city}
             onChangeText={handleCityChange}
             style={[GlobalStyles.inputStyles]}
+            selectionColor={COLORS.Accent}
           />
           <TextInput
             label="Место учебы"
@@ -77,6 +79,7 @@ export const FormSection = ({ navigation }) => {
             value={school}
             onChangeText={handleSchoolChange}
             style={[GlobalStyles.inputStyles]}
+            selectionColor={COLORS.Accent}
           />
           <View style={{ flexDirection: "row", gap: 15 }}>
             <TextInput
@@ -85,6 +88,7 @@ export const FormSection = ({ navigation }) => {
               value={faculty}
               onChangeText={handleFacultyChange}
               style={[GlobalStyles.inputStyles, { flex: 2 }]}
+              selectionColor={COLORS.Accent}
             />
             <TextInput
               label="Курс"
@@ -92,6 +96,7 @@ export const FormSection = ({ navigation }) => {
               value={course}
               onChangeText={handleCourseChange}
               style={[GlobalStyles.inputStyles, { flex: 1 }]}
+              selectionColor={COLORS.Accent}
             />
           </View>
           <TextInput

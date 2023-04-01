@@ -60,6 +60,7 @@ const Form = ({ navigation }) => {
                   value={values.firstName}
                   onBlur={handleBlur("firstName")}
                   onChangeText={handleChange("firstName")}
+                  selectionColor={COLORS.Accent}
                 />
 
                 {/* {touched.firstName && errors.firstName && (
@@ -75,6 +76,7 @@ const Form = ({ navigation }) => {
                   onBlur={handleBlur("lastName")}
                   value={values.lastName}
                   placeholder="Фамилия"
+                  selectionColor={COLORS.Accent}
                 />
                 {/* {touched.lastName && errors.lastName && (
                   <Text>{errors.lastName}</Text>
@@ -90,6 +92,7 @@ const Form = ({ navigation }) => {
                   value={values.email}
                   placeholder="email"
                   keyboardType="email-address"
+                  selectionColor={COLORS.Accent}
                 />
                 {/* {touched.email && errors.email && <Text>{errors.email}</Text>} */}
 
@@ -103,6 +106,7 @@ const Form = ({ navigation }) => {
                   value={values.password}
                   placeholder="Пароль"
                   secureTextEntry={true}
+                  selectionColor={COLORS.Accent}
                 />
                 {/* {touched.password && errors.password && (
                   <Text>{errors.password}</Text>
@@ -120,6 +124,7 @@ const Form = ({ navigation }) => {
                   value={values.confirmPassword}
                   placeholder="Повторите пароль"
                   secureTextEntry={true}
+                  selectionColor={COLORS.Accent}
                 />
                 {/* {touched.confirmPassword && errors.confirmPassword && (
                   <Text>{errors.confirmPassword}</Text>

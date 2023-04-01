@@ -96,6 +96,7 @@ export const SignInPage = ({ navigation }) => {
                     value={values.email}
                     placeholder="Email"
                     keyboardType="email-address"
+                    selectionColor={COLORS.Accent}
                     style={[
                       GlobalStyles.inputStyles,
                       errors.email && GlobalStyles.wrongInput,
@@ -111,6 +112,7 @@ export const SignInPage = ({ navigation }) => {
                     value={values.password}
                     secureTextEntry
                     errorMessage={errors.password}
+                    selectionColor={COLORS.Accent}
                     style={[
                       GlobalStyles.inputStyles,
                       errors.email && GlobalStyles.wrongInput,
