@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   SafeAreaView,
@@ -14,12 +14,21 @@ import { Button, Text } from "react-native-paper";
 import * as yup from "yup";
 import { COLORS } from "../../constants/Colors/Colors";
 import { GlobalStyles } from "../../constants/GlobalStyles";
+import * as VKLogin from "react-native-vkontakte-login";
 
 export const SignInPage = ({ navigation }) => {
+  const [userInfo, setUserInfo] = useState(null);
+
   const login = async () => {
     try {
+      VKLogin.initialize("51600354");
       const result = await VKLogin.login(["email"]);
-      console.log(result);
+
+      if (result.status === "connected") {
+        const userData = await VKLogin.getUserInfo();
+
+        setUserInfo(userData);
+      }
     } catch (error) {
       console.log(error);
     }
