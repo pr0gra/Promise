@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { StyleSheet, View, TextInput, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, TextInput } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { GlobalStyles } from "../../../constants/GlobalStyles";
 import { COLORS } from "../../../constants/Colors/Colors";
+import { FONTS } from "../../../constants/FONTS/FONTS";
 
 export const FormSection = ({ navigation }) => {
   const [city, setCity] = useState("");
@@ -47,8 +48,9 @@ export const FormSection = ({ navigation }) => {
     // отправка formData на сервер
   };
   return (
-    <ScrollView style={{ maxHeight: 550 }}>
-      <View>
+    <View>
+      <ScrollView style={{ maxHeight: 550 }}>
+        {/* <View> */}
         <View style={{ gap: 20 }}>
           <TextInput
             label="Расскажи о себе"
@@ -58,17 +60,19 @@ export const FormSection = ({ navigation }) => {
             multiline
             numberOfLines={4}
             textAlignVertical="top"
+            selectionColor={COLORS.Accent}
             style={[
               GlobalStyles.inputStyles,
               { height: "auto", textAlign: "auto" },
             ]}
           />
           <TextInput
-            label="Город"
+            // label="Город"
             placeholder="Город"
             value={city}
             onChangeText={handleCityChange}
             style={[GlobalStyles.inputStyles]}
+            selectionColor={COLORS.Accent}
           />
           <TextInput
             label="Место учебы"
@@ -76,6 +80,7 @@ export const FormSection = ({ navigation }) => {
             value={school}
             onChangeText={handleSchoolChange}
             style={[GlobalStyles.inputStyles]}
+            selectionColor={COLORS.Accent}
           />
           <View style={{ flexDirection: "row", gap: 15 }}>
             <TextInput
@@ -84,6 +89,7 @@ export const FormSection = ({ navigation }) => {
               value={faculty}
               onChangeText={handleFacultyChange}
               style={[GlobalStyles.inputStyles, { flex: 2 }]}
+              selectionColor={COLORS.Accent}
             />
             <TextInput
               label="Курс"
@@ -91,6 +97,7 @@ export const FormSection = ({ navigation }) => {
               value={course}
               onChangeText={handleCourseChange}
               style={[GlobalStyles.inputStyles, { flex: 1 }]}
+              selectionColor={COLORS.Accent}
             />
           </View>
           <TextInput
@@ -99,36 +106,41 @@ export const FormSection = ({ navigation }) => {
             value={email}
             onChangeText={handleEmailChange}
             style={[GlobalStyles.inputStyles]}
+            selectionColor={COLORS.Accent}
           />
         </View>
-
-        <View style={[styles.buttonContainer, { marginTop: 30 }]}>
-          <Button
-            style={[GlobalStyles.transparentButton, styles.button]}
-            onPress={() => navigation.goBack()}
-            contentStyle={{
-              paddingVertical: 10,
-            }}
-          >
-            <Text style={[{ color: COLORS.Accent }, styles.textButton]}>
-              Позже
-            </Text>
-          </Button>
-          <Button
-            style={[GlobalStyles.boldButton, styles.button, styles.textButton]}
-            onPress={handleSubmit}
-            mode="tonal"
-            contentStyle={{
-              paddingVertical: 10,
-            }}
-          >
-            <Text style={[{ color: COLORS.White }, styles.textButton]}>
-              Сохранить
-            </Text>
-          </Button>
-        </View>
+        {/* </View> */}
+      </ScrollView>
+      <View style={[styles.buttonContainer, { marginTop: 30 }]}>
+        <Button
+          style={[
+            GlobalStyles.transparentButton,
+            styles.button,
+            { textAlign: "center" },
+          ]}
+          onPress={() => navigation.goBack()}
+          contentStyle={{
+            paddingVertical: 10,
+          }}
+        >
+          <Text style={[{ color: COLORS.Accent }, styles.textButton]}>
+            Позже
+          </Text>
+        </Button>
+        <Button
+          style={[GlobalStyles.boldButton, styles.button, styles.textButton]}
+          onPress={handleSubmit}
+          mode="tonal"
+          contentStyle={{
+            paddingVertical: 10,
+          }}
+        >
+          <Text style={[{ color: COLORS.White }, styles.textButton]}>
+            Сохранить
+          </Text>
+        </Button>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -142,8 +154,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   textButton: {
-    fontWeight: "600",
-    fontSize: 14,
-    fontFamily: "Roboto-flex",
+    ...FONTS.buttonText,
   },
 });

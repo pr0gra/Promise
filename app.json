@@ -26,6 +26,10 @@
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
+    },
+    "config": {
+      "VK_APP_ID": "51600354",
+      "VK_APP_SECRET": "G0Uc7SixtXMOyRIgLiOh"
     }
   }
 }

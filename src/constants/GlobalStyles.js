@@ -1,39 +1,28 @@
 import { StyleSheet } from "react-native";
 import { COLORS } from "./Colors/Colors.js";
 import { Platform, PlatformIOSStatic } from "react-native";
+import { FONTS } from "../constants/FONTS/FONTS.js";
 export const GlobalStyles = {
   boldButton: {
     backgroundColor: COLORS.Accent,
-    fontSize: 12,
-    fontFamily: "Roboto-flex",
-    fontStyle: "normal",
-    fontWeight: 600,
-    lineHeight: 16,
+
     textAlign: "center",
     borderRadius: 10,
     boxSizing: "border-box",
+    ...FONTS.buttonText,
   },
 
   transparentButton: {
     backgroundColor: COLORS.Gray,
     borderRadius: 10,
-    fontSize: 12,
-    fontFamily: "Roboto-flex",
-    fontStyle: "normal",
-    fontWeight: 600,
-    lineHeight: 16,
+
     textAlign: "center",
+    ...FONTS.buttonText,
   },
 
   pageTitle: {
-    fontFamily: "Roboto-flex",
-    fontStyle: "normal",
-    fontWeight: "900",
-    fontSize: 32,
-    lineHeight: 38,
+    ...FONTS.sectionHeader,
     color: COLORS.Accent,
-    // marginLeft: 30,
-    // marginBottom: 20,
   },
 
   inputStyles: {
@@ -43,11 +32,7 @@ export const GlobalStyles = {
     paddingLeft: 20,
     paddingRight: 20,
     color: COLORS.Black,
-    fontFamily: "Roboto-flex",
-    fontStyle: "normal",
-    height: 53,
-    fontSize: 13,
-    lineHeight: 15,
+    ...FONTS.label,
     borderColor: COLORS.GrayText,
     borderWidth: 1,
     borderRadius: 10,
