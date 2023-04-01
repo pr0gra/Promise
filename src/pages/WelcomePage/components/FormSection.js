@@ -3,6 +3,7 @@ import { StyleSheet, View, ScrollView, TextInput } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { GlobalStyles } from "../../../constants/GlobalStyles";
 import { COLORS } from "../../../constants/Colors/Colors";
+import { FONTS } from "../../../constants/FONTS/FONTS";
 
 export const FormSection = ({ navigation }) => {
   const [city, setCity] = useState("");
@@ -112,7 +113,11 @@ export const FormSection = ({ navigation }) => {
       </ScrollView>
       <View style={[styles.buttonContainer, { marginTop: 30 }]}>
         <Button
-          style={[GlobalStyles.transparentButton, styles.button]}
+          style={[
+            GlobalStyles.transparentButton,
+            styles.button,
+            { textAlign: "center" },
+          ]}
           onPress={() => navigation.goBack()}
           contentStyle={{
             paddingVertical: 10,
@@ -149,8 +154,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   textButton: {
-    fontWeight: "600",
-    fontSize: 14,
-    fontFamily: "Roboto-flex",
+    ...FONTS.buttonText,
   },
 });

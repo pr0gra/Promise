@@ -9,30 +9,32 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  StyleSheet,
 } from "react-native";
 import { Button, Text } from "react-native-paper";
 import * as yup from "yup";
 import { COLORS } from "../../constants/Colors/Colors";
 import { GlobalStyles } from "../../constants/GlobalStyles";
 import * as VKLogin from "react-native-vkontakte-login";
+import { FONTS } from "../../constants/FONTS/FONTS";
 
 export const SignInPage = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState(null);
 
-  const login = async () => {
-    try {
-      VKLogin.initialize("51600354");
-      const result = await VKLogin.login(["email"]);
+  // const login = async () => {
+  //   try {
+  //     VKLogin.initialize("51600354");
+  //     const result = await VKLogin.login(["email"]);
 
-      if (result.status === "connected") {
-        const userData = await VKLogin.getUserInfo();
+  //     if (result.status === "connected") {
+  //       const userData = await VKLogin.getUserInfo();
 
-        setUserInfo(userData);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //       setUserInfo(userData);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   // Вызов функции для авторизации пользователя
 
@@ -129,12 +131,9 @@ export const SignInPage = ({ navigation }) => {
             textAlign: "center",
             paddingTop: 20,
             paddingBottom: 30,
-            fontFamily: "Roboto-flex",
-            fontStyle: "normal",
-            fontWeight: 600,
-            fontSize: 14,
-            lineHeight: 16,
+
             color: COLORS.Accent,
+            ...FONTS.buttonText,
           }}
         >
           Забыли пароль?
@@ -150,14 +149,7 @@ export const SignInPage = ({ navigation }) => {
                   paddingVertical: 10,
                 }}
               >
-                <Text
-                  style={{
-                    fontFamily: "Roboto-flex",
-                    fontWeight: "bold",
-                    color: COLORS.White,
-                    fontSize: 14,
-                  }}
-                >
+                <Text style={{ color: COLORS.White, ...FONTS.buttonText }}>
                   Войти
                 </Text>
               </Button>
@@ -172,7 +164,8 @@ export const SignInPage = ({ navigation }) => {
             >
               <Image source={require("../../../assets/icons/Google.png")} />
 
-              <TouchableWithoutFeedback onPress={login}>
+              {/* <TouchableWithoutFeedback onPress={login}> */}
+              <TouchableWithoutFeedback>
                 <Image source={require("../../../assets/icons/VK.png")} />
               </TouchableWithoutFeedback>
             </View>
@@ -186,19 +179,17 @@ export const SignInPage = ({ navigation }) => {
             }}
             onPress={() => navigation.navigate("SignUp")}
           >
-            <Text
-              style={{
-                fontFamily: "Roboto-flex",
-                fontWeight: "bold",
-                color: COLORS.Accent,
-                fontSize: 14,
-              }}
-            >
-              Зарегистрироваться
-            </Text>
+            <Text style={styles.registationButton}>Зарегистрироваться</Text>
           </Button>
         </View>
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  registationButton: {
+    ...FONTS.buttonText,
+    color: COLORS.Accent,
+  },
+});

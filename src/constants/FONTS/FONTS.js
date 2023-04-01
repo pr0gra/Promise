@@ -22,12 +22,10 @@ export const FONTS = {
   },
   buttonText: {
     fontFamily: "Roboto-flex",
-    fontStyle: "norma",
+    fontStyle: "normal",
     fontWeight: 600,
     fontSize: 14,
     lineHeight: 16,
-
-    color: "#000000",
   },
   postButtonText: {
     fontFamily: "Roboto-flex",
@@ -41,7 +39,7 @@ export const FONTS = {
   label: {
     fontFamily: "Roboto-flex",
     fontStyle: "normal",
-    fontWeight: 400,
+    fontWeight: "400",
     fontSize: 12,
     lineHeight: 14,
   },
