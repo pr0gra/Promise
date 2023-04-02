@@ -15,28 +15,30 @@ import { Button, Text } from "react-native-paper";
 import * as yup from "yup";
 import { COLORS } from "../../constants/Colors/Colors";
 import { GlobalStyles } from "../../constants/GlobalStyles";
-import * as VKLogin from "react-native-vkontakte-login";
+// import * as VKLogin from "react-native-vkontakte-login";
 import { FONTS } from "../../constants/FONTS/FONTS";
+import { VKLoginComponent } from "./components/VKLoginCOmponent/VKLoginComponent.js";
 
 export const SignInPage = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState(null);
 
-  // const login = async () => {
-  //   try {
-  //     VKLogin.initialize("51600354");
-  //     const result = await VKLogin.login(["email"]);
+  // VK.init({
+  //   apiId: 51600354,
+  //   status: true,
+  //   cookie: true,
+  //   version: "5.103",
+  // });
 
-  //     if (result.status === "connected") {
-  //       const userData = await VKLogin.getUserInfo();
-
-  //       setUserInfo(userData);
+  // function authVK() {
+  //   VK.Auth.login(function (response) {
+  //     if (response.status === "connected") {
+  //       let accessToken = response.authResponse.access_token;
+  //       // You can now use the access token to make API calls on behalf of the user
+  //     } else {
+  //       console.log("User cancelled login or did not fully authorize.");
   //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // Вызов функции для авторизации пользователя
+  //   });
+  // }
 
   const validationSchema = yup.object().shape({
     email: yup
@@ -165,9 +167,10 @@ export const SignInPage = ({ navigation }) => {
               <Image source={require("../../../assets/icons/Google.png")} />
 
               {/* <TouchableWithoutFeedback onPress={login}> */}
-              <TouchableWithoutFeedback>
+              {/* <TouchableWithoutFeedback>
                 <Image source={require("../../../assets/icons/VK.png")} />
-              </TouchableWithoutFeedback>
+              </TouchableWithoutFeedback> */}
+              <VKLoginComponent />
             </View>
           </View>
 
