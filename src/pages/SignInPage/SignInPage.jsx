@@ -164,7 +164,7 @@ export const SignInPage = ({ navigation }) => {
                 alignItems: "center",
               }}
             >
-              <Image source={require("../../../assets/icons/Google.png")} />
+              {/* <Image source={require("../../../assets/icons/Google.png")} /> */}
 
               {/* <TouchableWithoutFeedback onPress={login}> */}
               {/* <TouchableWithoutFeedback>

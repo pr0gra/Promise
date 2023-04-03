@@ -76,11 +76,17 @@ export const VKLoginComponent = () => {
       {loggedIn ? (
         <View>
           {/* <SocialIcon title="VKontakte (Logged In)" button type="vk" /> */}
-          <Image source={require("../../../../../assets/icons/VK.png")} />
+          <Image
+            source={require("../../../../../assets/icons/VK.png")}
+            style={styles.image}
+          />
         </View>
       ) : (
         <TouchableWithoutFeedback onPress={handleAuthPress}>
-          <Image source={require("../../../../../assets/icons/VK.png")} />
+          <Image
+            source={require("../../../../../assets/icons/VK.png")}
+            style={styles.image}
+          />
         </TouchableWithoutFeedback>
       )}
     </View>
@@ -92,4 +98,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  image: { width: 25, height: 25 },
 });
