@@ -49,7 +49,7 @@ export const FormSection = ({ navigation }) => {
   };
   return (
     <View>
-      <ScrollView style={{ maxHeight: 550 }}>
+      <ScrollView style={{ maxHeight: 450 }}>
         {/* <View> */}
         <View style={{ gap: 20 }}>
           <TextInput

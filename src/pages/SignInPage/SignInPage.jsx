@@ -168,8 +168,8 @@ export const SignInPage = ({ navigation }) => {
 
               {/* <TouchableWithoutFeedback onPress={login}> */}
               {/* <TouchableWithoutFeedback>
-                <Image source={require("../../../assets/icons/VK.png")} />
-              </TouchableWithoutFeedback> */}
+                  <Image source={require("../../../assets/icons/VK.png")} />
+                </TouchableWithoutFeedback> */}
               <VKLoginComponent />
             </View>
           </View>
@@ -194,5 +194,9 @@ const styles = StyleSheet.create({
   registationButton: {
     ...FONTS.buttonText,
     color: COLORS.Accent,
+  },
+  content: {
+    flexGrow: 1,
+    justifyContent: "flex-end",
   },
 });

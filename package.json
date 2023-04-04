@@ -17,7 +17,7 @@
     "expo-web-browser": "^12.1.1",
     "formik": "^2.2.9",
     "react": "18.2.0",
-    "react-native": "0.71.4",
+    "react-native": "0.71.6",
     "react-native-paper": "^5.5.2",
     "react-native-vkontakte-login": "^1.0.1",
     "yup": "^1.0.2"

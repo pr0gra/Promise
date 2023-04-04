@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, Platform, ScrollView, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  Platform,
+  ScrollView,
+  SafeAreaView,
+  StyleSheet,
+} from "react-native";
 import { COLORS } from "../../constants/Colors/Colors";
 import { GlobalStyles } from "../../constants/GlobalStyles";
 import Form from "./components/Form";
@@ -13,12 +20,25 @@ export const RegistatrionPage = ({ navigation }) => {
         justifyContent: "flex-end",
       }}
     >
-      <Text
-        style={[GlobalStyles.pageTitle, { marginLeft: 30, marginBottom: 20 }]}
-      >
-        Регистрация
-      </Text>
-      <Form navigation={navigation} />
+      <ScrollView contentContainerStyle={styles.content}>
+        <Text
+          style={[GlobalStyles.pageTitle, { marginLeft: 30, marginBottom: 20 }]}
+        >
+          Регистрация
+        </Text>
+        <Form navigation={navigation} />
+      </ScrollView>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+  content: {
+    flexGrow: 1,
+    justifyContent: "flex-end",
+  },
+});
