@@ -13,6 +13,7 @@ import { COLORS } from "./src/constants/Colors/Colors";
 export default function App() {
   const Stack = createNativeStackNavigator();
   const [fontsLoaded] = useFonts({
+    //Не юзать 1 строчку. Например roboto-flex-bold
     "Roboto-flex": require("./assets/fonts/RobotoFlex.ttf"),
   });
   if (!fontsLoaded) {

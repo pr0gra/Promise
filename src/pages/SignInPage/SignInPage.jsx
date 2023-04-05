@@ -15,30 +15,12 @@ import { Button, Text } from "react-native-paper";
 import * as yup from "yup";
 import { COLORS } from "../../constants/Colors/Colors";
 import { GlobalStyles } from "../../constants/GlobalStyles";
-// import * as VKLogin from "react-native-vkontakte-login";
+
 import { FONTS } from "../../constants/FONTS/FONTS";
 import { VKLoginComponent } from "./components/VKLoginCOmponent/VKLoginComponent.js";
 
 export const SignInPage = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState(null);
-
-  // VK.init({
-  //   apiId: 51600354,
-  //   status: true,
-  //   cookie: true,
-  //   version: "5.103",
-  // });
-
-  // function authVK() {
-  //   VK.Auth.login(function (response) {
-  //     if (response.status === "connected") {
-  //       let accessToken = response.authResponse.access_token;
-  //       // You can now use the access token to make API calls on behalf of the user
-  //     } else {
-  //       console.log("User cancelled login or did not fully authorize.");
-  //     }
-  //   });
-  // }
 
   const validationSchema = yup.object().shape({
     email: yup
@@ -166,10 +148,6 @@ export const SignInPage = ({ navigation }) => {
             >
               {/* <Image source={require("../../../assets/icons/Google.png")} /> */}
 
-              {/* <TouchableWithoutFeedback onPress={login}> */}
-              {/* <TouchableWithoutFeedback>
-                  <Image source={require("../../../assets/icons/VK.png")} />
-                </TouchableWithoutFeedback> */}
               <VKLoginComponent />
             </View>
           </View>
