@@ -23,8 +23,6 @@ export default function App() {
   return (
     fontsLoaded && (
       <NavigationContainer>
-        {/* initialRouteName изменить на SignIn */}
-        {/* <Stack.Navigator initialRouteName="SignIn"> */}
         <Stack.Navigator initialRouteName="SignIn">
           {/* Начальная страница(Страница входа) ее пилит олександер */}
 

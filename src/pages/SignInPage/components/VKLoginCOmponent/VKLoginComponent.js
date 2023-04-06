@@ -6,51 +6,51 @@ import {
   View,
   Linking,
 } from "react-native";
-import * as WebBrowser from "expo-web-browser";
-import { VK } from "react-native-vkontakte-login";
 
+import * as AuthSession from "expo-auth-session";
+import { makeRedirectUri } from "expo-auth-session";
 export const VKLoginComponent = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  const vkAuth = async () => {
-    try {
-      const { accessToken, userId } = await VK.login(["email"]);
-
-      console.log(`AccessToken: ${accessToken}, UserId: ${userId}`);
-
-      setLoggedIn(true);
-    } catch (error) {
-      console.error(error);
-    }
+  const [test, setTest] = useState("");
+  const vkAuthConfig = {
+    issuer: "https://oauth.vk.com",
+    clientId: "51600354",
+    scopes: ["wall"],
+    /* токен безопасности можно сгенерировать через:
+      https://randus.org/generators/access_token_vk/ */
+    redirectUrl:
+      "https://oauth.vk.com/blank.html#access_token=G0Uc7SixtXMOyRIgLiOh&expires_in=0&user_id=51600354",
   };
 
-  const handleAuthPress = async () => {
-    await WebBrowser.openBrowserAsync(
-      "https://oauth.vk.com/authorize?client_id=51600354&redirect_uri=https://auth.expo.io/@company/Promise&display=mobile&scope=12&response_type=token"
-    );
-    VK.initialize(51600354);
-  };
+  const [request, response, promptAsync] = AuthSession.useAuthRequest(
+    {
+      clientId: vkAuthConfig.clientId,
+      scopes: vkAuthConfig.scopes,
+      redirectUri: makeRedirectUri(),
+    },
+    vkAuthConfig
+  );
 
   useEffect(() => {
-    const handleUrl = async ({ url }) => {
+    if (response?.type === "success") {
+      const responseUrl = response.params.url;
+      const accessToken = responseUrl.match(/access_token=(.*?)&/)[1];
+      // используйте полученный токен для получения данных о пользователе
       try {
-        if (url.startsWith("https://oauth.vk.com/")) {
-          await WebBrowser.dismissBrowser();
-          VK.setAccessToken(url.split("=")[1]); // устанавливаем токен доступа в библиотеке VK
-          vkAuth(); // вызываем метод для авторизации ВКонтакте
-        }
-
-        return () => {
-          Linking.removeEventListener("url", handleUrl);
-        };
+        fetch(
+          `https://api.vk.com/method/users.get?v=5.92&access_token=${accessToken}`
+        )
+          .then((response) => response.json())
+          .then((json) => setTest(json.response[0].first_name))
+          .catch((error) => console.error(error));
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
-    };
-  }, []);
+    }
+  }, [response]);
+
   return (
     <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={handleAuthPress}>
+      <TouchableWithoutFeedback onPress={() => promptAsync()}>
         <Image
           source={require("../../../../../assets/icons/VK.png")}
           style={styles.image}
@@ -67,3 +67,4 @@ const styles = StyleSheet.create({
   },
   image: { width: 25, height: 25 },
 });
+//  "https://oauth.vk.com/authorize?client_id=51600354&redirect_uri=https://auth.expo.io/@company/Promise&display=mobile&scope=wall&response_type=token"

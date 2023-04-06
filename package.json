@@ -20,7 +20,9 @@
     "react-native": "0.71.6",
     "react-native-paper": "^5.5.2",
     "react-native-vkontakte-login": "^1.0.1",
-    "yup": "^1.0.2"
+    "yup": "^1.0.2",
+    "expo-auth-session": "~4.0.3",
+    "expo-random": "~13.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
