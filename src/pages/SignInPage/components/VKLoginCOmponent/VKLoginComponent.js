@@ -5,52 +5,31 @@ import {
   TouchableWithoutFeedback,
   View,
   Linking,
+  Text,
 } from "react-native";
-
+import axios from "axios";
 import * as AuthSession from "expo-auth-session";
 import { makeRedirectUri } from "expo-auth-session";
 export const VKLoginComponent = () => {
-  const [test, setTest] = useState("");
-  const vkAuthConfig = {
-    issuer: "https://oauth.vk.com",
-    clientId: "51600354",
-    scopes: ["wall"],
-    /* токен безопасности можно сгенерировать через:
-      https://randus.org/generators/access_token_vk/ */
-    redirectUrl:
-      "https://oauth.vk.com/blank.html#access_token=G0Uc7SixtXMOyRIgLiOh&expires_in=0&user_id=51600354",
-  };
-
-  const [request, response, promptAsync] = AuthSession.useAuthRequest(
-    {
-      clientId: vkAuthConfig.clientId,
-      scopes: vkAuthConfig.scopes,
-      redirectUri: makeRedirectUri(),
-    },
-    vkAuthConfig
-  );
-
-  useEffect(() => {
-    if (response?.type === "success") {
-      const responseUrl = response.params.url;
-      const accessToken = responseUrl.match(/access_token=(.*?)&/)[1];
-      // используйте полученный токен для получения данных о пользователе
-      try {
-        fetch(
-          `https://api.vk.com/method/users.get?v=5.92&access_token=${accessToken}`
-        )
-          .then((response) => response.json())
-          .then((json) => setTest(json.response[0].first_name))
-          .catch((error) => console.error(error));
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }, [response]);
+  const [user, setUser] = useState(null);
+  async function test() {
+    axios
+      .get(
+        "https://test.promise.waika28.ru/api/users/c1e3541f-36fa-430d-b5c0-6962b7216e89"
+      )
+      .then(function (response) {
+        setUser(response.data);
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 
   return (
     <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={() => promptAsync()}>
+      <Text>{JSON.stringify(user)}</Text>
+      <TouchableWithoutFeedback onPress={() => test()}>
         <Image
           source={require("../../../../../assets/icons/VK.png")}
           style={styles.image}
