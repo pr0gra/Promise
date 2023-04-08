@@ -10,7 +10,7 @@ const validationSchema = yup.object().shape({
   firstName: yup.string().label("First Name").required(),
   lastName: yup.string().label("Last Name").required(),
   email: yup.string().label("Email").email().required(),
-  password: yup.string().label("Password").required().min(6),
+  password: yup.string().label("Password").required().min(8),
   confirmPassword: yup
     .string()
     .label("Confirm password")
@@ -25,12 +25,12 @@ const Form = ({ navigation }) => {
     try {
       setLoading(true);
       const response = await axios.post("/api/users", {
-        first_name: values.firstName,
-        last_name: values.lastName,
-        email: values.email,
-        password: values.password,
-        city: "",
-        bio: "",
+        user: {
+          first_name: values.firstName,
+          last_name: values.lastName,
+          email: values.email,
+          password: values.password,
+        },
       });
 
       return response.data;
