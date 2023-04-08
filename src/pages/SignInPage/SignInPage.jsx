@@ -20,8 +20,6 @@ import { FONTS } from "../../constants/FONTS/FONTS";
 import { VKLoginComponent } from "./components/VKLoginCOmponent/VKLoginComponent.js";
 
 export const SignInPage = ({ navigation }) => {
-  const [userInfo, setUserInfo] = useState(null);
-
   const validationSchema = yup.object().shape({
     email: yup
       .string()

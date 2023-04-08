@@ -5,7 +5,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { Styles } from "../../../constants/GlobalStyles";
 import { COLORS } from "../../../constants/Colors/Colors";
-
+import axios from "axios";
 const validationSchema = yup.object().shape({
   firstName: yup.string().label("First Name").required(),
   lastName: yup.string().label("Last Name").required(),
@@ -20,6 +20,28 @@ const validationSchema = yup.object().shape({
 
 const Form = ({ navigation }) => {
   const [Loading, setLoading] = useState(false);
+
+  async function registerUser(values) {
+    try {
+      setLoading(true);
+      const response = await axios.post("/api/users", {
+        first_name: values.firstName,
+        last_name: values.lastName,
+        email: values.email,
+        password: values.password,
+        city: "",
+        bio: "",
+      });
+
+      return response.data;
+    } catch (error) {
+      console.log(error, "425425245");
+      return error;
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <View style={styles.formContainer}>
       <ScrollView>
@@ -33,11 +55,9 @@ const Form = ({ navigation }) => {
           }}
           onSubmit={(values) => {
             setLoading(true);
+            registerUser(values);
             console.log(values);
-            setTimeout(() => {
-              setLoading(false);
-              navigation.navigate("SignIn");
-            }, 1000);
+            setLoading(false);
           }}
           validationSchema={validationSchema}
         >
@@ -130,37 +150,22 @@ const Form = ({ navigation }) => {
                   <Text>{errors.confirmPassword}</Text>
                 )} */}
               </View>
-              {!Loading ? (
-                <Button
-                  title="Submit"
-                  onPress={handleSubmit}
-                  mode="contained-tonal"
-                  style={styles.postButton}
-                  contentStyle={{
-                    paddingVertical: 10,
-                  }}
-                >
-                  <Text style={{ fontSize: 14, color: COLORS.White }}>
-                    Зарегистрироваться
-                  </Text>
-                </Button>
-              ) : (
-                <Button
-                  title="Submit"
-                  onPress={handleSubmit}
-                  mode="contained-tonal"
-                  style={styles.postButton}
-                  labelStyle={{ color: COLORS.White }}
-                  loading={true}
-                  contentStyle={{
-                    paddingVertical: 10,
-                  }}
-                >
-                  <Text style={{ fontSize: 14, color: COLORS.White }}>
-                    Зарегистрироваться
-                  </Text>
-                </Button>
-              )}
+
+              <Button
+                title="Submit"
+                onPress={handleSubmit}
+                mode="contained-tonal"
+                style={styles.postButton}
+                labelStyle={{ color: COLORS.White }}
+                loading={Loading ? true : false}
+                contentStyle={{
+                  paddingVertical: 10,
+                }}
+              >
+                <Text style={{ fontSize: 14, color: COLORS.White }}>
+                  Зарегистрироваться
+                </Text>
+              </Button>
               <Button
                 onPress={() => navigation.goBack()}
                 mode="contained-tonal"
@@ -212,7 +217,7 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     paddingLeft: 20,
     paddingRight: 20,
-    color: COLORS.GrayText,
+    color: COLORS.Black,
     fontFamily: "Roboto-flex",
     fontStyle: "normal",
     height: 53,

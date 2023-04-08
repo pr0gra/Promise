@@ -12,7 +12,7 @@ import * as AuthSession from "expo-auth-session";
 import { makeRedirectUri } from "expo-auth-session";
 export const VKLoginComponent = () => {
   const [user, setUser] = useState(null);
-  async function test() {
+  async function getUser() {
     axios
       .get(
         "https://test.promise.waika28.ru/api/users/c1e3541f-36fa-430d-b5c0-6962b7216e89"
@@ -29,7 +29,7 @@ export const VKLoginComponent = () => {
   return (
     <View style={styles.container}>
       <Text>{JSON.stringify(user)}</Text>
-      <TouchableWithoutFeedback onPress={() => test()}>
+      <TouchableWithoutFeedback onPress={() => getUser()}>
         <Image
           source={require("../../../../../assets/icons/VK.png")}
           style={styles.image}
