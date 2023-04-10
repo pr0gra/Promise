@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { Styles } from "../../../constants/GlobalStyles";
 import { COLORS } from "../../../constants/Colors/Colors";
 import axios from "axios";
+import { useFonts } from "expo-font";
 const validationSchema = yup.object().shape({
   firstName: yup.string().label("First Name").required(),
   lastName: yup.string().label("Last Name").required(),
@@ -20,9 +21,11 @@ const validationSchema = yup.object().shape({
 
 const Form = ({ navigation }) => {
   const [Loading, setLoading] = useState(false);
+  const [ErrorState, setErrorState] = useState(false);
 
   async function registerUser(values) {
     try {
+      setErrorState(false);
       setLoading(true);
       const response = await axios.post("/api/users", {
         user: {
@@ -32,10 +35,11 @@ const Form = ({ navigation }) => {
           password: values.password,
         },
       });
-
+      navigation.navigate("Welcome");
       return response.data;
     } catch (error) {
       console.log(error, "425425245");
+      setErrorState(true);
       return error;
     } finally {
       setLoading(false);
@@ -44,6 +48,7 @@ const Form = ({ navigation }) => {
 
   return (
     <View style={styles.formContainer}>
+      <Text>{ErrorState}</Text>
       <ScrollView>
         <Formik
           initialValues={{
@@ -71,21 +76,25 @@ const Form = ({ navigation }) => {
           }) => (
             <>
               <View style={styles.inputContainer}>
-                <TextInput
-                  style={[
-                    styles.inputStyles,
-                    touched.firstName && errors.firstName && styles.wrongInput,
-                  ]}
-                  placeholder="Имя"
-                  value={values.firstName}
-                  onBlur={handleBlur("firstName")}
-                  onChangeText={handleChange("firstName")}
-                  selectionColor={COLORS.Accent}
-                />
+                <View>
+                  <TextInput
+                    style={[
+                      styles.inputStyles,
+                      touched.firstName &&
+                        errors.firstName &&
+                        styles.wrongInput,
+                    ]}
+                    placeholder="Имя"
+                    value={values.firstName}
+                    onBlur={handleBlur("firstName")}
+                    onChangeText={handleChange("firstName")}
+                    selectionColor={COLORS.Accent}
+                  />
 
-                {/* {touched.firstName && errors.firstName && (
-                  <Text>{errors.firstName}</Text>
-                )} */}
+                  {touched.firstName && errors.firstName && (
+                    <Text style={styles.errorMessage}>{errors.firstName}</Text>
+                  )}
+                </View>
 
                 <TextInput
                   style={[
@@ -98,9 +107,9 @@ const Form = ({ navigation }) => {
                   placeholder="Фамилия"
                   selectionColor={COLORS.Accent}
                 />
-                {/* {touched.lastName && errors.lastName && (
-                  <Text>{errors.lastName}</Text>
-                )} */}
+                {touched.lastName && errors.lastName && (
+                  <Text style={styles.errorMessage}>{errors.lastName}</Text>
+                )}
 
                 <TextInput
                   style={[
@@ -114,8 +123,16 @@ const Form = ({ navigation }) => {
                   keyboardType="email-address"
                   selectionColor={COLORS.Accent}
                 />
-                {/* {touched.email && errors.email && <Text>{errors.email}</Text>} */}
-
+                {touched.email && errors.email && (
+                  <Text style={[styles.errorMessage, { flex: 1 }]}>
+                    {errors.email}
+                  </Text>
+                )}
+                {ErrorState && (
+                  <Text style={[styles.errorMessage, { marginLeft: 200 }]}>
+                    email has been taked
+                  </Text>
+                )}
                 <TextInput
                   style={[
                     styles.inputStyles,
@@ -128,9 +145,9 @@ const Form = ({ navigation }) => {
                   secureTextEntry={true}
                   selectionColor={COLORS.Accent}
                 />
-                {/* {touched.password && errors.password && (
-                  <Text>{errors.password}</Text>
-                )} */}
+                {touched.password && errors.password && (
+                  <Text style={styles.errorMessage}>{errors.password}</Text>
+                )}
 
                 <TextInput
                   style={[
@@ -146,9 +163,11 @@ const Form = ({ navigation }) => {
                   secureTextEntry={true}
                   selectionColor={COLORS.Accent}
                 />
-                {/* {touched.confirmPassword && errors.confirmPassword && (
-                  <Text>{errors.confirmPassword}</Text>
-                )} */}
+                {touched.confirmPassword && errors.confirmPassword && (
+                  <Text style={styles.errorMessage}>
+                    {errors.confirmPassword}
+                  </Text>
+                )}
               </View>
 
               <Button
@@ -241,6 +260,14 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     textAlign: "center",
     borderRadius: 10,
+  },
+  errorMessage: {
+    marginLeft: 20,
+    fontSize: 12,
+    fontFamily: "Roboto-flex",
+    marginTop: -20,
+    marginBottom: -20,
+    color: "red",
   },
 });
 export default Form;
