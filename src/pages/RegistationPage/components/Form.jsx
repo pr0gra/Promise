@@ -7,6 +7,7 @@ import { Styles } from "../../../constants/GlobalStyles";
 import { COLORS } from "../../../constants/Colors/Colors";
 import axios from "axios";
 import { useFonts } from "expo-font";
+import { FONTS } from "../../../constants/FONTS/FONTS";
 const validationSchema = yup.object().shape({
   firstName: yup.string().label("First Name").required(),
   lastName: yup.string().label("Last Name").required(),
@@ -24,9 +25,10 @@ const Form = ({ navigation }) => {
   const [ErrorState, setErrorState] = useState(false);
 
   async function registerUser(values) {
+    setLoading(true);
     try {
       setErrorState(false);
-      setLoading(true);
+
       const response = await axios.post("/api/users", {
         user: {
           first_name: values.firstName,
@@ -42,13 +44,14 @@ const Form = ({ navigation }) => {
       setErrorState(true);
       return error;
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     }
   }
 
   return (
     <View style={styles.formContainer}>
-      <Text>{ErrorState}</Text>
       <ScrollView>
         <Formik
           initialValues={{
@@ -59,10 +62,8 @@ const Form = ({ navigation }) => {
             confirmPassword: "",
           }}
           onSubmit={(values) => {
-            setLoading(true);
             registerUser(values);
             console.log(values);
-            setLoading(false);
           }}
           validationSchema={validationSchema}
         >
@@ -96,78 +97,86 @@ const Form = ({ navigation }) => {
                   )}
                 </View>
 
-                <TextInput
-                  style={[
-                    styles.inputStyles,
-                    touched.lastName && errors.lastName && styles.wrongInput,
-                  ]}
-                  onChangeText={handleChange("lastName")}
-                  onBlur={handleBlur("lastName")}
-                  value={values.lastName}
-                  placeholder="Фамилия"
-                  selectionColor={COLORS.Accent}
-                />
-                {touched.lastName && errors.lastName && (
-                  <Text style={styles.errorMessage}>{errors.lastName}</Text>
-                )}
+                <View>
+                  <TextInput
+                    style={[
+                      styles.inputStyles,
+                      touched.lastName && errors.lastName && styles.wrongInput,
+                    ]}
+                    onChangeText={handleChange("lastName")}
+                    onBlur={handleBlur("lastName")}
+                    value={values.lastName}
+                    placeholder="Фамилия"
+                    selectionColor={COLORS.Accent}
+                  />
+                  {touched.lastName && errors.lastName && (
+                    <Text style={styles.errorMessage}>{errors.lastName}</Text>
+                  )}
+                </View>
 
-                <TextInput
-                  style={[
-                    styles.inputStyles,
-                    touched.email && errors.email && styles.wrongInput,
-                  ]}
-                  onChangeText={handleChange("email")}
-                  onBlur={handleBlur("email")}
-                  value={values.email}
-                  placeholder="email"
-                  keyboardType="email-address"
-                  selectionColor={COLORS.Accent}
-                />
-                {touched.email && errors.email && (
-                  <Text style={[styles.errorMessage, { flex: 1 }]}>
-                    {errors.email}
-                  </Text>
-                )}
-                {ErrorState && (
-                  <Text style={[styles.errorMessage, { marginLeft: 200 }]}>
-                    email has been taked
-                  </Text>
-                )}
-                <TextInput
-                  style={[
-                    styles.inputStyles,
-                    touched.password && errors.password && styles.wrongInput,
-                  ]}
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                  value={values.password}
-                  placeholder="Пароль"
-                  secureTextEntry={true}
-                  selectionColor={COLORS.Accent}
-                />
-                {touched.password && errors.password && (
-                  <Text style={styles.errorMessage}>{errors.password}</Text>
-                )}
+                <View>
+                  <TextInput
+                    style={[
+                      styles.inputStyles,
+                      touched.email && errors.email && styles.wrongInput,
+                    ]}
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    value={values.email}
+                    placeholder="email"
+                    keyboardType="email-address"
+                    selectionColor={COLORS.Accent}
+                  />
+                  {touched.email && errors.email && (
+                    <Text style={[styles.errorMessage, { flex: 1 }]}>
+                      {errors.email}
+                    </Text>
+                  )}
+                  {ErrorState && (
+                    <Text style={[styles.errorMessage, { marginLeft: 200 }]}>
+                      email has been taked
+                    </Text>
+                  )}
+                </View>
+                <View>
+                  <TextInput
+                    style={[
+                      styles.inputStyles,
+                      touched.password && errors.password && styles.wrongInput,
+                    ]}
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                    value={values.password}
+                    placeholder="Пароль"
+                    secureTextEntry={true}
+                    selectionColor={COLORS.Accent}
+                  />
+                  {touched.password && errors.password && (
+                    <Text style={styles.errorMessage}>{errors.password}</Text>
+                  )}
+                </View>
 
-                <TextInput
-                  style={[
-                    styles.inputStyles,
-                    touched.confirmPassword &&
-                      errors.confirmPassword &&
-                      styles.wrongInput,
-                  ]}
-                  onChangeText={handleChange("confirmPassword")}
-                  onBlur={handleBlur("confirmPassword")}
-                  value={values.confirmPassword}
-                  placeholder="Повторите пароль"
-                  secureTextEntry={true}
-                  selectionColor={COLORS.Accent}
-                />
-                {touched.confirmPassword && errors.confirmPassword && (
-                  <Text style={styles.errorMessage}>
-                    {errors.confirmPassword}
-                  </Text>
-                )}
+                <View>
+                  <TextInput
+                    style={[
+                      styles.inputStyles,
+                      touched.confirmPassword &&
+                        errors.confirmPassword &&
+                        styles.wrongInput,
+                    ]}
+                    onChangeText={handleChange("confirmPassword")}
+                    onBlur={handleBlur("confirmPassword")}
+                    value={values.confirmPassword}
+                    placeholder="Повторите пароль"
+                    secureTextEntry={true}
+                    selectionColor={COLORS.Accent}
+                  />
+                  {touched.confirmPassword && errors.confirmPassword && (
+                    <Text style={styles.errorMessage}>
+                      {errors.confirmPassword}
+                    </Text>
+                  )}
+                </View>
               </View>
 
               <Button
@@ -181,7 +190,7 @@ const Form = ({ navigation }) => {
                   paddingVertical: 10,
                 }}
               >
-                <Text style={{ fontSize: 14, color: COLORS.White }}>
+                <Text style={{ color: COLORS.White, ...FONTS.buttonText }}>
                   Зарегистрироваться
                 </Text>
               </Button>
@@ -197,14 +206,14 @@ const Form = ({ navigation }) => {
                   borderRadius: 10,
 
                   fontSize: 12,
-                  fontFamily: "Roboto-flex",
+                  fontFamily: "RobotoFlex",
                   fontStyle: "normal",
                   fontWeight: 600,
                   lineHeight: 16,
                   textAlign: "center",
                 }}
               >
-                <Text style={{ fontSize: 14, color: COLORS.Accent }}>
+                <Text style={{ ...FONTS.buttonText, color: COLORS.Accent }}>
                   Назад
                 </Text>
               </Button>
@@ -237,7 +246,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     color: COLORS.Black,
-    fontFamily: "Roboto-flex",
+    fontFamily: "RobotoFlex",
     fontStyle: "normal",
     height: 53,
     fontSize: 13,
@@ -254,7 +263,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
 
     fontSize: 12,
-    fontFamily: "Roboto-flex",
+    fontFamily: "RobotoFlex",
     fontStyle: "normal",
     fontWeight: 600,
     lineHeight: 16,
@@ -264,8 +273,8 @@ const styles = StyleSheet.create({
   errorMessage: {
     marginLeft: 20,
     fontSize: 12,
-    fontFamily: "Roboto-flex",
-    marginTop: -20,
+    fontFamily: "RobotoFlex",
+    // marginTop: 5,
     marginBottom: -20,
     color: "red",
   },

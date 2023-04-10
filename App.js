@@ -13,7 +13,7 @@ import axios from "axios";
 export default function App() {
   const Stack = createNativeStackNavigator();
   const [fontsLoaded] = useFonts({
-    "Roboto-flex": require("./assets/fonts/RobotoFlex.ttf"),
+    RobotoFlex: require("./assets/fonts/RobotoFlex.ttf"),
   });
 
   axios.defaults.baseURL = "https://test.promise.waika28.ru";
@@ -21,7 +21,7 @@ export default function App() {
     fontsLoaded && (
       <NavigationContainer>
         <Stack.Navigator initialRouteName="SignIn">
-          {/* Начальная страница(Страница входа) ее пилит олександер */}
+          {/* Начальная страница(Страница входа) */}
 
           <Stack.Screen
             name="SignIn"
