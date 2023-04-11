@@ -23,12 +23,12 @@ export const SignInPage = ({ navigation }) => {
   const validationSchema = yup.object().shape({
     email: yup
       .string()
-      .email("Invalid email address")
-      .required("Email is required"),
+      .email("Неверный адрес электронной почты")
+      .required("Требуется электронная почта"),
     password: yup
       .string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Password is required"),
+      .min(8, "Пароль должен состоять не менее чем из 8 символов")
+      .required("Требуется ввести пароль"),
   });
 
   const handleSubmit = (values) => {

@@ -9,26 +9,41 @@ import axios from "axios";
 import { useFonts } from "expo-font";
 import { FONTS } from "../../../constants/FONTS/FONTS";
 const validationSchema = yup.object().shape({
-  firstName: yup.string().label("First Name").required(),
-  lastName: yup.string().label("Last Name").required(),
-  email: yup.string().label("Email").email().required(),
-  password: yup.string().label("Password").required().min(8),
+  firstName: yup
+    .string()
+    .matches(/^[a-zA-Zа-яА-Я]+$/, "Имя должно содержать только буквы")
+    .label("Имя")
+    .required("Введите имя"),
+  lastName: yup
+    .string()
+    .matches(/^[a-zA-Zа-яА-Я]+$/, "Фамилия должна содержать только буквы")
+    .label("Фамилия")
+    .required("Введите фамилию"),
+  email: yup
+    .string()
+
+    .label("Email")
+    .email("Адрес электронной почты должен быть действительным")
+    .required("Введите email"),
+  password: yup
+    .string()
+    .label("Password")
+    .required("Введите пароль")
+    .min(8, "Пароль должен состоять не менее чем из 8 символов"),
   confirmPassword: yup
     .string()
-    .label("Confirm password")
-    .required()
-    .oneOf([yup.ref("password"), null], "Passwords must match"),
+    .label("пароль")
+    .required("подтвердите пароль")
+    .oneOf([yup.ref("password"), null], "Пароли должны совпадать"),
 });
 
 const Form = ({ navigation }) => {
   const [Loading, setLoading] = useState(false);
-  const [ErrorState, setErrorState] = useState(false);
+  const [ErrorState, setErrorState] = useState(null);
 
   async function registerUser(values) {
     setLoading(true);
     try {
-      setErrorState(false);
-
       const response = await axios.post("/api/users", {
         user: {
           first_name: values.firstName,
@@ -40,8 +55,12 @@ const Form = ({ navigation }) => {
       navigation.navigate("Welcome");
       return response.data;
     } catch (error) {
-      console.log(error, "425425245");
-      setErrorState(true);
+      if (error.response) {
+        setErrorState(error.response.data.errors.email[0]);
+      } else {
+        console.log("NO RESPONSE");
+      }
+
       return error;
     } finally {
       setTimeout(() => {
@@ -127,16 +146,12 @@ const Form = ({ navigation }) => {
                     keyboardType="email-address"
                     selectionColor={COLORS.Accent}
                   />
-                  {touched.email && errors.email && (
-                    <Text style={[styles.errorMessage, { flex: 1 }]}>
-                      {errors.email}
-                    </Text>
-                  )}
-                  {ErrorState && (
-                    <Text style={[styles.errorMessage, { marginLeft: 200 }]}>
-                      email has been taked
-                    </Text>
-                  )}
+
+                  <Text style={[styles.errorMessage, { flex: 1 }]}>
+                    {touched.email && errors?.email}
+
+                    {ErrorState && " " + ErrorState}
+                  </Text>
                 </View>
                 <View>
                   <TextInput
@@ -206,7 +221,7 @@ const Form = ({ navigation }) => {
                   borderRadius: 10,
 
                   fontSize: 12,
-                  fontFamily: "RobotoFlex",
+                  // fontFamily: "RobotoFlex",
                   fontStyle: "normal",
                   fontWeight: 600,
                   lineHeight: 16,

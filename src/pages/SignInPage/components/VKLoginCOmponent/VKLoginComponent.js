@@ -28,7 +28,6 @@ export const VKLoginComponent = () => {
 
   return (
     <View style={styles.container}>
-      <Text>{JSON.stringify(user)}</Text>
       <TouchableWithoutFeedback onPress={() => getUser()}>
         <Image
           source={require("../../../../../assets/icons/VK.png")}
