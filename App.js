@@ -9,23 +9,19 @@ import { useFonts } from "expo-font";
 import { TextInput } from "react-native";
 import { WelcomePage } from "./src/pages/WelcomePage/WelcomePage";
 import { COLORS } from "./src/constants/Colors/Colors";
-
+import axios from "axios";
 export default function App() {
   const Stack = createNativeStackNavigator();
   const [fontsLoaded] = useFonts({
-    "Roboto-flex": require("./assets/fonts/RobotoFlex.ttf"),
+    RobotoFlex: require("./assets/fonts/RobotoFlex.ttf"),
   });
-  if (!fontsLoaded) {
-    return <ActivityIndicator animating={true} color={COLORS.Accent} />;
-  }
 
+  axios.defaults.baseURL = "https://test.promise.waika28.ru";
   return (
     fontsLoaded && (
       <NavigationContainer>
-        {/* initialRouteName изменить на SignIn */}
-        {/* <Stack.Navigator initialRouteName="SignIn"> */}
         <Stack.Navigator initialRouteName="SignIn">
-          {/* Начальная страница(Страница входа) ее пилит олександер */}
+          {/* Начальная страница(Страница входа) */}
 
           <Stack.Screen
             name="SignIn"

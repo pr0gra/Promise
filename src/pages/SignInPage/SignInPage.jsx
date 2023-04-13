@@ -15,40 +15,20 @@ import { Button, Text } from "react-native-paper";
 import * as yup from "yup";
 import { COLORS } from "../../constants/Colors/Colors";
 import { GlobalStyles } from "../../constants/GlobalStyles";
-// import * as VKLogin from "react-native-vkontakte-login";
+
 import { FONTS } from "../../constants/FONTS/FONTS";
 import { VKLoginComponent } from "./components/VKLoginCOmponent/VKLoginComponent.js";
 
 export const SignInPage = ({ navigation }) => {
-  const [userInfo, setUserInfo] = useState(null);
-
-  // VK.init({
-  //   apiId: 51600354,
-  //   status: true,
-  //   cookie: true,
-  //   version: "5.103",
-  // });
-
-  // function authVK() {
-  //   VK.Auth.login(function (response) {
-  //     if (response.status === "connected") {
-  //       let accessToken = response.authResponse.access_token;
-  //       // You can now use the access token to make API calls on behalf of the user
-  //     } else {
-  //       console.log("User cancelled login or did not fully authorize.");
-  //     }
-  //   });
-  // }
-
   const validationSchema = yup.object().shape({
     email: yup
       .string()
-      .email("Invalid email address")
-      .required("Email is required"),
+      .email("Неверный адрес электронной почты")
+      .required("Требуется электронная почта"),
     password: yup
       .string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Password is required"),
+      .min(8, "Пароль должен состоять не менее чем из 8 символов")
+      .required("Требуется ввести пароль"),
   });
 
   const handleSubmit = (values) => {
@@ -166,10 +146,6 @@ export const SignInPage = ({ navigation }) => {
             >
               {/* <Image source={require("../../../assets/icons/Google.png")} /> */}
 
-              {/* <TouchableWithoutFeedback onPress={login}> */}
-              {/* <TouchableWithoutFeedback>
-                <Image source={require("../../../assets/icons/VK.png")} />
-              </TouchableWithoutFeedback> */}
               <VKLoginComponent />
             </View>
           </View>
@@ -194,5 +170,9 @@ const styles = StyleSheet.create({
   registationButton: {
     ...FONTS.buttonText,
     color: COLORS.Accent,
+  },
+  content: {
+    flexGrow: 1,
+    justifyContent: "flex-end",
   },
 });

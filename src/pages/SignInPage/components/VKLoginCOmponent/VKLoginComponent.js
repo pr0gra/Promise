@@ -5,90 +5,35 @@ import {
   TouchableWithoutFeedback,
   View,
   Linking,
+  Text,
 } from "react-native";
-
-import * as WebBrowser from "expo-web-browser";
-import { VK } from "react-native-vkontakte-login";
-
+import axios from "axios";
+import * as AuthSession from "expo-auth-session";
+import { makeRedirectUri } from "expo-auth-session";
 export const VKLoginComponent = () => {
-  //   const [loggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+  async function getUser() {
+    axios
+      .get(
+        "https://test.promise.waika28.ru/api/users/c1e3541f-36fa-430d-b5c0-6962b7216e89"
+      )
+      .then(function (response) {
+        setUser(response.data);
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 
-  //   const vkAuth = async () => {
-  //     try {
-  //       const { accessToken, userId } = await VK.login(["email"]);
-
-  //       console.log(
-  //         `AccessToken: ${accessToken}, UserId: ${userId}`,
-  //         "FFFFFFFFFFFFFF"
-  //       );
-
-  //       setLoggedIn(true);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-
-  //   const handleAuthPress = async () => {
-  //     await WebBrowser.openBrowserAsync(
-  //       "https://oauth.vk.com/authorize?client_id=51600354&redirect_uri=myapp://&display=mobile&scope=email&response_type=token"
-  //     );
-  //     VK.initialize(51600354);
-  //     vkAuth();
-  //   };
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  const vkAuth = async () => {
-    try {
-      const { accessToken, userId } = await VK.login(["email"]);
-
-      console.log(`AccessToken: ${accessToken}, UserId: ${userId}`);
-
-      setLoggedIn(true);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleAuthPress = async () => {
-    await WebBrowser.openBrowserAsync(
-      "https://oauth.vk.com/authorize?client_id=51600354&redirect_uri=exp://192.168.100.2:19000&display=mobile&scope=email&response_type=token"
-    );
-    VK.initialize(51600354);
-  };
-
-  useEffect(() => {
-    const handleUrl = async ({ url }) => {
-      if (url.startsWith("https://oauth.vk.com/")) {
-        await WebBrowser.dismissBrowser();
-        VK.setAccessToken(url.split("=")[1]); // устанавливаем токен доступа в библиотеке VK
-        vkAuth(); // вызываем метод для авторизации ВКонтакте
-      }
-    };
-
-    Linking.addEventListener("url", handleUrl);
-
-    return () => {
-      Linking.removeEventListener("url", handleUrl);
-    };
-  }, []);
   return (
     <View style={styles.container}>
-      {loggedIn ? (
-        <View>
-          {/* <SocialIcon title="VKontakte (Logged In)" button type="vk" /> */}
-          <Image
-            source={require("../../../../../assets/icons/VK.png")}
-            style={styles.image}
-          />
-        </View>
-      ) : (
-        <TouchableWithoutFeedback onPress={handleAuthPress}>
-          <Image
-            source={require("../../../../../assets/icons/VK.png")}
-            style={styles.image}
-          />
-        </TouchableWithoutFeedback>
-      )}
+      <TouchableWithoutFeedback onPress={() => getUser()}>
+        <Image
+          source={require("../../../../../assets/icons/VK.png")}
+          style={styles.image}
+        />
+      </TouchableWithoutFeedback>
     </View>
   );
 };
@@ -100,3 +45,4 @@ const styles = StyleSheet.create({
   },
   image: { width: 25, height: 25 },
 });
+//  "https://oauth.vk.com/authorize?client_id=51600354&redirect_uri=https://auth.expo.io/@company/Promise&display=mobile&scope=wall&response_type=token"

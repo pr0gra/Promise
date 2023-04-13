@@ -5,21 +5,70 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { Styles } from "../../../constants/GlobalStyles";
 import { COLORS } from "../../../constants/Colors/Colors";
-
+import axios from "axios";
+import { useFonts } from "expo-font";
+import { FONTS } from "../../../constants/FONTS/FONTS";
 const validationSchema = yup.object().shape({
-  firstName: yup.string().label("First Name").required(),
-  lastName: yup.string().label("Last Name").required(),
-  email: yup.string().label("Email").email().required(),
-  password: yup.string().label("Password").required().min(6),
+  firstName: yup
+    .string()
+    .matches(/^[a-zA-Zа-яА-Я]+$/, "Имя должно содержать только буквы")
+    .label("Имя")
+    .required("Введите имя"),
+  lastName: yup
+    .string()
+    .matches(/^[a-zA-Zа-яА-Я]+$/, "Фамилия должна содержать только буквы")
+    .label("Фамилия")
+    .required("Введите фамилию"),
+  email: yup
+    .string()
+
+    .label("Email")
+    .email("Адрес электронной почты должен быть действительным")
+    .required("Введите email"),
+  password: yup
+    .string()
+    .label("Password")
+    .required("Введите пароль")
+    .min(8, "Пароль должен состоять не менее чем из 8 символов"),
   confirmPassword: yup
     .string()
-    .label("Confirm password")
-    .required()
-    .oneOf([yup.ref("password"), null], "Passwords must match"),
+    .label("пароль")
+    .required("подтвердите пароль")
+    .oneOf([yup.ref("password"), null], "Пароли должны совпадать"),
 });
 
 const Form = ({ navigation }) => {
   const [Loading, setLoading] = useState(false);
+  const [ErrorState, setErrorState] = useState(null);
+
+  async function registerUser(values) {
+    setLoading(true);
+    try {
+      const response = await axios.post("/api/users", {
+        user: {
+          first_name: values.firstName,
+          last_name: values.lastName,
+          email: values.email,
+          password: values.password,
+        },
+      });
+      navigation.navigate("Welcome");
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        setErrorState(error.response.data.errors.email[0]);
+      } else {
+        console.log("NO RESPONSE");
+      }
+
+      return error;
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    }
+  }
+
   return (
     <View style={styles.formContainer}>
       <ScrollView>
@@ -32,12 +81,8 @@ const Form = ({ navigation }) => {
             confirmPassword: "",
           }}
           onSubmit={(values) => {
-            setLoading(true);
+            registerUser(values);
             console.log(values);
-            setTimeout(() => {
-              setLoading(false);
-              navigation.navigate("SignIn");
-            }, 1000);
           }}
           validationSchema={validationSchema}
         >
@@ -51,116 +96,119 @@ const Form = ({ navigation }) => {
           }) => (
             <>
               <View style={styles.inputContainer}>
-                <TextInput
-                  style={[
-                    styles.inputStyles,
-                    touched.firstName && errors.firstName && styles.wrongInput,
-                  ]}
-                  placeholder="Имя"
-                  value={values.firstName}
-                  onBlur={handleBlur("firstName")}
-                  onChangeText={handleChange("firstName")}
-                  selectionColor={COLORS.Accent}
-                />
+                <View>
+                  <TextInput
+                    style={[
+                      styles.inputStyles,
+                      touched.firstName &&
+                        errors.firstName &&
+                        styles.wrongInput,
+                    ]}
+                    placeholder="Имя"
+                    value={values.firstName}
+                    onBlur={handleBlur("firstName")}
+                    onChangeText={handleChange("firstName")}
+                    selectionColor={COLORS.Accent}
+                  />
 
-                {/* {touched.firstName && errors.firstName && (
-                  <Text>{errors.firstName}</Text>
-                )} */}
+                  {touched.firstName && errors.firstName && (
+                    <Text style={styles.errorMessage}>{errors.firstName}</Text>
+                  )}
+                </View>
 
-                <TextInput
-                  style={[
-                    styles.inputStyles,
-                    touched.lastName && errors.lastName && styles.wrongInput,
-                  ]}
-                  onChangeText={handleChange("lastName")}
-                  onBlur={handleBlur("lastName")}
-                  value={values.lastName}
-                  placeholder="Фамилия"
-                  selectionColor={COLORS.Accent}
-                />
-                {/* {touched.lastName && errors.lastName && (
-                  <Text>{errors.lastName}</Text>
-                )} */}
+                <View>
+                  <TextInput
+                    style={[
+                      styles.inputStyles,
+                      touched.lastName && errors.lastName && styles.wrongInput,
+                    ]}
+                    onChangeText={handleChange("lastName")}
+                    onBlur={handleBlur("lastName")}
+                    value={values.lastName}
+                    placeholder="Фамилия"
+                    selectionColor={COLORS.Accent}
+                  />
+                  {touched.lastName && errors.lastName && (
+                    <Text style={styles.errorMessage}>{errors.lastName}</Text>
+                  )}
+                </View>
 
-                <TextInput
-                  style={[
-                    styles.inputStyles,
-                    touched.email && errors.email && styles.wrongInput,
-                  ]}
-                  onChangeText={handleChange("email")}
-                  onBlur={handleBlur("email")}
-                  value={values.email}
-                  placeholder="email"
-                  keyboardType="email-address"
-                  selectionColor={COLORS.Accent}
-                />
-                {/* {touched.email && errors.email && <Text>{errors.email}</Text>} */}
+                <View>
+                  <TextInput
+                    style={[
+                      styles.inputStyles,
+                      touched.email && errors.email && styles.wrongInput,
+                    ]}
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    value={values.email}
+                    placeholder="email"
+                    keyboardType="email-address"
+                    selectionColor={COLORS.Accent}
+                  />
 
-                <TextInput
-                  style={[
-                    styles.inputStyles,
-                    touched.password && errors.password && styles.wrongInput,
-                  ]}
-                  onChangeText={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                  value={values.password}
-                  placeholder="Пароль"
-                  secureTextEntry={true}
-                  selectionColor={COLORS.Accent}
-                />
-                {/* {touched.password && errors.password && (
-                  <Text>{errors.password}</Text>
-                )} */}
+                  <Text style={[styles.errorMessage, { flex: 1 }]}>
+                    {touched.email && errors?.email}
 
-                <TextInput
-                  style={[
-                    styles.inputStyles,
-                    touched.confirmPassword &&
-                      errors.confirmPassword &&
-                      styles.wrongInput,
-                  ]}
-                  onChangeText={handleChange("confirmPassword")}
-                  onBlur={handleBlur("confirmPassword")}
-                  value={values.confirmPassword}
-                  placeholder="Повторите пароль"
-                  secureTextEntry={true}
-                  selectionColor={COLORS.Accent}
-                />
-                {/* {touched.confirmPassword && errors.confirmPassword && (
-                  <Text>{errors.confirmPassword}</Text>
-                )} */}
+                    {ErrorState && " " + ErrorState}
+                  </Text>
+                </View>
+                <View>
+                  <TextInput
+                    style={[
+                      styles.inputStyles,
+                      touched.password && errors.password && styles.wrongInput,
+                    ]}
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                    value={values.password}
+                    placeholder="Пароль"
+                    secureTextEntry={true}
+                    selectionColor={COLORS.Accent}
+                  />
+                  {touched.password && errors.password && (
+                    <Text style={styles.errorMessage}>{errors.password}</Text>
+                  )}
+                </View>
+
+                <View>
+                  <TextInput
+                    style={[
+                      styles.inputStyles,
+                      touched.confirmPassword &&
+                        errors.confirmPassword &&
+                        styles.wrongInput,
+                    ]}
+                    onChangeText={handleChange("confirmPassword")}
+                    onBlur={handleBlur("confirmPassword")}
+                    value={values.confirmPassword}
+                    placeholder="Повторите пароль"
+                    secureTextEntry={true}
+                    selectionColor={COLORS.Accent}
+                  />
+                  {touched.confirmPassword && errors.confirmPassword && (
+                    <Text style={styles.errorMessage}>
+                      {errors.confirmPassword}
+                    </Text>
+                  )}
+                </View>
               </View>
-              {!Loading ? (
-                <Button
-                  title="Submit"
-                  onPress={handleSubmit}
-                  mode="contained-tonal"
-                  style={styles.postButton}
-                  contentStyle={{
-                    paddingVertical: 10,
-                  }}
-                >
-                  <Text style={{ fontSize: 14, color: COLORS.White }}>
-                    Зарегистрироваться
-                  </Text>
-                </Button>
-              ) : (
-                <Button
-                  title="Submit"
-                  onPress={handleSubmit}
-                  mode="contained-tonal"
-                  style={styles.postButton}
-                  labelStyle={{ color: COLORS.White }}
-                  loading={true}
-                  contentStyle={{
-                    paddingVertical: 10,
-                  }}
-                >
-                  <Text style={{ fontSize: 14, color: COLORS.White }}>
-                    Зарегистрироваться
-                  </Text>
-                </Button>
-              )}
+
+              <Button
+                title="Submit"
+                onPress={handleSubmit}
+                mode="contained-tonal"
+                style={styles.postButton}
+                labelStyle={{ color: COLORS.White }}
+                loading={Loading ? true : false}
+                contentStyle={{
+                  paddingVertical: 10,
+                }}
+              >
+                <Text style={{ color: COLORS.White, ...FONTS.buttonText }}>
+                  Зарегистрироваться
+                </Text>
+              </Button>
               <Button
                 onPress={() => navigation.goBack()}
                 mode="contained-tonal"
@@ -173,14 +221,14 @@ const Form = ({ navigation }) => {
                   borderRadius: 10,
 
                   fontSize: 12,
-                  fontFamily: "Roboto-flex",
+                  // fontFamily: "RobotoFlex",
                   fontStyle: "normal",
                   fontWeight: 600,
                   lineHeight: 16,
                   textAlign: "center",
                 }}
               >
-                <Text style={{ fontSize: 14, color: COLORS.Accent }}>
+                <Text style={{ ...FONTS.buttonText, color: COLORS.Accent }}>
                   Назад
                 </Text>
               </Button>
@@ -212,8 +260,8 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     paddingLeft: 20,
     paddingRight: 20,
-    color: COLORS.GrayText,
-    fontFamily: "Roboto-flex",
+    color: COLORS.Black,
+    fontFamily: "RobotoFlex",
     fontStyle: "normal",
     height: 53,
     fontSize: 13,
@@ -230,12 +278,20 @@ const styles = StyleSheet.create({
     marginTop: 30,
 
     fontSize: 12,
-    fontFamily: "Roboto-flex",
+    fontFamily: "RobotoFlex",
     fontStyle: "normal",
     fontWeight: 600,
     lineHeight: 16,
     textAlign: "center",
     borderRadius: 10,
+  },
+  errorMessage: {
+    marginLeft: 20,
+    fontSize: 12,
+    fontFamily: "RobotoFlex",
+    // marginTop: 5,
+    marginBottom: -20,
+    color: "red",
   },
 });
 export default Form;
