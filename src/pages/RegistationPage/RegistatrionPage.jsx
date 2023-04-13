@@ -20,7 +20,11 @@ export const RegistatrionPage = ({ navigation }) => {
         justifyContent: "flex-end",
       }}
     >
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView
+        contentContainerStyle={[styles.content, { borderBottomColor: "black" }]}
+        showsVerticalScrollIndicator={false}
+        indicatorStyle={COLORS.Accent}
+      >
         <Text
           style={[GlobalStyles.pageTitle, { marginLeft: 30, marginBottom: 20 }]}
         >
