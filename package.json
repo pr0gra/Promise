@@ -15,6 +15,7 @@
     "expo-auth-session": "~4.0.3",
     "expo-font": "^11.1.1",
     "expo-random": "~13.1.1",
+    "expo-secure-store": "~12.1.1",
     "expo-splash-screen": "^0.18.1",
     "expo-status-bar": "~1.4.4",
     "expo-web-browser": "^12.1.1",
@@ -23,6 +24,7 @@
     "react-native": "0.71.6",
     "react-native-paper": "^5.5.2",
     "react-native-vkontakte-login": "^1.0.1",
+    "sync-storage": "^0.4.2",
     "yup": "^1.0.2"
   },
   "devDependencies": {
