@@ -1,3 +1,5 @@
+import { COLORS } from "../Colors/Colors";
+
 export const FONTS = {
   sectionHeader: {
     // fontFamily: "RobotoFlex",
@@ -42,5 +44,9 @@ export const FONTS = {
     fontWeight: "400",
     fontSize: 12,
     lineHeight: 14,
+  },
+  goalTime: {
+    fontWeight: "900",
+    fontSize: 24,
   },
 };

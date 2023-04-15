@@ -10,6 +10,7 @@ import { TextInput } from "react-native";
 import { WelcomePage } from "./src/pages/WelcomePage/WelcomePage";
 import { COLORS } from "./src/constants/Colors/Colors";
 import axios from "axios";
+import { MyGoals } from "./src/pages/MyGoals/MyGoals";
 export default function App() {
   const Stack = createNativeStackNavigator();
   const [fontsLoaded] = useFonts({
@@ -20,7 +21,7 @@ export default function App() {
   return (
     fontsLoaded && (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="SignIn">
+        <Stack.Navigator initialRouteName="MyGoals">
           {/* Начальная страница(Страница входа) */}
 
           <Stack.Screen
@@ -39,6 +40,11 @@ export default function App() {
             name="Welcome"
             component={WelcomePage}
             options={{ title: "Приветственная страница", headerShown: false }}
+          />
+          <Stack.Screen
+            name="MyGoals"
+            component={MyGoals}
+            options={{ title: "Мои цели", headerShown: false }}
           />
         </Stack.Navigator>
       </NavigationContainer>

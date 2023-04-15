@@ -21,7 +21,7 @@ export const RegistatrionPage = ({ navigation }) => {
       }}
     >
       <ScrollView
-        contentContainerStyle={[styles.content, { borderBottomColor: "black" }]}
+        contentContainerStyle={[styles.content]}
         showsVerticalScrollIndicator={false}
         indicatorStyle={COLORS.Accent}
       >
