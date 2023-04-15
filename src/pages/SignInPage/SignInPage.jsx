@@ -34,7 +34,7 @@ export const SignInPage = ({ navigation }) => {
   const handleSubmit = (values) => {
     //Тестовый обработчик
     setTimeout(() => {
-      navigation.navigate("MyGoals");
+      navigation.navigate("Welcome");
     }, 1000);
     console.log(values);
   };
