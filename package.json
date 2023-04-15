@@ -24,7 +24,8 @@
     "react-native-blur": "^3.2.2",
     "react-native-paper": "^5.5.2",
     "react-native-vkontakte-login": "^1.0.1",
-    "yup": "^1.0.2"
+    "yup": "^1.0.2",
+    "zustand": "^4.3.7"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

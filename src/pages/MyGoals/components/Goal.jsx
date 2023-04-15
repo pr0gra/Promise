@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import { COLORS } from "../../../constants/Colors/Colors";
 import { FONTS } from "../../../constants/FONTS/FONTS";
 
-export const Goal = () => {
+export const Goal = ({ time, description }) => {
   return (
     <View style={styles.goalContainer}>
       <View style={styles.top}>

@@ -11,6 +11,8 @@ import { WelcomePage } from "./src/pages/WelcomePage/WelcomePage";
 import { COLORS } from "./src/constants/Colors/Colors";
 import axios from "axios";
 import { MyGoals } from "./src/pages/MyGoals/MyGoals";
+import { useState } from "react";
+import { createStore } from "zustand";
 export default function App() {
   const Stack = createNativeStackNavigator();
   const [fontsLoaded] = useFonts({
@@ -18,10 +20,14 @@ export default function App() {
   });
 
   axios.defaults.baseURL = "https://test.promise.waika28.ru";
+  const useStore = createStore((set) => ({
+    token: null,
+    setToken: (newToken) => set((state) => ({ token: newToken })),
+  }));
   return (
     fontsLoaded && (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MyGoals">
+        <Stack.Navigator initialRouteName="SignIn">
           {/* Начальная страница(Страница входа) */}
 
           <Stack.Screen
