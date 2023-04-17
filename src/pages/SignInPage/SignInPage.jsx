@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Image,
   SafeAreaView,
@@ -15,11 +15,24 @@ import { Button, Text } from "react-native-paper";
 import * as yup from "yup";
 import { COLORS } from "../../constants/Colors/Colors";
 import { GlobalStyles } from "../../constants/GlobalStyles";
-
+import rocketImg from "../../../assets/images/rocket-illustration-3d-render.png";
 import { FONTS } from "../../constants/FONTS/FONTS";
 import { VKLoginComponent } from "./components/VKLoginCOmponent/VKLoginComponent.js";
+import axios from "axios";
+import SecureStore from "expo-secure-store";
+
+// async function SaveToken(key, value) { ЗАГОТОВКА ДЛЯ СОХРАНЕНИЯ ТОКЕНА
+//   console.log(key, value);
+//   try {
+//     await SecureStore.setItemAsync(key, value);
+//     console.log("Data successfully saved");
+//   } catch (error) {
+//     console.log("Error saving data", error);
+//   }
+// }
 
 export const SignInPage = ({ navigation }) => {
+  const [userExistError, setUserExistError] = useState(false);
   const validationSchema = yup.object().shape({
     email: yup
       .string()
@@ -31,25 +44,39 @@ export const SignInPage = ({ navigation }) => {
       .required("Требуется ввести пароль"),
   });
 
-  const handleSubmit = (values) => {
-    //Тестовый обработчик
-    setTimeout(() => {
+  async function loginUser(email, password) {
+    setUserExistError(false);
+    try {
+      const response = await axios.post("/api/tokens", {
+        user: {
+          email: email,
+          password: password,
+        },
+      });
+      // SaveToken("user_token", response.data.data.token);
       navigation.navigate("Welcome");
-    }, 1000);
-    console.log(values);
-  };
+    } catch (error) {
+      console.log(error);
+
+      setUserExistError(true);
+
+      return error;
+    }
+  }
 
   return (
     <View style={[GlobalStyles.viewBasic]}>
       <View
         style={{
           flex: 1,
+          alignItems: "center",
         }}
       >
         <Image
           style={{
             flex: 1,
-            marginBottom: -150,
+            width: 400,
+            marginBottom: -200,
           }}
           source={require("../../../assets/images/rocket-illustration-3d-render.png")}
         />
@@ -69,10 +96,18 @@ export const SignInPage = ({ navigation }) => {
             <Formik
               initialValues={{ email: "", password: "" }}
               validationSchema={validationSchema}
-              onSubmit={handleSubmit}
+              onSubmit={(values) => loginUser(values.email, values.password)}
             >
               {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
                 <>
+                  <Text
+                    style={{
+                      display: userExistError ? "flex" : "none",
+                      color: "red",
+                    }}
+                  >
+                    Неверный логин или пароль
+                  </Text>
                   <TextInput
                     label="Email"
                     onChangeText={handleChange("email")}
@@ -102,64 +137,63 @@ export const SignInPage = ({ navigation }) => {
                       errors.email && GlobalStyles.wrongInput,
                     ]}
                   />
+
+                  <Text
+                    style={{
+                      textAlign: "center",
+
+                      color: COLORS.Accent,
+                      ...FONTS.buttonText,
+                    }}
+                  >
+                    Забыли пароль?
+                  </Text>
+
+                  <View style={{ gap: 15 }}>
+                    <View style={{ flexDirection: "row" }}>
+                      <View style={{ flex: 1 }}>
+                        <Button
+                          mode="tonal"
+                          style={[GlobalStyles.boldButton]}
+                          onPress={handleSubmit}
+                          contentStyle={{
+                            paddingVertical: 10,
+                          }}
+                        >
+                          <Text
+                            style={{ color: COLORS.White, ...FONTS.buttonText }}
+                          >
+                            Войти
+                          </Text>
+                        </Button>
+                      </View>
+
+                      <View
+                        style={{
+                          flexDirection: "row",
+
+                          alignItems: "center",
+                        }}
+                      ></View>
+                    </View>
+
+                    <Button
+                      mode="tonal"
+                      style={GlobalStyles.transparentButton}
+                      contentStyle={{
+                        paddingVertical: 10,
+                      }}
+                      onPress={() => navigation.navigate("SignUp")}
+                    >
+                      <Text style={styles.registationButton}>
+                        Зарегистрироваться
+                      </Text>
+                    </Button>
+                  </View>
                 </>
               )}
             </Formik>
           </TouchableWithoutFeedback>
-        </View>
-
-        <Text
-          style={{
-            textAlign: "center",
-            paddingTop: 20,
-            paddingBottom: 30,
-
-            color: COLORS.Accent,
-            ...FONTS.buttonText,
-          }}
-        >
-          Забыли пароль?
-        </Text>
-        <View style={{ gap: 15 }}>
-          <View style={{ flexDirection: "row", gap: 20 }}>
-            <View style={{ flex: 1 }}>
-              <Button
-                mode="tonal"
-                style={[GlobalStyles.boldButton]}
-                onPress={handleSubmit}
-                contentStyle={{
-                  paddingVertical: 10,
-                }}
-              >
-                <Text style={{ color: COLORS.White, ...FONTS.buttonText }}>
-                  Войти
-                </Text>
-              </Button>
-            </View>
-
-            <View
-              style={{
-                flexDirection: "row",
-                gap: 20,
-                alignItems: "center",
-              }}
-            >
-              {/* <Image source={require("../../../assets/icons/Google.png")} /> */}
-
-              <VKLoginComponent />
-            </View>
-          </View>
-
-          <Button
-            mode="tonal"
-            style={GlobalStyles.transparentButton}
-            contentStyle={{
-              paddingVertical: 10,
-            }}
-            onPress={() => navigation.navigate("SignUp")}
-          >
-            <Text style={styles.registationButton}>Зарегистрироваться</Text>
-          </Button>
         </View>
       </View>
     </View>
