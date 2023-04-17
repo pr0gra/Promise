@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: "RobotoFlex",
     // marginTop: 5,
-    marginBottom: -20,
+    // marginBottom: -20,
     color: "red",
   },
 });
