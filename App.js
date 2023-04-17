@@ -10,6 +10,7 @@ import { TextInput } from "react-native";
 import { WelcomePage } from "./src/pages/WelcomePage/WelcomePage";
 import { COLORS } from "./src/constants/Colors/Colors";
 import axios from "axios";
+
 export default function App() {
   const Stack = createNativeStackNavigator();
   const [fontsLoaded] = useFonts({
