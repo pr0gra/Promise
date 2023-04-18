@@ -20,6 +20,7 @@ import { FONTS } from "../../constants/FONTS/FONTS";
 import { VKLoginComponent } from "./components/VKLoginCOmponent/VKLoginComponent.js";
 import axios from "axios";
 import SecureStore from "expo-secure-store";
+import { tokenStore } from "../../../store.js";
 
 // async function SaveToken(key, value) { ЗАГОТОВКА ДЛЯ СОХРАНЕНИЯ ТОКЕНА
 //   console.log(key, value);
@@ -32,6 +33,8 @@ import SecureStore from "expo-secure-store";
 // }
 
 export const SignInPage = ({ navigation }) => {
+  const token = tokenStore((state) => state.token);
+  const setToken = tokenStore((state) => state.setToken);
   const [userExistError, setUserExistError] = useState(false);
   const validationSchema = yup.object().shape({
     email: yup
@@ -53,8 +56,10 @@ export const SignInPage = ({ navigation }) => {
           password: password,
         },
       });
+      setToken(response.data.data.token.toString());
+
       // SaveToken("user_token", response.data.data.token);
-      navigation.navigate("Welcome");
+      navigation.navigate("MyGoals"); //welcome
     } catch (error) {
       console.log(error);
 

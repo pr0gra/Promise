@@ -13,21 +13,26 @@ import { GlobalStyles } from "../../constants/GlobalStyles";
 import { FONTS } from "../../constants/FONTS/FONTS";
 import { Goal } from "./components/Goal.jsx";
 import axios from "axios";
-import { useUserStore } from "../../../store";
+import { tokenStore } from "../../../store.js";
 
 export const MyGoals = () => {
   const [Loading, setLoading] = useState(false);
   const [errorState, setErrorState] = useState(null);
-  const { token } = useUserStore();
+  const [goals, setGoals] = useState(null);
+  const token = tokenStore((state) => state.token);
+  const config = {
+    params: {
+      token: token,
+    },
+  };
 
-  async function getGoals() {
+  async function getGoals(token) {
     setLoading(true);
+
     try {
-      const response = await axios.get("/api/goals", {
-        params: {
-          token: token,
-        },
-      });
+      const response = await axios.get(`/api/goals`, config);
+      setGoals(response.data);
+
       return response.data;
     } catch (error) {
       if (error.response) {
@@ -43,8 +48,9 @@ export const MyGoals = () => {
     }
   }
   useEffect(() => {
-    getGoals();
+    token && getGoals(token);
   }, []);
+
   return (
     <View
       style={{
