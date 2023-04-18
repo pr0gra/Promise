@@ -33,6 +33,7 @@ import { tokenStore } from "../../../store.js";
 // }
 
 export const SignInPage = ({ navigation }) => {
+  const [loading, setLoading] = useState(false);
   const token = tokenStore((state) => state.token);
   const setToken = tokenStore((state) => state.setToken);
   const [userExistError, setUserExistError] = useState(false);
@@ -50,6 +51,7 @@ export const SignInPage = ({ navigation }) => {
   async function loginUser(email, password) {
     setUserExistError(false);
     try {
+      setLoading(true);
       const response = await axios.post("/api/tokens", {
         user: {
           email: email,
@@ -66,6 +68,8 @@ export const SignInPage = ({ navigation }) => {
       setUserExistError(true);
 
       return error;
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -164,6 +168,8 @@ export const SignInPage = ({ navigation }) => {
                           contentStyle={{
                             paddingVertical: 10,
                           }}
+                          labelStyle={{ color: COLORS.White }}
+                          loading={loading ? true : false}
                         >
                           <Text
                             style={{ color: COLORS.White, ...FONTS.buttonText }}

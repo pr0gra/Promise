@@ -3,9 +3,9 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import { COLORS } from "../../../constants/Colors/Colors";
 import { FONTS } from "../../../constants/FONTS/FONTS";
 
-export const Goal = ({ time, description }) => {
+export const Goal = ({ title, id, user_id }) => {
   return (
-    <View style={styles.goalContainer}>
+    <View style={styles.goalContainer} key={id}>
       <View style={styles.top}>
         <Text style={{ ...FONTS.goalTime, color: COLORS.Accent }}>Хочу к</Text>
         <Image
@@ -15,7 +15,7 @@ export const Goal = ({ time, description }) => {
         <Text style={{ ...FONTS.goalTime, color: COLORS.Accent }}>13 мая</Text>
       </View>
       <Text style={{ ...FONTS.goalTime, color: "rgba(145, 155, 204, 0.5)" }}>
-        Заработать Миллион
+        {title}
       </Text>
     </View>
   );

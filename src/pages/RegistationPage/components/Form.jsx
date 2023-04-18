@@ -39,7 +39,7 @@ const validationSchema = yup.object().shape({
 
 const Form = ({ navigation }) => {
   const [Loading, setLoading] = useState(false);
-  const [ErrorState, setErrorState] = useState(null);
+  const [errorEmail, setErrorEmail] = useState(null);
 
   async function registerUser(values) {
     setLoading(true);
@@ -56,7 +56,7 @@ const Form = ({ navigation }) => {
       return response.data;
     } catch (error) {
       if (error.response) {
-        setErrorState(error.response.data.errors.email[0]);
+        setErrorEmail(error.response.data.errors.email[0]);
       } else {
         console.log("NO RESPONSE");
       }
@@ -147,11 +147,13 @@ const Form = ({ navigation }) => {
                     selectionColor={COLORS.Accent}
                   />
 
-                  <Text style={[styles.errorMessage, { flex: 1 }]}>
-                    {touched.email && errors?.email}
+                  {touched.email && (
+                    <Text style={[styles.errorMessage, styles.errorWithMargin]}>
+                      {touched.email && errors?.email}
 
-                    {ErrorState && " " + ErrorState}
-                  </Text>
+                      {errorEmail && " " + errorEmail}
+                    </Text>
+                  )}
                 </View>
                 <View>
                   <TextInput
@@ -292,6 +294,9 @@ const styles = StyleSheet.create({
     // marginTop: 5,
     // marginBottom: -20,
     color: "red",
+  },
+  errorWithMargin: {
+    marginBottom: -15,
   },
 });
 export default Form;

@@ -14,33 +14,33 @@ import { FONTS } from "../../constants/FONTS/FONTS";
 import { Goal } from "./components/Goal.jsx";
 import axios from "axios";
 import { tokenStore } from "../../../store.js";
+import { FlatList } from "react-native";
 
 export const MyGoals = () => {
   const [Loading, setLoading] = useState(false);
   const [errorState, setErrorState] = useState(null);
-  const [goals, setGoals] = useState(null);
+  const [goals, setGoals] = useState([]);
   const token = tokenStore((state) => state.token);
-  const config = {
-    params: {
-      token: token,
-    },
-  };
 
-  async function getGoals(token) {
+  async function getGoals() {
     setLoading(true);
-
+    console.log(token);
     try {
-      const response = await axios.get(`/api/goals`, config);
-      setGoals(response.data);
-
-      return response.data;
+      const response = await axios.get(`/api/goals`, {
+        headers: { Authorization: `bearer ${token}` },
+      });
+      setGoals(response.data.data);
+      console.log(goals);
+      console.log(response.data.data);
+      return response.data.data;
     } catch (error) {
       if (error.response) {
+        console.log(error.response);
         setErrorState(error.response.status);
       } else {
         console.log("NO RESPONSE");
       }
-      throw error;
+      throw new Error("Ошибка в получении целей");
     } finally {
       setTimeout(() => {
         setLoading(false);
@@ -48,7 +48,7 @@ export const MyGoals = () => {
     }
   }
   useEffect(() => {
-    token && getGoals(token);
+    getGoals();
   }, []);
 
   return (
@@ -59,25 +59,43 @@ export const MyGoals = () => {
         flex: 1,
       }}
     >
-      <Text
-        style={[
-          GlobalStyles.pageTitle,
-          { marginLeft: 20, marginTop: 20, marginBottom: 20 },
-        ]}
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginRight: 20,
+        }}
       >
-        Новая цель
-      </Text>
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        showsVerticalScrollIndicator={false}
-        indicatorStyle={COLORS.Accent}
-      >
-        {errorState < 400 ? (
-          <Goal />
-        ) : (
-          <Text> Пользователь не авторизован</Text>
-        )}
-      </ScrollView>
+        <Text
+          style={[
+            GlobalStyles.pageTitle,
+            { marginLeft: 20, marginTop: 20, marginBottom: 20 },
+          ]}
+        >
+          Мои цели
+        </Text>
+        <Image
+          source={require("../../../assets/icons/bell-01.png")}
+          style={{ width: 24, height: 24 }}
+        />
+      </View>
+
+      {goals.length === 0 ? (
+        <Text>Нет никаких целей</Text>
+      ) : (
+        <FlatList
+          data={goals}
+          renderItem={({ item }) => (
+            <Goal title={item.title} id={item.id} user_id={item.user_id} />
+          )}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{ flexGrow: 1 }}
+          showsVerticalScrollIndicator={false}
+          indicatorStyle={COLORS.Accent}
+        />
+      )}
+
       <View style={styles.buttonContainer}>
         <Text>Навигация</Text>
       </View>
