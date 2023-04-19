@@ -12,6 +12,7 @@ import { COLORS } from "./src/constants/Colors/Colors";
 import axios from "axios";
 import { MyGoals } from "./src/pages/MyGoals/MyGoals";
 import { useState } from "react";
+import { CertainGoal } from "./src/pages/CertainGoal/CertainGoal";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -25,20 +26,16 @@ export default function App() {
     fontsLoaded && (
       <NavigationContainer>
         <Stack.Navigator initialRouteName="SignIn">
-          {/* Начальная страница(Страница входа) */}
-
           <Stack.Screen
             name="SignIn"
             component={SignInPage}
             options={{ title: "Страница Входа", headerShown: false }}
           />
-          {/* Страница регистрации */}
           <Stack.Screen
             name="SignUp"
             component={RegistatrionPage}
             options={{ title: "Страница Входа", headerShown: false }}
           />
-          {/* welcompe page */}
           <Stack.Screen
             name="Welcome"
             component={WelcomePage}
@@ -47,6 +44,11 @@ export default function App() {
           <Stack.Screen
             name="MyGoals"
             component={MyGoals}
+            options={{ title: "Мои цели", headerShown: false }}
+          />
+          <Stack.Screen
+            name="CertainGoal"
+            component={CertainGoal}
             options={{ title: "Мои цели", headerShown: false }}
           />
         </Stack.Navigator>

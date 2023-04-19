@@ -83,24 +83,27 @@ export const MyGoals = ({ navigation }) => {
       </View>
 
       {goals.length === 0 ? (
-        <Text>Нет никаких целей</Text>
+        <View style={{ flex: 1 }}></View>
       ) : (
         <FlatList
           data={goals}
           renderItem={({ item }) => (
-            <Goal title={item.title} id={item.id} user_id={item.user_id} />
+            <Goal
+              title={item.title}
+              id={item.id}
+              user_id={item.user_id}
+              deadline={item.deadline}
+              navigation={navigation}
+            />
           )}
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ flexGrow: 1 }}
-          showsVerticalScrollIndicator={false}
+          showsVerticalScrollIndicator={true}
           indicatorStyle={COLORS.Accent}
         />
       )}
 
-      <View style={styles.buttonContainer}>
-        {/* <Text>Навигация</Text> */}
-        <Navigation navigation={navigation} />
-      </View>
+      <Navigation navigation={navigation} />
     </View>
   );
 };

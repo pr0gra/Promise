@@ -1,118 +1,168 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { COLORS } from "../constants/Colors/Colors";
 import { useRoute } from "@react-navigation/native";
 import { Image } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
-import { Surface, IconButton } from "react-native-paper";
+import {
+  Surface,
+  IconButton,
+  Menu,
+  Divider,
+  Provider,
+} from "react-native-paper";
 export const Navigation = ({ navigation }) => {
   const route = useRoute();
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const [menuTop, setMenuTop] = useState(70);
+  const openMenu = () => {
+    setIsMenuVisible(true);
+  };
+
+  const closeMenu = () => {
+    setIsMenuVisible(false);
+  };
 
   return (
-    <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={() => navigation.navigate("MyGoals")}>
-        <View style={styles.buttonContainer}>
-          <View style={route.name == "MyGoals" && styles.paramsStyle}>
-            <Image
-              source={require("../../assets/icons/target-04.png")}
-              style={styles.image}
-            />
-          </View>
-          <Text
-            style={[
-              styles.text,
-              {
-                color: COLORS.Accent,
-                marginTop: route.name == "MyGoals" ? 4 : 8,
-              },
-            ]}
-          >
-            Мои цели
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
+    <>
+      <Provider>
+        <Menu
+          visible={isMenuVisible} // устанавливаем видимость меню
+          onDismiss={closeMenu} // функция, вызываемая при закрытии меню
+          anchorPosition={{ top: menuTop, left: 0 }}
+          anchor={<Provider></Provider>}
+        >
+          <Menu.Item onPress={() => {}} title="Пункт 1" />
+          <Divider />
+          <Menu.Item onPress={() => {}} title="Пункт 2" />
+          <Divider />
+          <Menu.Item onPress={() => {}} title="Пункт 3" />
+        </Menu>
+      </Provider>
 
-      <TouchableWithoutFeedback onPress={() => navigation.navigate("Advices")}>
-        <View style={styles.buttonContainer}>
-          <View style={route.name == "Advices" && styles.paramsStyle}>
-            <Image
-              source={require("../../assets/icons/rows-01.png")}
-              style={styles.image}
-            />
+      <View style={styles.container}>
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate("MyGoals")}
+        >
+          <View style={styles.buttonContainer}>
+            <View
+              style={
+                route.name == "MyGoals" && !isMenuVisible && styles.paramsStyle
+              }
+            >
+              <Image
+                source={require("../../assets/icons/target-04.png")}
+                style={styles.image}
+              />
+            </View>
+            <Text
+              style={[
+                styles.text,
+                {
+                  color: COLORS.Accent,
+                  marginTop: route.name == "MyGoals" ? 4 : 8,
+                },
+              ]}
+            >
+              Мои цели
+            </Text>
           </View>
-          <Text
-            style={[
-              styles.text,
-              {
-                color: COLORS.Accent,
-                marginTop: route.name == "Advices" ? 4 : 8,
-              },
-            ]}
-          >
-            Лента
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
 
-      <Surface
-        style={[styles.surface]}
-        elevation={4}
-        shadowColor={"rgba(145, 155, 204, 0.3)"}
-      >
-        <IconButton
-          onPress={() => {
-            console.log(123);
-          }}
-          size={30}
-          mode="contained"
-          style={[styles.button]}
-          iconColor={COLORS.LowAccent}
-          icon={require("../../assets/icons/plus.png")}
-        />
-      </Surface>
-      <TouchableWithoutFeedback onPress={() => navigation.navigate("Chats")}>
-        <View style={styles.buttonContainer}>
-          <View style={route.name == "Chats" && styles.paramsStyle}>
-            <Image
-              source={require("../../assets/icons/message-square-01.png")}
-              style={styles.image}
-            />
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate("Advices")}
+        >
+          <View style={styles.buttonContainer}>
+            <View
+              style={
+                route.name == "Advices" && !isMenuVisible && styles.paramsStyle
+              }
+            >
+              <Image
+                source={require("../../assets/icons/rows-01.png")}
+                style={styles.image}
+              />
+            </View>
+            <Text
+              style={[
+                styles.text,
+                {
+                  color: COLORS.Accent,
+                  marginTop: route.name == "Advices" && !isMenuVisible ? 4 : 8,
+                },
+              ]}
+            >
+              Лента
+            </Text>
           </View>
-          <Text
-            style={[
-              styles.text,
-              {
-                color: COLORS.Accent,
-                marginTop: route.name == "Chats" ? 4 : 8,
-              },
-            ]}
-          >
-            Чаты
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback onPress={() => navigation.navigate("Menu")}>
-        <View style={styles.buttonContainer}>
-          <View style={route.name == "Menu" && styles.paramsStyle}>
-            <Image
-              source={require("../../assets/icons/menu-01.png")}
-              style={styles.image}
-            />
+        </TouchableWithoutFeedback>
+
+        <Surface
+          style={[styles.surface]}
+          elevation={3}
+          shadowColor={"rgba(145, 155, 204, 0.3)"}
+        >
+          <IconButton
+            onPress={() => {
+              console.log(123);
+            }}
+            size={30}
+            mode="contained"
+            style={[styles.button]}
+            iconColor={COLORS.LowAccent}
+            icon={require("../../assets/icons/plus.png")}
+          />
+        </Surface>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate("Chats")}>
+          <View style={styles.buttonContainer}>
+            <View
+              style={
+                route.name == "Chats" && !isMenuVisible && styles.paramsStyle
+              }
+            >
+              <Image
+                source={require("../../assets/icons/message-square-01.png")}
+                style={styles.image}
+              />
+            </View>
+            <Text
+              style={[
+                styles.text,
+                {
+                  color: COLORS.Accent,
+                  marginTop: route.name == "Chats" && !isMenuVisible ? 4 : 8,
+                },
+              ]}
+            >
+              Чаты
+            </Text>
           </View>
-          <Text
-            style={[
-              styles.text,
-              {
-                color: COLORS.Accent,
-                marginTop: route.name == "Menu" ? 4 : 8,
-              },
-            ]}
-          >
-            Меню
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
-    </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={() => setIsMenuVisible((state) => !state)}
+        >
+          <View style={styles.buttonContainer}>
+            <View style={isMenuVisible && styles.paramsStyle}>
+              <Image
+                source={require("../../assets/icons/menu-01.png")}
+                style={styles.image}
+              />
+            </View>
+            <Text
+              style={[
+                styles.text,
+                {
+                  color: COLORS.Accent,
+                  marginTop: isMenuVisible ? 4 : 8,
+                },
+              ]}
+            >
+              Меню
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+    </>
   );
 };
 
@@ -156,14 +206,14 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   surface: {
-    shadowColor: "rgba(0, 0, 0, 0.15)", // цвет тени на iOS
-    shadowOffset: { width: 0, height: 2 }, // смещение тени на iOS
-    shadowOpacity: 0.1, // прозрачность тени на iOS
-    shadowRadius: 4, // радиус тени на iOS
-    backgroundColor: "transparent", //
+    shadowColor: "rgba(0, 0, 0, 0.30)",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    backgroundColor: "transparent",
     flex: 1,
     height: 70,
 
-    borderRadius: 30, //
+    borderRadius: 30,
   },
 });
