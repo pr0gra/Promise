@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { COLORS } from "../constants/Colors/Colors";
 import { useRoute } from "@react-navigation/native";
@@ -11,34 +11,20 @@ import {
   Divider,
   Provider,
 } from "react-native-paper";
+import { PanGestureHandler } from "react-native-gesture-handler";
+
 export const Navigation = ({ navigation }) => {
   const route = useRoute();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [menuTop, setMenuTop] = useState(70);
-  const openMenu = () => {
-    setIsMenuVisible(true);
-  };
+  const { ref, isOpen, setIsOpen } = useOutsideClickListener(false);
 
-  const closeMenu = () => {
-    setIsMenuVisible(false);
+  const handleContainerPress = () => {
+    setIsOpen(!isOpen);
   };
-
   return (
     <>
-      <Provider>
-        <Menu
-          visible={isMenuVisible} // устанавливаем видимость меню
-          onDismiss={closeMenu} // функция, вызываемая при закрытии меню
-          anchorPosition={{ top: menuTop, left: 0 }}
-          anchor={<Provider></Provider>}
-        >
-          <Menu.Item onPress={() => {}} title="Пункт 1" />
-          <Divider />
-          <Menu.Item onPress={() => {}} title="Пункт 2" />
-          <Divider />
-          <Menu.Item onPress={() => {}} title="Пункт 3" />
-        </Menu>
-      </Provider>
+      <View ref={ref}>{isOpen && <Text> Меня Видно?</Text>}</View>
 
       <View style={styles.container}>
         <TouchableWithoutFeedback
@@ -138,9 +124,7 @@ export const Navigation = ({ navigation }) => {
             </Text>
           </View>
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback
-          onPress={() => setIsMenuVisible((state) => !state)}
-        >
+        <TouchableWithoutFeedback onPress={handleContainerPress}>
           <View style={styles.buttonContainer}>
             <View style={isMenuVisible && styles.paramsStyle}>
               <Image
