@@ -82,7 +82,6 @@ const Form = ({ navigation }) => {
           }}
           onSubmit={(values) => {
             registerUser(values);
-            console.log(values);
           }}
           validationSchema={validationSchema}
         >

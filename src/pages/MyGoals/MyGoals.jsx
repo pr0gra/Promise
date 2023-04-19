@@ -15,8 +15,9 @@ import { Goal } from "./components/Goal.jsx";
 import axios from "axios";
 import { tokenStore } from "../../../store.js";
 import { FlatList } from "react-native";
+import { Navigation } from "../../components/Navigation";
 
-export const MyGoals = () => {
+export const MyGoals = ({ navigation }) => {
   const [Loading, setLoading] = useState(false);
   const [errorState, setErrorState] = useState(null);
   const [goals, setGoals] = useState([]);
@@ -97,7 +98,8 @@ export const MyGoals = () => {
       )}
 
       <View style={styles.buttonContainer}>
-        <Text>Навигация</Text>
+        {/* <Text>Навигация</Text> */}
+        <Navigation navigation={navigation} />
       </View>
     </View>
   );
