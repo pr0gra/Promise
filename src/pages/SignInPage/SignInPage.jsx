@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   SafeAreaView,
@@ -37,6 +37,7 @@ export const SignInPage = ({ navigation }) => {
   const token = tokenStore((state) => state.token);
   const setToken = tokenStore((state) => state.setToken);
   const [userExistError, setUserExistError] = useState(false);
+
   const validationSchema = yup.object().shape({
     email: yup
       .string()

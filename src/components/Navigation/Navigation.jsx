@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { COLORS } from "../constants/Colors/Colors";
+import { COLORS } from "../../constants/Colors/Colors";
 import { useRoute } from "@react-navigation/native";
 import { Image } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
@@ -11,24 +11,64 @@ import {
   Divider,
   Provider,
 } from "react-native-paper";
-import { PanGestureHandler } from "react-native-gesture-handler";
+
+import { MenuInNavigation } from "./components/MenuInNavigation";
+import axios from "axios";
+import { tokenStore } from "../../../store";
 
 export const Navigation = ({ navigation }) => {
   const route = useRoute();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
-  const [menuTop, setMenuTop] = useState(70);
-  const { ref, isOpen, setIsOpen } = useOutsideClickListener(false);
+  const token = tokenStore((state) => state.token);
+  const [userData, setUserData] = useState(null);
 
-  const handleContainerPress = () => {
-    setIsOpen(!isOpen);
-  };
+  const getUserInfo = useMemo(
+    () =>
+      async function getUserInfo() {
+        try {
+          const response = await axios.get("/api/profile", {
+            headers: { Authorization: `bearer ${token}` },
+          });
+
+          setUserData(JSON.stringify(response.data.data));
+          return response.data.data;
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    [userData]
+  );
   return (
     <>
-      <View ref={ref}>{isOpen && <Text> Меня Видно?</Text>}</View>
-
+      {isMenuVisible && (
+        <>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              setIsMenuVisible((state) => !state);
+            }}
+          >
+            <View
+              style={{
+                position: "absolute",
+                zIndex: 1,
+                bottom: 71,
+                backgroundColor: "rgba(0, 0, 0, 0.2)",
+                height: "100%",
+                width: "100%",
+              }}
+            ></View>
+          </TouchableWithoutFeedback>
+          {userData && (
+            <MenuInNavigation userData={userData} navigation={navigation} />
+          )}
+        </>
+      )}
       <View style={styles.container}>
         <TouchableWithoutFeedback
-          onPress={() => navigation.navigate("MyGoals")}
+          onPress={() => {
+            setIsMenuVisible(false);
+            navigation.navigate("MyGoals");
+          }}
         >
           <View style={styles.buttonContainer}>
             <View
@@ -37,7 +77,7 @@ export const Navigation = ({ navigation }) => {
               }
             >
               <Image
-                source={require("../../assets/icons/target-04.png")}
+                source={require("../../../assets/icons/target-04.png")}
                 style={styles.image}
               />
             </View>
@@ -65,7 +105,7 @@ export const Navigation = ({ navigation }) => {
               }
             >
               <Image
-                source={require("../../assets/icons/rows-01.png")}
+                source={require("../../../assets/icons/rows-01.png")}
                 style={styles.image}
               />
             </View>
@@ -96,7 +136,7 @@ export const Navigation = ({ navigation }) => {
             mode="contained"
             style={[styles.button]}
             iconColor={COLORS.LowAccent}
-            icon={require("../../assets/icons/plus.png")}
+            icon={require("../../../assets/icons/plus.png")}
           />
         </Surface>
         <TouchableWithoutFeedback onPress={() => navigation.navigate("Chats")}>
@@ -107,7 +147,7 @@ export const Navigation = ({ navigation }) => {
               }
             >
               <Image
-                source={require("../../assets/icons/message-square-01.png")}
+                source={require("../../../assets/icons/message-square-01.png")}
                 style={styles.image}
               />
             </View>
@@ -124,11 +164,16 @@ export const Navigation = ({ navigation }) => {
             </Text>
           </View>
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={handleContainerPress}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            getUserInfo();
+            setIsMenuVisible((state) => !state);
+          }}
+        >
           <View style={styles.buttonContainer}>
             <View style={isMenuVisible && styles.paramsStyle}>
               <Image
-                source={require("../../assets/icons/menu-01.png")}
+                source={require("../../../assets/icons/menu-01.png")}
                 style={styles.image}
               />
             </View>
@@ -162,6 +207,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingLeft: 16,
     paddingRight: 16,
+    zIndex: 10,
   },
   buttonContainer: {
     alignItems: "center",
@@ -199,5 +245,25 @@ const styles = StyleSheet.create({
     height: 70,
 
     borderRadius: 30,
+  },
+  menuContainer: {
+    position: "absolute",
+    bottom: 71,
+    zIndex: 5,
+    backgroundColor: COLORS.LowAccent,
+    width: "100%",
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 20,
+    paddingBottom: 36,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  avatarContainer: {
+    width: "100%",
+    marginBottom: 22,
+    marginTop: 20,
+    flexDirection: "row",
+    gap: 20,
   },
 });

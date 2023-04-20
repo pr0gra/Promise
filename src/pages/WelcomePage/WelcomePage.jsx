@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Image, ScrollView, StyleSheet } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { GlobalStyles } from "../../constants/GlobalStyles.js";

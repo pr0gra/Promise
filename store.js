@@ -8,3 +8,18 @@ export const goalStore = create((set) => ({
   goalId: null,
   setGoalId: (newId) => set({ goalId: newId }),
 }));
+
+// export const userInformationStore = create((set) => ({
+//   bio: null,
+//   city: null,
+//   email: null,
+//   firstName: null,
+//   id: null,
+//   lastName: null,
+//   setBio: (newBio) => set({ bio: newBio }),
+//   setCity: (newCity) => set({ city: newCity }),
+//   setEmail: (newEmail) => set({ email: newEmail }),
+//   setName: (newName) => set({ firstName: newName }),
+//   setId: (newId) => set({ id: newId }),
+//   setLastName: (newLastName) => set({ lastName: newLastName }),
+// }));

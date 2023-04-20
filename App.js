@@ -37,7 +37,7 @@ export default function App() {
             options={{ title: "Страница Входа", headerShown: false }}
           />
           <Stack.Screen
-            name="Welcome"
+            name="WelcomePage"
             component={WelcomePage}
             options={{ title: "Приветственная страница", headerShown: false }}
           />

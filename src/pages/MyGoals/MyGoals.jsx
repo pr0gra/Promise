@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
+  RefreshControl,
 } from "react-native";
 import { Button } from "react-native-paper";
 import { COLORS } from "../../constants/Colors/Colors";
@@ -15,24 +16,27 @@ import { Goal } from "./components/Goal.jsx";
 import axios from "axios";
 import { tokenStore } from "../../../store.js";
 import { FlatList } from "react-native";
-import { Navigation } from "../../components/Navigation";
+import { Navigation } from "../../components/Navigation/Navigation";
 
 export const MyGoals = ({ navigation }) => {
   const [Loading, setLoading] = useState(false);
   const [errorState, setErrorState] = useState(null);
   const [goals, setGoals] = useState([]);
   const token = tokenStore((state) => state.token);
-
+  const [refreshing, setRefreshing] = useState(false);
+  const handleRefresh = () => {
+    getGoals();
+  };
   async function getGoals() {
     setLoading(true);
-    console.log(token);
+    setRefreshing(true);
+    console.log("REfreshing");
     try {
       const response = await axios.get(`/api/goals`, {
         headers: { Authorization: `bearer ${token}` },
       });
       setGoals(response.data.data);
-      console.log(goals);
-      console.log(response.data.data);
+
       return response.data.data;
     } catch (error) {
       if (error.response) {
@@ -45,6 +49,7 @@ export const MyGoals = ({ navigation }) => {
     } finally {
       setTimeout(() => {
         setLoading(false);
+        setRefreshing(false);
       }, 1000);
     }
   }
@@ -100,6 +105,13 @@ export const MyGoals = ({ navigation }) => {
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={true}
           indicatorStyle={COLORS.Accent}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+              colors={[COLORS.Accent]}
+            />
+          }
         />
       )}
 
