@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -20,7 +20,11 @@ export const RegistatrionPage = ({ navigation }) => {
         justifyContent: "flex-end",
       }}
     >
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView
+        contentContainerStyle={[styles.content]}
+        showsVerticalScrollIndicator={false}
+        indicatorStyle={COLORS.Accent}
+      >
         <Text
           style={[GlobalStyles.pageTitle, { marginLeft: 30, marginBottom: 20 }]}
         >

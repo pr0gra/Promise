@@ -1,6 +1,6 @@
 export const COLORS = {
   Background: "#E7EBFF",
-  LowAccent: " #D0D6F2",
+  LowAccent: "rgba(208, 214, 242, 1)",
   Accent: "#919BCC",
   AccentDisabled: "#AEAEAE",
   Gray: "#E9E9E9",
