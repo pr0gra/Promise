@@ -30,13 +30,13 @@ export const MyGoals = ({ navigation }) => {
   async function getGoals() {
     setLoading(true);
     setRefreshing(true);
-    console.log("REfreshing");
+
     try {
       const response = await axios.get(`/api/goals`, {
         headers: { Authorization: `bearer ${token}` },
       });
       setGoals(response.data.data);
-      console.log(response.data.data);
+
       return response.data.data;
     } catch (error) {
       if (error.response) {

@@ -34,14 +34,14 @@ export const Navigation = ({ navigation }) => {
   const expand = () => {
     Animated.timing(widthSize, {
       toValue: windowWidth - 30,
-      duration: 100,
+      duration: 200,
       useNativeDriver: false,
     }).start();
   };
   const noExpand = () => {
     Animated.timing(widthSize, {
       toValue: 70,
-      duration: 100,
+      duration: 200,
       useNativeDriver: false,
     }).start();
   };

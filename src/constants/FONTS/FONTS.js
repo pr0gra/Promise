@@ -49,4 +49,9 @@ export const FONTS = {
     fontWeight: "900",
     fontSize: 24,
   },
+  typography: {
+    fontWeight: "900",
+    fontSize: 24,
+    lineHeight: 28.13,
+  },
 };

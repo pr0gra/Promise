@@ -7,11 +7,23 @@ import { userInformationStore, tokenStore } from "../../../../store";
 import { PanGestureHandler, State } from "react-native-gesture-handler";
 import { Animated } from "react-native";
 import BottomSheet from "@gorhom/bottom-sheet";
+import { LinearGradient } from "expo-linear-gradient";
 export const MenuNavigation = memo(({ userData, navigation }) => {
   const data = JSON.parse(userData);
 
   return (
-    <View style={[styles.menuContainer]}>
+    <LinearGradient
+      colors={["rgba(231, 235, 255, 1)", "rgba(208, 214, 242, 1)"]}
+      start={{
+        x: 1,
+        y: 0,
+      }}
+      end={{
+        x: 1,
+        y: 1,
+      }}
+      style={[styles.menuContainer]}
+    >
       <View
         style={{
           width: 50,
@@ -105,7 +117,7 @@ export const MenuNavigation = memo(({ userData, navigation }) => {
           </View>
         </TouchableWithoutFeedback>
       </View>
-    </View>
+    </LinearGradient>
   );
 });
 const styles = StyleSheet.create({
