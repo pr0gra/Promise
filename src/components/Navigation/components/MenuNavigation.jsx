@@ -1,12 +1,13 @@
 import React, { memo, useEffect, useRef } from "react";
 import { TouchableWithoutFeedback } from "react-native";
-import { Text, View, Image, StyleSheet } from "react-native";
+import { Text, View, Image, StyleSheet, PanResponder } from "react-native";
 import { COLORS } from "../../../constants/Colors/Colors";
 import { FONTS } from "../../../constants/FONTS/FONTS";
 import { userInformationStore, tokenStore } from "../../../../store";
 import { PanGestureHandler, State } from "react-native-gesture-handler";
-
-export const MenuInNavigation = memo(({ userData, navigation }) => {
+import { Animated } from "react-native";
+import BottomSheet from "@gorhom/bottom-sheet";
+export const MenuNavigation = memo(({ userData, navigation }) => {
   const data = JSON.parse(userData);
 
   return (

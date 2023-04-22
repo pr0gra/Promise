@@ -36,7 +36,7 @@ export const MyGoals = ({ navigation }) => {
         headers: { Authorization: `bearer ${token}` },
       });
       setGoals(response.data.data);
-
+      console.log(response.data.data);
       return response.data.data;
     } catch (error) {
       if (error.response) {
@@ -56,7 +56,6 @@ export const MyGoals = ({ navigation }) => {
   useEffect(() => {
     getGoals();
   }, []);
-
   return (
     <View
       style={{
@@ -99,6 +98,7 @@ export const MyGoals = ({ navigation }) => {
               user_id={item.user_id}
               deadline={item.deadline}
               navigation={navigation}
+              startDate={item.inserted_at}
             />
           )}
           keyExtractor={(item) => item.id}
