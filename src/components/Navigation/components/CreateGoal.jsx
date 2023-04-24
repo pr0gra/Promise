@@ -35,13 +35,15 @@ export const CreateGoal = ({ setIsGoalVisible, isGoalVisible, noExpand }) => {
   // const leftPosition = useRef(new Animated.Value(0)).current;
   // const expand = () => {
   //   Animated.timing(widthSize, {
-  //     toValue: windowWidth - 30,
+  //     toValue: 200,
   //     duration: 500,
   //     useNativeDriver: false,
   //   }).start();
   // };
   // useEffect(() => {
-  //   expand();
+  //   setTimeout(() => {
+  //     expand();
+  //   }, 1000);
   // }, []);
   // const noExpand = () => {
   //   Animated.timing(widthSize, {
@@ -50,7 +52,18 @@ export const CreateGoal = ({ setIsGoalVisible, isGoalVisible, noExpand }) => {
   //     useNativeDriver: false,
   //   }).start();
   // };
-
+  function test() {
+    let widthSize = 0;
+    let interval = setInterval(() => {
+      if (widthSize < 200) {
+        widthSize++;
+      }
+      if (widthSize >= 200) {
+        clearInterval(interval);
+      }
+    }, 2);
+    return widthSize;
+  }
   return (
     <Portal>
       <Dialog
@@ -186,7 +199,7 @@ export const CreateGoal = ({ setIsGoalVisible, isGoalVisible, noExpand }) => {
                   onPress={() => {}}
                   size={30}
                   mode="contained"
-                  style={[styles.button]}
+                  style={[styles.button, { width: "100%" }]}
                   iconColor={COLORS.LowAccent}
                   icon={require("../../../../assets/icons/plus.png")}
                 />
@@ -237,21 +250,20 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: COLORS.Accent,
-    marginTop: -11,
+    marginTop: -17,
     borderRadius: 30,
-    width: "100%",
-    marginHorizontal: 15,
+    // width: 70,
     height: 70,
   },
   surface: {
-    shadowColor: "rgba(0, 0, 0, 0.30)",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
+    shadowColor: "rgba(0, 0, 0, 0.15)",
+    shadowOffset: { width: 0, height: 15 },
+    // shadowOpacity: 0.15,
     shadowRadius: 4,
     backgroundColor: "transparent",
     flex: 1,
-    height: 70,
-    marginBottom: -11,
+    // height: 70,
+
     borderRadius: 30,
   },
 });

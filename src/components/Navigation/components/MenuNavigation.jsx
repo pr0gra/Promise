@@ -9,6 +9,7 @@ import { Animated } from "react-native";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { LinearGradient } from "expo-linear-gradient";
 import { Dialog, Portal } from "react-native-paper";
+import UserAvatar from "react-native-user-avatar";
 export const MenuNavigation = memo(
   ({ userData, navigation, setIsMenuVisible, isMenuVisible, noExpand }) => {
     const data = JSON.parse(userData);
@@ -67,9 +68,13 @@ export const MenuNavigation = memo(
                 }}
               >
                 <View style={styles.avatarContainer}>
-                  <Image
-                    source={require("../../../../assets/images/user-avatar.png")} //Пока статичная картинка, так как на бекенде нет возможности получить картинку
+                  <UserAvatar
+                    size={62}
+                    imageStyle={{ width: 62.6, height: 62.6, borderRadius: 15 }}
+                    name={`${data?.first_name} ${data?.last_name}`}
                     style={{ width: 62.6, height: 62.6, borderRadius: 15 }}
+                    src={"https://dummyimage.com/100x100/000/fff"}
+                    bgColor={COLORS.Accent}
                   />
                   <View style={styles.profileLinkContainer}>
                     <View

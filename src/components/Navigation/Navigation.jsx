@@ -16,8 +16,9 @@ import { MenuNavigation } from "./components/MenuNavigation";
 import { CreateGoal } from "./components/CreateGoal";
 import axios from "axios";
 import { tokenStore } from "../../../store";
-import { DarkBackround } from "./components/DarkBackround";
+
 import { set } from "react-native-reanimated";
+import { Platform } from "react-native";
 export const Navigation = ({ navigation }) => {
   const route = useRoute();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -73,7 +74,18 @@ export const Navigation = ({ navigation }) => {
       },
     [userData]
   );
-
+  const shadowStyle =
+    Platform.OS === "android" // Определение платформы
+      ? {
+          elevation: 4, // Уровень тени для Android
+          shadowColor: "rgba(0, 0, 0, 0.30)",
+        }
+      : {
+          shadowColor: "#000", // Цвет тени для iOS
+          shadowOffset: { width: 0, height: 11 }, // Смещение тени для iOS
+          shadowOpacity: 0.15, // Прозрачность тени для iOS
+          shadowRadius: 32, // Радиус тени для iOS
+        };
   return (
     <>
       {isMenuVisible && (
@@ -163,12 +175,7 @@ export const Navigation = ({ navigation }) => {
           </TouchableWithoutFeedback>
         )}
 
-        <Surface
-          style={[styles.surface]}
-          elevation={4}
-          shadowColor={"rgba(0, 0, 0, 0.15)"}
-          // shadowOpacity={1}
-        >
+        <Surface style={[styles.surface, shadowStyle]}>
           <Animated.View
             style={{
               alignTimes: "center",

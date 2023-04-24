@@ -28,6 +28,7 @@
     "react-native-gesture-handler": "~2.9.0",
     "react-native-paper": "^5.5.2",
     "react-native-reanimated": "~2.14.4",
+    "react-native-user-avatar": "^1.0.8",
     "react-native-vkontakte-login": "^1.0.1",
     "yup": "^1.0.2",
     "zustand": "^4.3.7"
