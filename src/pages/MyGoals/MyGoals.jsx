@@ -60,7 +60,7 @@ export const MyGoals = ({ navigation }) => {
   return (
     <View
       style={{
-        paddingTop: Platform.OS === "ios" ? 0 : 28,
+        paddingTop: Platform.OS === "ios" ? 28 : 0,
         backgroundColor: COLORS.Background,
         flex: 1,
       }}
