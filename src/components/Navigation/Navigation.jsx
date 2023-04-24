@@ -22,19 +22,17 @@ export const Navigation = ({ navigation }) => {
   const route = useRoute();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [stateNavigation, setStateNavigation] = useState("");
-
   const token = tokenStore((state) => state.token);
   const [userData, setUserData] = useState(null);
-
   const widthSize = useRef(new Animated.Value(70)).current;
   const leftPosition = useRef(new Animated.Value(0)).current;
-
   const windowWidth = Dimensions.get("window").width;
+  const [isGoalVisible, setIsGoalVisible] = useState(false);
 
   const expand = () => {
     Animated.timing(widthSize, {
       toValue: windowWidth - 30,
-      duration: 200,
+      duration: 500,
       useNativeDriver: false,
     }).start();
   };
@@ -45,20 +43,20 @@ export const Navigation = ({ navigation }) => {
       useNativeDriver: false,
     }).start();
   };
-  const goLeft = () => {
-    Animated.timing(leftPosition, {
-      toValue: -windowWidth / 2 + 50,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-  };
-  const goRight = () => {
-    Animated.timing(leftPosition, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-  };
+  // const goLeft = () => {
+  //   Animated.timing(leftPosition, {
+  //     toValue: -windowWidth / 2 + 50,
+  //     duration: 300,
+  //     useNativeDriver: false,
+  //   }).start();
+  // };
+  // const goRight = () => {
+  //   Animated.timing(leftPosition, {
+  //     toValue: 0,
+  //     duration: 300,
+  //     useNativeDriver: false,
+  //   }).start();
+  // };
   const getUserInfo = useMemo(
     () =>
       async function getUserInfo() {
@@ -75,24 +73,29 @@ export const Navigation = ({ navigation }) => {
       },
     [userData]
   );
+
   return (
     <>
       {isMenuVisible && (
-        <>
-          <DarkBackround
-            setIsMenuVisible={setIsMenuVisible}
-            noExpand={noExpand}
-            setStateNavigation={setStateNavigation}
-          />
-
-          {stateNavigation === "Menu" && (
-            <MenuNavigation userData={userData} navigation={navigation} />
-          )}
-          {stateNavigation === "CreateGoal" && <CreateGoal />}
-        </>
+        <MenuNavigation
+          userData={userData}
+          navigation={navigation}
+          isMenuVisible={isMenuVisible}
+          setIsMenuVisible={setIsMenuVisible}
+          noExpand={noExpand}
+        />
       )}
+      {isGoalVisible && (
+        <CreateGoal
+          isGoalVisible={isGoalVisible}
+          setIsGoalVisible={setIsGoalVisible}
+          noExpand={noExpand}
+          expand={expand}
+        />
+      )}
+
       <View style={styles.container}>
-        {stateNavigation !== "CreateGoal" && (
+        {!isGoalVisible && (
           <TouchableWithoutFeedback
             onPress={() => {
               setIsMenuVisible(false);
@@ -127,7 +130,7 @@ export const Navigation = ({ navigation }) => {
           </TouchableWithoutFeedback>
         )}
 
-        {stateNavigation !== "CreateGoal" && (
+        {!isGoalVisible && (
           <TouchableWithoutFeedback
             onPress={() => navigation.navigate("Advices")}
           >
@@ -162,9 +165,9 @@ export const Navigation = ({ navigation }) => {
 
         <Surface
           style={[styles.surface]}
-          elevation={3}
-          shadowColor={"rgba(145, 155, 204, 0.3)"}
-          shadowOpacity={1}
+          elevation={4}
+          shadowColor={"rgba(0, 0, 0, 0.15)"}
+          // shadowOpacity={1}
         >
           <Animated.View
             style={{
@@ -176,7 +179,7 @@ export const Navigation = ({ navigation }) => {
             <IconButton
               onPress={() => {
                 setStateNavigation("CreateGoal");
-                setIsMenuVisible(true);
+                setIsGoalVisible(true);
                 expand();
               }}
               size={30}
@@ -194,7 +197,7 @@ export const Navigation = ({ navigation }) => {
           </Animated.View>
         </Surface>
 
-        {stateNavigation !== "CreateGoal" && (
+        {!isGoalVisible && (
           <TouchableWithoutFeedback
             onPress={() => navigation.navigate("Chats")}
           >
@@ -223,7 +226,7 @@ export const Navigation = ({ navigation }) => {
             </View>
           </TouchableWithoutFeedback>
         )}
-        {stateNavigation !== "CreateGoal" && (
+        {!isGoalVisible && (
           <TouchableWithoutFeedback
             onPress={() => {
               setStateNavigation("Menu");
@@ -298,13 +301,13 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   surface: {
-    shadowColor: "rgba(0, 0, 0, 0.30)",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowColor: "rgba(0, 0, 0, 0.15)",
+    shadowOffset: { width: 0, height: 15 },
+    // shadowOpacity: 0.15,
     shadowRadius: 4,
     backgroundColor: "transparent",
     flex: 1,
-    height: 70,
+    // height: 70,
 
     borderRadius: 30,
   },
