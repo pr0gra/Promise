@@ -29,7 +29,6 @@ export const MyGoals = ({ navigation }) => {
   };
   async function getGoals() {
     setLoading(true);
-    setRefreshing(true);
 
     try {
       const response = await axios.get(`/api/goals`, {
@@ -49,7 +48,6 @@ export const MyGoals = ({ navigation }) => {
     } finally {
       setTimeout(() => {
         setLoading(false);
-        setRefreshing(false);
       }, 1000);
     }
   }
@@ -107,7 +105,7 @@ export const MyGoals = ({ navigation }) => {
           indicatorStyle={COLORS.Accent}
           refreshControl={
             <RefreshControl
-              refreshing={refreshing}
+              refreshing={Loading}
               onRefresh={handleRefresh}
               colors={[COLORS.Accent]}
             />

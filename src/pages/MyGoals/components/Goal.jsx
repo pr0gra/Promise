@@ -17,7 +17,7 @@ export const Goal = ({
 }) => {
   const setGoalId = goalStore((state) => state.setGoalId);
   const goalId = goalStore((state) => state.goalId);
-
+  // const token = tokenStore((state) => state.token);
   const colors = {
     1: "rgba(153, 204, 145, 1)",
     2: "rgba(203, 204, 145, 1)",
