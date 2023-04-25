@@ -13,6 +13,7 @@ import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { GlobalStyles } from "../../../constants/GlobalStyles";
 import {
+  Button,
   Checkbox,
   Dialog,
   IconButton,
@@ -23,13 +24,19 @@ import {
 import { TextComponent } from "react-native";
 import Animated from "react-native-reanimated";
 import { Dimensions } from "react-native";
+import { CalendarComponent } from "./CalendarComponent";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableHighlight } from "react-native";
 
 export const CreateGoal = ({ setIsGoalVisible, isGoalVisible, noExpand }) => {
   const [about, setAbout] = useState("");
   const [checkedNormal, setCheckedNormal] = useState(true);
+  const [isVisibleCalendar, setIsVisibleCalendar] = useState(false);
+  const [selected, setSelected] = useState("");
   const handleAboutChange = (value) => {
     setAbout(value);
   };
+
   // const windowWidth = Dimensions.get("window").width;
   // const widthSize = useRef(new Animated.Value(70)).current;
   // const leftPosition = useRef(new Animated.Value(0)).current;
@@ -52,18 +59,7 @@ export const CreateGoal = ({ setIsGoalVisible, isGoalVisible, noExpand }) => {
   //     useNativeDriver: false,
   //   }).start();
   // };
-  function test() {
-    let widthSize = 0;
-    let interval = setInterval(() => {
-      if (widthSize < 200) {
-        widthSize++;
-      }
-      if (widthSize >= 200) {
-        clearInterval(interval);
-      }
-    }, 2);
-    return widthSize;
-  }
+  //Как опустить текст внутри тега Button В котором есть
   return (
     <Portal>
       <Dialog
@@ -89,123 +85,155 @@ export const CreateGoal = ({ setIsGoalVisible, isGoalVisible, noExpand }) => {
             paddingBottom: 0,
           }}
         >
-          <LinearGradient
-            colors={["rgba(231, 235, 255, 1)", "rgba(208, 214, 242, 1)"]}
-            start={{
-              x: 1,
-              y: 0,
-            }}
-            end={{
-              x: 1,
-              y: 1,
-            }}
-            style={styles.container}
-          >
-            <View
-              style={{
-                width: 50,
-                height: 4,
-                backgroundColor: COLORS.Accent,
-                left: "50%",
-                marginLeft: -25,
-                borderRadius: 100,
-                marginBottom: 20,
+          <>
+            {isVisibleCalendar && (
+              <CalendarComponent
+                isVisibleCalendar={isVisibleCalendar}
+                setIsVisibleCalendar={setIsVisibleCalendar}
+                selected={selected}
+                setSelected={setSelected}
+              />
+            )}
+            <LinearGradient
+              colors={["rgba(231, 235, 255, 1)", "rgba(208, 214, 242, 1)"]}
+              start={{
+                x: 1,
+                y: 0,
               }}
-            ></View>
-            <View style={styles.top}>
-              <Text style={{ ...FONTS.goalTime, color: COLORS.Accent }}>
-                Хочу к
-              </Text>
+              end={{
+                x: 1,
+                y: 1,
+              }}
+              style={styles.container}
+            >
               <View
                 style={{
-                  backgroundColor: COLORS.LowAccent,
-                  flexDirection: "row",
-                  alignItems: "center",
-                  paddingHorizontal: 10,
-                  paddingVertical: 5,
-                  borderRadius: 10,
-                  marginLeft: 10,
+                  width: 50,
+                  height: 4,
+                  backgroundColor: COLORS.Accent,
+                  left: "50%",
+                  marginLeft: -25,
+                  borderRadius: 100,
+                  marginBottom: 20,
                 }}
-              >
-                <Image
-                  source={require("../../../../assets/icons/clock.png")}
-                  style={styles.image}
-                />
+              ></View>
+              <View style={styles.top}>
                 <Text style={{ ...FONTS.goalTime, color: COLORS.Accent }}>
-                  Пивет
+                  Хочу к
                 </Text>
-              </View>
-            </View>
-            <View>
-              <TextInput
-                autoFocus={true}
-                label="Расскажи о себе"
-                placeholder="Расскажи о себе"
-                value={about}
-                onChangeText={handleAboutChange}
-                multiline
-                numberOfLines={4}
-                textAlignVertical="top"
-                selectionColor={COLORS.Accent}
-                placeholderTextColor={"rgba(145, 155, 204, 0.3)"}
-                style={[
-                  styles.input,
-                  {
-                    height: "auto",
-                    textAlign: "auto",
-                    ...FONTS.typography,
-                    color: "rgba(145, 155, 204, 0.7)",
-                  },
-                ]}
-              />
-            </View>
-            <TouchableWithoutFeedback
-              onPress={() => setCheckedNormal((state) => !state)}
-              style={{ height: 50 }}
-            >
-              <View style={styles.checkboxContainer}>
-                <View pointerEvents="none">
-                  <Checkbox
-                    status={checkedNormal ? "checked" : "unchecked"}
-                    color={COLORS.Accent}
-                  />
-                </View>
-                <Text
+                <View
                   style={{
-                    fontWeight: "600",
-                    fontSize: 15,
-                    lineHeight: 18,
-                    color: COLORS.Accent,
+                    backgroundColor: COLORS.LowAccent,
+                    flexDirection: "row",
+                    gap: 10,
+                    borderRadius: 10,
+                    marginLeft: 10,
+                    alignItems: "center",
+                    paddingHorizontal: 10,
                   }}
                 >
-                  Опубликовать
-                </Text>
+                  <Image
+                    source={require("../../../../assets/icons/clock.png")}
+                    style={{ width: 24, height: 24 }}
+                  />
+                  <TouchableWithoutFeedback
+                    onPress={() => setIsVisibleCalendar((state) => !state)}
+                  >
+                    <View
+                      style={{
+                        backgroundColor: COLORS.LowAccent,
+                        borderRadius: 10,
+                        paddingVertical: 5,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          ...FONTS.typography,
+
+                          color: COLORS.Accent,
+                          textAlign: "left",
+                          marginVertical: "auto",
+                          flexDirection: "row",
+                          maxWidth: "100%",
+                        }}
+                      >
+                        {selected ? selected : "Выберите дату"}
+                      </Text>
+                    </View>
+                  </TouchableWithoutFeedback>
+                </View>
               </View>
-            </TouchableWithoutFeedback>
-            <Surface
-              style={[styles.surface]}
-              elevation={3}
-              shadowColor={"rgba(145, 155, 204, 0.3)"}
-              shadowOpacity={1}
-            >
-              <Animated.View
-                style={{
-                  alignTimes: "center",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                }}
-              >
-                <IconButton
-                  onPress={() => {}}
-                  size={30}
-                  mode="contained"
-                  style={[styles.button, { width: "100%" }]}
-                  iconColor={COLORS.LowAccent}
-                  icon={require("../../../../assets/icons/plus.png")}
+              <View>
+                <TextInput
+                  autoFocus={true}
+                  label="Расскажи о себе"
+                  placeholder="Расскажи о себе"
+                  value={about}
+                  onChangeText={handleAboutChange}
+                  multiline
+                  numberOfLines={4}
+                  textAlignVertical="top"
+                  selectionColor={COLORS.Accent}
+                  placeholderTextColor={"rgba(145, 155, 204, 0.3)"}
+                  style={[
+                    styles.input,
+                    {
+                      height: "auto",
+                      textAlign: "auto",
+                      ...FONTS.typography,
+                      color: "rgba(145, 155, 204, 0.7)",
+                    },
+                  ]}
                 />
-              </Animated.View>
-            </Surface>
-          </LinearGradient>
+              </View>
+              <TouchableWithoutFeedback
+                onPress={() => setCheckedNormal((state) => !state)}
+                style={{ height: 50 }}
+              >
+                <View style={styles.checkboxContainer}>
+                  <View pointerEvents="none">
+                    <Checkbox
+                      status={checkedNormal ? "checked" : "unchecked"}
+                      color={COLORS.Accent}
+                    />
+                  </View>
+                  <Text
+                    style={{
+                      fontWeight: "600",
+                      fontSize: 15,
+                      lineHeight: 18,
+                      color: COLORS.Accent,
+                    }}
+                  >
+                    Опубликовать
+                  </Text>
+                </View>
+              </TouchableWithoutFeedback>
+              <Surface
+                style={[styles.surface]}
+                elevation={3}
+                shadowColor={"rgba(145, 155, 204, 0.3)"}
+                shadowOpacity={1}
+              >
+                <Animated.View
+                  style={{
+                    alignTimes: "center",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                  }}
+                >
+                  <IconButton
+                    onPress={() => {}}
+                    size={30}
+                    mode="contained"
+                    style={[styles.button, { width: "100%" }]}
+                    iconColor={COLORS.LowAccent}
+                    icon={require("../../../../assets/icons/plus.png")}
+                  />
+                </Animated.View>
+              </Surface>
+            </LinearGradient>
+          </>
         </Dialog.Content>
       </Dialog>
     </Portal>

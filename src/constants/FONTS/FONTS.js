@@ -4,7 +4,7 @@ export const FONTS = {
   sectionHeader: {
     // fontFamily: "RobotoFlex",
     // fontStyle: "normal",
-    fontWeight: 900,
+    fontWeight: "900",
     fontSize: 32,
     lineHeight: 38,
   },
