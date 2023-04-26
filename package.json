@@ -33,8 +33,12 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@expo/webpack-config": "^18.0.1",
+    "add": "^2.0.6",
+    "or": "^0.2.0",
     "react-dom": "^18.2.0",
-    "react-native-web": "^0.18.12"
+    "react-native-user-avatar": "^1.0.8",
+    "react-native-web": "^0.18.12",
+    "yarn": "^1.22.19"
   },
   "private": true
 }

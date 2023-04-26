@@ -6,6 +6,11 @@ import { GlobalStyles } from "../../constants/GlobalStyles";
 import { goalStore, tokenStore } from "../../../store";
 import axios from "axios";
 import { Navigation } from "../../components/Navigation/Navigation";
+import UserAvatar from 'react-native-user-avatar';
+import { formatDate } from "../../constants/Functions/formatDate"
+import { PostsArray } from "./components/PostsArray";
+import { AddingPostInput } from "./components/AddingPostInput";
+
 
 export const CertainGoal = () => {
   const goalId = goalStore((state) => state.goalId);
@@ -13,6 +18,8 @@ export const CertainGoal = () => {
   const token = tokenStore((state) => state.token);
   const [currentGoal, setCurrentGoal] = useState(null)
   const [userInfo, setUserInfo] = useState(null)
+  const goalInsertedAt = currentGoal && formatDate(currentGoal.inserted_at)
+  const fullName = userInfo?.first_name + " " + userInfo?.last_name
   async function getGoalById(goalId, token) {
     setLoading(true);
     try {
@@ -20,6 +27,7 @@ export const CertainGoal = () => {
         headers: { Authorization: `bearer ${token}` },
       });
       await setCurrentGoal(response.data.data)
+      getUserInfo(response.data.data.user_id, token)
     } catch (error) {
       if (error.response) {
         console.log(error.response);
@@ -32,14 +40,13 @@ export const CertainGoal = () => {
     }
   }
 
-
-  async function getUserInfo(goalId, token) {
+  async function getUserInfo(userId, token) {
     setLoading(true);
     try {
-      const response = await axios.get(`/api/users/${goalId}`, {
+      const response = await axios.get(`/api/users/${userId}`, {
         headers: { Authorization: `bearer ${token}` },
       });
-      
+
       await setUserInfo(response.data.data)
     } catch (error) {
       if (error.response) {
@@ -52,59 +59,60 @@ export const CertainGoal = () => {
       setLoading(false)
     }
   }
-
   useEffect(() => {
     getGoalById(goalId, token);
-    getUserInfo(currentGoal.user_id, token)
-  }, []);
-  
-  
-  return (
-   <>
-   <View  style={{
-      paddingTop: Platform.OS === "ios" ? 28 : 0,
-      backgroundColor: COLORS.Background,
-      flex: 1,
-    }}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginRight: 20,
-        }}
-      >
-        <Text
-          style={[
-            GlobalStyles.pageTitle,
-            { marginLeft: 20, marginTop: 20, marginBottom: 20 },
-          ]}
-        >
-          Цель
-        </Text>
-        <Image
-          source={require("../../../assets/icons/bell-01.png")}
-          style={{ width: 24, height: 24 }}
-        />
-      </View>
 
-      <View style={styles.goalContainer} >
-          <View>
-            <Image />
-            <View>
-              <Text></Text>
-              <Text></Text>
+  }, []);
+
+  return (
+    <>
+      <View style={{
+        paddingTop: Platform.OS === "ios" ? 28 : 0,
+        backgroundColor: COLORS.Background,
+        flex: 1,
+      }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginRight: 20,
+          }}
+        >
+          <Text
+            style={[
+              GlobalStyles.pageTitle,
+              { marginLeft: 20, marginTop: 20, marginBottom: 20 },
+            ]}
+          >
+            Цель
+          </Text>
+          <Image
+            source={require("../../../assets/icons/bell-01.png")}
+            style={{ width: 24, height: 24 }}
+          />
+        </View>
+
+        <View style={styles.goalContainer} >
+          <View style={{ flexDirection: "row", gap: 20, alignItems: "center", marginBottom: 20 }}>
+            <UserAvatar style={{ width: 50 }} size={50} name={fullName} bgColor={COLORS.Accent} />
+            <View style={{ gap: 5 }} >
+              <Text>{fullName}</Text>
+              <Text style={{ color: "rgba(175, 175, 175, 1)" }}>{goalInsertedAt}</Text>
             </View>
           </View>
           <View>
-            <Text>{currentGoal && currentGoal.title}</Text>
+            <Text>{currentGoal?.title}</Text>
           </View>
-      </View>
+        </View>
 
-      
-    </View>
-    <Navigation />
-    </> 
+        <PostsArray fullName={fullName} goalId={currentGoal?.id} />
+
+        {currentGoal && <AddingPostInput fullName={fullName} currentGoalId={currentGoal.id} />}
+
+      </View>
+      <Navigation />
+    </>
   );
 };
 

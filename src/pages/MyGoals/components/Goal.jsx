@@ -46,13 +46,16 @@ export const Goal = ({ title, id, user_id, deadline, navigation }) => {
   return (
     <TouchableWithoutFeedback
       onPress={() => {
+        navigation.navigate("CertainGoal");
         if (goalId !== id) {
+          
           setGoalId(id);
 
-          navigation.navigate("CertainGoal");
+          
         } else {
           return null;
         }
+       
       }}
     >
       <View style={styles.goalContainer}>

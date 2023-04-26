@@ -130,7 +130,6 @@ export const Navigation = ({ navigation }) => {
         >
           <IconButton
             onPress={() => {
-              console.log(123);
             }}
             size={30}
             mode="contained"
@@ -243,7 +242,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     flex: 1,
     height: 70,
-
+    alignItems: "center",
     borderRadius: 30,
   },
   menuContainer: {
