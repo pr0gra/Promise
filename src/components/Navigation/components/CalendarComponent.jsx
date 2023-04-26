@@ -29,24 +29,24 @@ export const CalendarComponent = ({
     return formattedToday;
   }
 
-  function formatDate(dateString) {
-    const inputDate = new Date(dateString);
-    const currentDate = new Date();
-    if (inputDate < currentDate) {
-      return "Это прошедшая\nдата";
-    }
-    const inputYear = inputDate.getFullYear();
-    const currentYear = currentDate.getFullYear();
-    const formattedDate = new Intl.DateTimeFormat("ru", {
-      day: "numeric",
-      month: "long",
-    }).format(inputDate);
-    if (inputYear - currentYear >= 1) {
-      const date = dateString.replace(/-/g, ".");
-      return date.split(".").reverse().join(".");
-    }
-    return formattedDate;
-  }
+  // function formatDate(dateString) {
+  //   const inputDate = new Date(dateString);
+  //   const currentDate = new Date();
+  //   if (inputDate < currentDate) {
+  //     return "Это прошедшая\nдата";
+  //   }
+  //   const inputYear = inputDate.getFullYear();
+  //   const currentYear = currentDate.getFullYear();
+  //   const formattedDate = new Intl.DateTimeFormat("ru", {
+  //     day: "numeric",
+  //     month: "long",
+  //   }).format(inputDate);
+  //   if (inputYear - currentYear >= 1) {
+  //     const date = dateString.replace(/-/g, ".");
+  //     return date.split(".").reverse().join(".");
+  //   }
+  //   return formattedDate;
+  // }
 
   return (
     <Portal>
@@ -61,8 +61,8 @@ export const CalendarComponent = ({
       >
         <Calendar
           onDayPress={(day) => {
-            const date = formatDate(day.dateString);
-            setSelected(date);
+            // const date = formatDate(day.dateString);
+            setSelected(day.dateString);
             setIsVisibleCalendar(false);
           }}
           style={{ backgroundColor: COLORS.LowAccent }}

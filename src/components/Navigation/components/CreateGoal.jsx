@@ -1,65 +1,39 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  TouchableWithoutFeedback,
-} from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
 
 import { COLORS } from "../../../constants/Colors/Colors";
 import { FONTS } from "../../../constants/FONTS/FONTS";
 import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { GlobalStyles } from "../../../constants/GlobalStyles";
-import {
-  Button,
-  Checkbox,
-  Dialog,
-  IconButton,
-  Portal,
-  Surface,
-  TouchableRipple,
-} from "react-native-paper";
-import { TextComponent } from "react-native";
-import Animated from "react-native-reanimated";
-import { Dimensions } from "react-native";
+
+import { Dialog, Portal } from "react-native-paper";
+
 import { CalendarComponent } from "./CalendarComponent";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { TouchableHighlight } from "react-native";
+
+import { Form } from "./Form";
 
 export const CreateGoal = ({ setIsGoalVisible, isGoalVisible, noExpand }) => {
-  const [about, setAbout] = useState("");
-  const [checkedNormal, setCheckedNormal] = useState(true);
   const [isVisibleCalendar, setIsVisibleCalendar] = useState(false);
   const [selected, setSelected] = useState("");
-  const handleAboutChange = (value) => {
-    setAbout(value);
-  };
 
-  // const windowWidth = Dimensions.get("window").width;
-  // const widthSize = useRef(new Animated.Value(70)).current;
-  // const leftPosition = useRef(new Animated.Value(0)).current;
-  // const expand = () => {
-  //   Animated.timing(widthSize, {
-  //     toValue: 200,
-  //     duration: 500,
-  //     useNativeDriver: false,
-  //   }).start();
-  // };
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     expand();
-  //   }, 1000);
-  // }, []);
-  // const noExpand = () => {
-  //   Animated.timing(widthSize, {
-  //     toValue: 70,
-  //     duration: 200,
-  //     useNativeDriver: false,
-  //   }).start();
-  // };
-  //Как опустить текст внутри тега Button В котором есть
+  function formatDate(dateString) {
+    const inputDate = new Date(dateString);
+    const currentDate = new Date();
+    // if (inputDate < currentDate) {
+    //   return "Это прошедшая\nдата";
+    // }
+    const inputYear = inputDate.getFullYear();
+    const currentYear = currentDate.getFullYear();
+    const formattedDate = new Intl.DateTimeFormat("ru", {
+      day: "numeric",
+      month: "long",
+    }).format(inputDate);
+    if (inputYear - currentYear >= 1) {
+      const date = dateString.replace(/-/g, ".");
+      return date.split(".").reverse().join(".");
+    }
+    return formattedDate;
+  }
   return (
     <Portal>
       <Dialog
@@ -157,81 +131,14 @@ export const CreateGoal = ({ setIsGoalVisible, isGoalVisible, noExpand }) => {
                           maxWidth: "100%",
                         }}
                       >
-                        {selected ? selected : "Выберите дату"}
+                        {selected ? formatDate(selected) : "Выберите дату"}
                       </Text>
                     </View>
                   </TouchableWithoutFeedback>
                 </View>
               </View>
-              <View>
-                <TextInput
-                  autoFocus={true}
-                  label="Расскажи о себе"
-                  placeholder="Расскажи о себе"
-                  value={about}
-                  onChangeText={handleAboutChange}
-                  multiline
-                  numberOfLines={4}
-                  textAlignVertical="top"
-                  selectionColor={COLORS.Accent}
-                  placeholderTextColor={"rgba(145, 155, 204, 0.3)"}
-                  style={[
-                    styles.input,
-                    {
-                      height: "auto",
-                      textAlign: "auto",
-                      ...FONTS.typography,
-                      color: "rgba(145, 155, 204, 0.7)",
-                    },
-                  ]}
-                />
-              </View>
-              <TouchableWithoutFeedback
-                onPress={() => setCheckedNormal((state) => !state)}
-                style={{ height: 50 }}
-              >
-                <View style={styles.checkboxContainer}>
-                  <View pointerEvents="none">
-                    <Checkbox
-                      status={checkedNormal ? "checked" : "unchecked"}
-                      color={COLORS.Accent}
-                    />
-                  </View>
-                  <Text
-                    style={{
-                      fontWeight: "600",
-                      fontSize: 15,
-                      lineHeight: 18,
-                      color: COLORS.Accent,
-                    }}
-                  >
-                    Опубликовать
-                  </Text>
-                </View>
-              </TouchableWithoutFeedback>
-              <Surface
-                style={[styles.surface]}
-                elevation={3}
-                shadowColor={"rgba(145, 155, 204, 0.3)"}
-                shadowOpacity={1}
-              >
-                <Animated.View
-                  style={{
-                    alignTimes: "center",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                  }}
-                >
-                  <IconButton
-                    onPress={() => {}}
-                    size={30}
-                    mode="contained"
-                    style={[styles.button, { width: "100%" }]}
-                    iconColor={COLORS.LowAccent}
-                    icon={require("../../../../assets/icons/plus.png")}
-                  />
-                </Animated.View>
-              </Surface>
+
+              <Form time={selected} />
             </LinearGradient>
           </>
         </Dialog.Content>
