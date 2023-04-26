@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
+  Dimensions,
 } from "react-native";
 import { Formik } from "formik";
 import { Button, Checkbox, IconButton, Surface } from "react-native-paper";
@@ -11,7 +12,7 @@ import * as yup from "yup";
 import Animated from "react-native-reanimated";
 import { COLORS } from "../../../constants/Colors/Colors";
 import { FONTS } from "../../../constants/FONTS/FONTS";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { tokenStore } from "../../../../store";
 import axios from "axios";
 const validationSchema = yup.object().shape({
@@ -20,14 +21,16 @@ const validationSchema = yup.object().shape({
     .required("Поле обязательно для заполнения")
     .min(8, "Длина текста должна быть не менее 8 символов"),
 });
-export const Form = ({ time }) => {
+export const Form = ({ time, setIsGoalVisible }) => {
   const [checkedNormal, setCheckedNormal] = useState(true);
   const token = tokenStore((state) => state.token);
   const [postedForm, setPostedForm] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [disabled, setDisabled] = useState(false);
   async function createGoal(title, deadline) {
     setPostedForm(false);
     setErrorMessage(null);
+    setDisabled(true);
     try {
       const response = await axios.post(
         "/api/goals",
@@ -42,6 +45,7 @@ export const Form = ({ time }) => {
       );
       setPostedForm(true);
 
+      console.log("Отправлено");
       return response.data;
     } catch (error) {
       if (error.response) {
@@ -50,6 +54,8 @@ export const Form = ({ time }) => {
         console.log("NO RESPONSE");
       }
       return error;
+    } finally {
+      setIsGoalVisible(false);
     }
   }
   const handleSubmit = (values) => {
@@ -152,7 +158,7 @@ export const Form = ({ time }) => {
                       ? require("../../../../assets/icons/check.png")
                       : require("../../../../assets/icons/plus.png")
                   }
-                  //   disabled={!values.title || !time}
+                  disabled={disabled}
                 />
               </Animated.View>
             </Surface>

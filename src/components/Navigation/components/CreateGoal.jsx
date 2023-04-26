@@ -12,7 +12,12 @@ import { CalendarComponent } from "./CalendarComponent";
 
 import { Form } from "./Form";
 
-export const CreateGoal = ({ setIsGoalVisible, isGoalVisible, noExpand }) => {
+export const CreateGoal = ({
+  setIsGoalVisible,
+  isGoalVisible,
+  noExpand,
+  setStateNavigation,
+}) => {
   const [isVisibleCalendar, setIsVisibleCalendar] = useState(false);
   const [selected, setSelected] = useState("");
 
@@ -138,7 +143,7 @@ export const CreateGoal = ({ setIsGoalVisible, isGoalVisible, noExpand }) => {
                 </View>
               </View>
 
-              <Form time={selected} />
+              <Form time={selected} setIsGoalVisible={setIsGoalVisible} />
             </LinearGradient>
           </>
         </Dialog.Content>
