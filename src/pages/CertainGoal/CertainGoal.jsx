@@ -10,6 +10,7 @@ import UserAvatar from 'react-native-user-avatar';
 import { formatDate } from "../../constants/Functions/formatDate"
 import { PostsArray } from "./components/PostsArray";
 import { AddingPostInput } from "./components/AddingPostInput";
+import { KeyboardAvoidingView } from "react-native";
 
 
 export const CertainGoal = () => {
@@ -107,9 +108,11 @@ export const CertainGoal = () => {
         </View>
 
         <PostsArray fullName={fullName} goalId={currentGoal?.id} />
-
-        {currentGoal && <AddingPostInput fullName={fullName} currentGoalId={currentGoal.id} />}
-
+        <KeyboardAvoidingView
+          behavior="padding"
+        >
+          {currentGoal && <AddingPostInput fullName={fullName} currentGoalId={currentGoal.id} />}
+        </KeyboardAvoidingView>
       </View>
       <Navigation />
     </>

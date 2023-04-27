@@ -34,7 +34,7 @@ export default function App() {
           <Stack.Screen
             name="SignUp"
             component={RegistatrionPage}
-            options={{ title: "Страница Входа", headerShown: false }}
+            options={{ title: "Страница Регистрации", headerShown: false }}
           />
           <Stack.Screen
             name="WelcomePage"

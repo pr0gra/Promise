@@ -46,7 +46,7 @@ export function AddingPostInput({ fullName, currentGoalId }) {
         }
     }
 
-    return <View style={{ backgroundColor: COLORS.White, borderRadius: 20, marginLeft: 20, flexDirection: "row", paddingLeft: 20, paddingRight: 60, paddingVertical: 10, alignItems: "center" }}>
+    return <View style={{ backgroundColor: COLORS.White, borderRadius: 20, marginLeft: 20, flexDirection: "row", marginBottom:20, paddingLeft: 20, paddingRight: 60, marginTop: 5, paddingVertical: 10, alignItems: "center" }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 20 }}>
             <UserAvatar style={{ width: 20, height: 20, }} size={25} name={fullName} bgColor={COLORS.Accent} />
             <TextInput multiline={true} style={{ flex: 1 }} onChangeText={setInputText} value={inputText} placeholder="Написать..." />

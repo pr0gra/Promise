@@ -59,7 +59,6 @@ export function PostsArray({ fullName, goalId }) {
         indicatorStyle={COLORS.Accent}
         refreshControl={
             <RefreshControl
-
                 onRefresh={handleRefresh}
                 colors={[COLORS.Accent]}
             />
