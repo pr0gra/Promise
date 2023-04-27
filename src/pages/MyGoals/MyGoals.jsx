@@ -34,7 +34,12 @@ export const MyGoals = ({ navigation }) => {
       const response = await axios.get(`/api/goals`, {
         headers: { Authorization: `bearer ${token}` },
       });
-      setGoals(response.data.data);
+      const sortedData = response.data.data.sort(
+        (a, b) => new Date(b.deadline) - new Date(a.deadline)
+      );
+
+      //Мне приходит массив объектов, в котором есть поле deadline: 2023-04-24T23:00Z, как отстортировать этот массив по deadline
+      setGoals(sortedData);
 
       return response.data.data;
     } catch (error) {
