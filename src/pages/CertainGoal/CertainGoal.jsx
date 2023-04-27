@@ -6,38 +6,37 @@ import { GlobalStyles } from "../../constants/GlobalStyles";
 import { goalStore, tokenStore } from "../../../store";
 import axios from "axios";
 import { Navigation } from "../../components/Navigation/Navigation";
-import UserAvatar from 'react-native-user-avatar';
-import { formatDate } from "../../constants/Functions/formatDate"
+import UserAvatar from "react-native-user-avatar";
+import { formatDate } from "../../constants/Functions/formatDate";
 import { PostsArray } from "./components/PostsArray";
 import { AddingPostInput } from "./components/AddingPostInput";
 import { KeyboardAvoidingView } from "react-native";
-
 
 export const CertainGoal = () => {
   const goalId = goalStore((state) => state.goalId);
   const [Loading, setLoading] = useState(false);
   const token = tokenStore((state) => state.token);
-  const [currentGoal, setCurrentGoal] = useState(null)
-  const [userInfo, setUserInfo] = useState(null)
-  const goalInsertedAt = currentGoal && formatDate(currentGoal.inserted_at)
-  const fullName = userInfo?.first_name + " " + userInfo?.last_name
+  const [currentGoal, setCurrentGoal] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const goalInsertedAt = currentGoal && formatDate(currentGoal.inserted_at);
+  const fullName = userInfo?.first_name + " " + userInfo?.last_name;
   async function getGoalById(goalId, token) {
     setLoading(true);
     try {
       const response = await axios.get(`/api/goals/${goalId}`, {
         headers: { Authorization: `bearer ${token}` },
       });
-      await setCurrentGoal(response.data.data)
-      getUserInfo(response.data.data.user_id, token)
+      setCurrentGoal(response.data.data);
+      getUserInfo(response.data.data.user_id, token);
     } catch (error) {
       if (error.response) {
         console.log(error.response);
       } else {
         console.log("NO RESPONSE");
       }
-      throw new Error("Ошибка в получении цели");
+      throw new Error("Ошибка в получении подпостов к цели");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -48,7 +47,7 @@ export const CertainGoal = () => {
         headers: { Authorization: `bearer ${token}` },
       });
 
-      await setUserInfo(response.data.data)
+      await setUserInfo(response.data.data);
     } catch (error) {
       if (error.response) {
         console.log(error.response);
@@ -57,21 +56,22 @@ export const CertainGoal = () => {
       }
       throw new Error("Ошибка в получении пользователя");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
   useEffect(() => {
     getGoalById(goalId, token);
-
   }, []);
 
   return (
     <>
-      <View style={{
-        paddingTop: Platform.OS === "ios" ? 28 : 0,
-        backgroundColor: COLORS.Background,
-        flex: 1,
-      }}>
+      <View
+        style={{
+          paddingTop: Platform.OS === "ios" ? 62 : 0,
+          backgroundColor: COLORS.Background,
+          flex: 1,
+        }}
+      >
         <View
           style={{
             flexDirection: "row",
@@ -94,12 +94,26 @@ export const CertainGoal = () => {
           />
         </View>
 
-        <View style={styles.goalContainer} >
-          <View style={{ flexDirection: "row", gap: 20, alignItems: "center", marginBottom: 20 }}>
-            <UserAvatar style={{ width: 50 }} size={50} name={fullName} bgColor={COLORS.Accent} />
-            <View style={{ gap: 5 }} >
+        <View style={styles.goalContainer}>
+          <View
+            style={{
+              flexDirection: "row",
+              gap: 20,
+              alignItems: "center",
+              marginBottom: 20,
+            }}
+          >
+            <UserAvatar
+              style={{ width: 50 }}
+              size={50}
+              name={fullName}
+              bgColor={COLORS.Accent}
+            />
+            <View style={{ gap: 5 }}>
               <Text>{fullName}</Text>
-              <Text style={{ color: "rgba(175, 175, 175, 1)" }}>{goalInsertedAt}</Text>
+              <Text style={{ color: "rgba(175, 175, 175, 1)" }}>
+                {goalInsertedAt}
+              </Text>
             </View>
           </View>
           <View>
@@ -108,17 +122,19 @@ export const CertainGoal = () => {
         </View>
 
         <PostsArray fullName={fullName} goalId={currentGoal?.id} />
-        <KeyboardAvoidingView
-          behavior="padding"
-        >
-          {currentGoal && <AddingPostInput fullName={fullName} currentGoalId={currentGoal.id} />}
+        <KeyboardAvoidingView behavior="padding">
+          {currentGoal && (
+            <AddingPostInput
+              fullName={fullName}
+              currentGoalId={currentGoal.id}
+            />
+          )}
         </KeyboardAvoidingView>
       </View>
       <Navigation />
     </>
   );
 };
-
 
 const styles = StyleSheet.create({
   goalContainer: {

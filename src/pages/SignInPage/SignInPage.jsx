@@ -21,6 +21,7 @@ import { VKLoginComponent } from "./components/VKLoginCOmponent/VKLoginComponent
 import axios from "axios";
 import SecureStore from "expo-secure-store";
 import { tokenStore } from "../../../store.js";
+import { Platform } from "react-native";
 
 // async function SaveToken(key, value) { ЗАГОТОВКА ДЛЯ СОХРАНЕНИЯ ТОКЕНА
 //   console.log(key, value);
@@ -77,24 +78,23 @@ export const SignInPage = ({ navigation }) => {
   return (
     <View style={[GlobalStyles.viewBasic]}>
       <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+        }}
+      >
+        <Image
           style={{
             flex: 1,
-            alignItems: "center",
+            width: 400,
+            marginBottom: -200,
           }}
-        >
-          <Image
-            style={{
-              flex: 1,
-              width: 400,
-              marginBottom: -200,
-            }}
-            source={require("../../../assets/images/rocket-illustration-3d-render.png")}
-          />
-        </View>
+          source={require("../../../assets/images/rocket-illustration-3d-render.png")}
+        />
+      </View>
       <KeyboardAvoidingView
-        behavior="padding"
+        behavior={Platform.OS === "android" ? "" : "padding"}
       >
-        
         <Text
           style={[GlobalStyles.pageTitle, { marginLeft: 30, marginBottom: 20 }]}
         >
@@ -107,13 +107,18 @@ export const SignInPage = ({ navigation }) => {
               onPress={Keyboard.dismiss}
               accessible={false}
             >
-
               <Formik
                 initialValues={{ email: "", password: "" }}
                 validationSchema={validationSchema}
                 onSubmit={(values) => loginUser(values.email, values.password)}
               >
-                {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+                {({
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  values,
+                  errors,
+                }) => (
                   <>
                     <Text
                       style={{
@@ -179,7 +184,10 @@ export const SignInPage = ({ navigation }) => {
                             loading={loading ? true : false}
                           >
                             <Text
-                              style={{ color: COLORS.White, ...FONTS.buttonText }}
+                              style={{
+                                color: COLORS.White,
+                                ...FONTS.buttonText,
+                              }}
                             >
                               Войти
                             </Text>
@@ -210,15 +218,12 @@ export const SignInPage = ({ navigation }) => {
                     </View>
                   </>
                 )}
-
               </Formik>
-
             </TouchableWithoutFeedback>
           </View>
         </View>
       </KeyboardAvoidingView>
-    </View >
-
+    </View>
   );
 };
 

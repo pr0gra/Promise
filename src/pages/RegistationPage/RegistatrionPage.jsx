@@ -6,7 +6,7 @@ import {
   ScrollView,
   SafeAreaView,
   StyleSheet,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from "react-native";
 import { COLORS } from "../../constants/Colors/Colors";
 import { GlobalStyles } from "../../constants/GlobalStyles";
@@ -19,30 +19,30 @@ export const RegistatrionPage = ({ navigation }) => {
         backgroundColor: COLORS.Background,
         flex: 1,
         justifyContent: "flex-end",
-        position: "relative"
+        position: "relative",
       }}
     >
       <KeyboardAvoidingView
-        behavior="padding"
+        behavior={Platform.OS === "android" ? "" : "padding"}
       >
         <ScrollView
           contentContainerStyle={[styles.content]}
           showsVerticalScrollIndicator={false}
           indicatorStyle={COLORS.Accent}
-
         >
-
           <Text
-            style={[GlobalStyles.pageTitle, { marginLeft: 30, marginBottom: 20 }]}
+            style={[
+              GlobalStyles.pageTitle,
+              { marginLeft: 30, marginBottom: 20 },
+            ]}
           >
             Регистрация
           </Text>
 
           <Form navigation={navigation} />
-
         </ScrollView>
       </KeyboardAvoidingView>
-    </View >
+    </View>
   );
 };
 
