@@ -4,7 +4,7 @@ export const FONTS = {
   sectionHeader: {
     // fontFamily: "RobotoFlex",
     // fontStyle: "normal",
-    fontWeight: 900,
+    fontWeight: "900",
     fontSize: 32,
     lineHeight: 38,
   },
@@ -48,5 +48,10 @@ export const FONTS = {
   goalTime: {
     fontWeight: "900",
     fontSize: 24,
+  },
+  typography: {
+    fontWeight: "900",
+    fontSize: 24,
+    lineHeight: 28.13,
   },
 };

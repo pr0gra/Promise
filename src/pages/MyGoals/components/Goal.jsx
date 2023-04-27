@@ -7,15 +7,52 @@ import axios from "axios";
 import { goalStore, tokenStore } from "../../../../store";
 import { TouchableWithoutFeedback } from "react-native";
 
-export const Goal = ({ title, id, user_id, deadline, navigation }) => {
+export const Goal = ({
+  title,
+  id,
+  user_id,
+  deadline,
+  navigation,
+  startDate,
+}) => {
   const setGoalId = goalStore((state) => state.setGoalId);
   const goalId = goalStore((state) => state.goalId);
+  // const token = tokenStore((state) => state.token);
+  const colors = {
+    1: "rgba(153, 204, 145, 1)",
+    2: "rgba(203, 204, 145, 1)",
+    3: "rgba(204, 145, 145, 1)",
+    4: "transparent",
+  };
+
+  function calculateDaysProgress(startDate, endDate) {
+    const oneDay = 24 * 60 * 60 * 1000;
+    const currentDate = new Date();
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    if (currentDate < start) {
+      return 0;
+    }
+    if (currentDate > end) {
+      return 100;
+    }
+    const totalDays = Math.round(Math.abs((end - start) / oneDay));
+    const daysLeft = Math.round(Math.abs((end - currentDate) / oneDay));
+    const progress = Math.round(((totalDays - daysLeft) / totalDays) * 100);
+    return progress;
+  }
+
+  const start = startDate.split("T")[0];
+  const end = deadline.split("T")[0];
+  const progress = calculateDaysProgress(start, end);
 
   const formattedDeadline = useMemo(
     () =>
       function getDayAndMonth(dateTimeString) {
         const [date, time] = dateTimeString.split("T");
         const [year, month, day] = date.split("-");
+        // const { color } = calculateDaysAndPercentage(startDate, date);
+
         const monthNames = [
           "января",
           "февраля",
@@ -37,54 +74,87 @@ export const Goal = ({ title, id, user_id, deadline, navigation }) => {
         } else {
           result = `${day} ${monthName}`;
         }
-
-        return result;
+        const color = colors[1];
+        return { result, color };
       },
     [deadline]
   );
-
+  const { result, color } = formattedDeadline(deadline);
   return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        navigation.navigate("CertainGoal");
-        if (goalId !== id) {
-          
-          setGoalId(id);
 
-          
-        } else {
-          return null;
-        }
-       
-      }}
-    >
-      <View style={styles.goalContainer}>
-        <View style={styles.top}>
-          <Text style={{ ...FONTS.goalTime, color: COLORS.Accent }}>
-            Хочу к
+    <>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          if (goalId !== id) {
+            setGoalId(id);
+
+            navigation.navigate("CertainGoal");
+          } else {
+            return null;
+          }
+        }}
+      >
+        <View style={styles.goalContainer}>
+          <View style={styles.top}>
+            <Text style={{ ...FONTS.goalTime, color: COLORS.Accent }}>
+              Хочу к
+            </Text>
+            <View
+              style={{
+                backgroundColor:
+                  progress < 20
+                    ? colors[1]
+                    : progress < 50
+                    ? colors[2]
+                    : progress < 90
+                    ? colors[3]
+                    : colors[4],
+
+                flexDirection: "row",
+                alignItems: "center",
+
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+                borderRadius: 10,
+                marginLeft: 10,
+              }}
+            >
+              <Image
+                source={
+                  progress < 100
+                    ? require("../../../../assets/icons/whiteClock.png")
+                    : require("../../../../assets/icons/clock.png")
+                }
+                style={styles.image}
+              />
+              <Text
+                style={{
+                  ...FONTS.goalTime,
+                  color: progress < 100 ? COLORS.White : COLORS.Accent,
+                }}
+              >
+                {result}
+              </Text>
+            </View>
+          </View>
+          <Text
+            style={{ ...FONTS.goalTime, color: "rgba(145, 155, 204, 0.5)" }}
+          >
+            {title}
+
           </Text>
-          <Image
-            source={require("../../../../assets/icons/clock.png")}
-            style={styles.image}
-          />
-          <Text style={{ ...FONTS.goalTime, color: COLORS.Accent }}>
-            {formattedDeadline(deadline)}
-          </Text>
+          {/* <Button //это для того чтобы удалить цель, это временно, мне нуэно было протестить refreshing
+            onPress={async () => {
+              const response = await axios.delete(`/api/goals/${id}`, {
+                headers: { Authorization: `Bearer ${token}` },
+              });
+            }}
+          >
+            <Text> удалить таск</Text>
+          </Button> */}
         </View>
-        <Text style={{ ...FONTS.goalTime, color: "rgba(145, 155, 204, 0.5)" }}>
-          {title}
-        </Text>
-        {/* <Button //это для того чтобы удалить цель, это временно, мне нуэно было протестить refreshing
-          onPress={async () => {
-            const response = await axios.delete(`/api/goals/${id}`, {
-              headers: { Authorization: `Bearer ${token}` },
-            });
-          }}
-        >
-          <Text> удалить таск</Text>
-        </Button> */}
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </>
   );
 };
 
@@ -101,9 +171,9 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
   image: {
-    width: 20,
-    height: 20,
+    width: 24,
+    height: 24,
     marginRight: 12,
-    marginLeft: 12,
+    // marginLeft: 12,
   },
 });

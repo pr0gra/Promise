@@ -29,13 +29,16 @@ export const MyGoals = ({ navigation }) => {
   };
   async function getGoals() {
     setLoading(true);
-    setRefreshing(true);
-    console.log("REfreshing");
+
     try {
       const response = await axios.get(`/api/goals`, {
         headers: { Authorization: `bearer ${token}` },
       });
-      setGoals(response.data.data);
+      const sortedData = response.data.data.sort(
+        (a, b) => new Date(b.deadline) - new Date(a.deadline)
+      );
+
+      setGoals(sortedData);
 
       return response.data.data;
     } catch (error) {
@@ -49,14 +52,12 @@ export const MyGoals = ({ navigation }) => {
     } finally {
       setTimeout(() => {
         setLoading(false);
-        setRefreshing(false);
       }, 1000);
     }
   }
   useEffect(() => {
     getGoals();
   }, []);
-
   return (
     <View
       style={{
@@ -99,6 +100,7 @@ export const MyGoals = ({ navigation }) => {
               user_id={item.user_id}
               deadline={item.deadline}
               navigation={navigation}
+              startDate={item.inserted_at}
             />
           )}
           keyExtractor={(item) => item.id}
@@ -107,7 +109,7 @@ export const MyGoals = ({ navigation }) => {
           indicatorStyle={COLORS.Accent}
           refreshControl={
             <RefreshControl
-              refreshing={refreshing}
+              refreshing={Loading}
               onRefresh={handleRefresh}
               colors={[COLORS.Accent]}
             />
@@ -119,25 +121,3 @@ export const MyGoals = ({ navigation }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  postButton: {
-    backgroundColor: COLORS.Accent,
-    marginTop: 10,
-    lineHeight: 16,
-    textAlign: "center",
-    borderRadius: 30,
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 30,
-    marginBottom: 29,
-  },
-  buttonContainer: {
-    alignItems: "center",
-  },
-  buttonImage: {
-    width: 30,
-    height: 30,
-    marginRight: 10,
-  },
-});
