@@ -175,6 +175,7 @@ export const Navigation = ({ navigation }) => {
                 setStateNavigation("CreateGoal");
                 setIsGoalVisible(true);
                 expand();
+                setIsMenuVisible(false);
               }}
               size={30}
               mode="contained"
