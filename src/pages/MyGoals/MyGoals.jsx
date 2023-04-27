@@ -121,25 +121,3 @@ export const MyGoals = ({ navigation }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  postButton: {
-    backgroundColor: COLORS.Accent,
-    marginTop: 10,
-    lineHeight: 16,
-    textAlign: "center",
-    borderRadius: 30,
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 30,
-    marginBottom: 29,
-  },
-  buttonContainer: {
-    alignItems: "center",
-  },
-  buttonImage: {
-    width: 30,
-    height: 30,
-    marginRight: 10,
-  },
-});

@@ -186,12 +186,8 @@ export const MenuNavigation = memo(
 );
 const styles = StyleSheet.create({
   menuContainer: {
-    // position: "absolute",
-    // overflow: "hidden",
-    // bottom: 71,
     zIndex: 5,
     backgroundColor: COLORS.LowAccent,
-    // width: "100%",
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 20,

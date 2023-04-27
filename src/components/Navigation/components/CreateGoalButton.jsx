@@ -50,18 +50,14 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.Accent,
     marginTop: -17,
     borderRadius: 30,
-    // width: 70,
     height: 70,
   },
   surface: {
     shadowColor: "rgba(0, 0, 0, 0.15)",
     shadowOffset: { width: 0, height: 15 },
-    // shadowOpacity: 0.15,
     shadowRadius: 4,
     backgroundColor: "transparent",
     flex: 1,
-    // height: 70,
-
     borderRadius: 30,
   },
 });

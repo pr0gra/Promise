@@ -44,20 +44,7 @@ export const Navigation = ({ navigation }) => {
       useNativeDriver: false,
     }).start();
   };
-  // const goLeft = () => {
-  //   Animated.timing(leftPosition, {
-  //     toValue: -windowWidth / 2 + 50,
-  //     duration: 300,
-  //     useNativeDriver: false,
-  //   }).start();
-  // };
-  // const goRight = () => {
-  //   Animated.timing(leftPosition, {
-  //     toValue: 0,
-  //     duration: 300,
-  //     useNativeDriver: false,
-  //   }).start();
-  // };
+
   const getUserInfo = useMemo(
     () =>
       async function getUserInfo() {
@@ -75,16 +62,16 @@ export const Navigation = ({ navigation }) => {
     [userData]
   );
   const shadowStyle =
-    Platform.OS === "android" // Определение платформы
+    Platform.OS === "android"
       ? {
-          elevation: 4, // Уровень тени для Android
+          elevation: 4,
           shadowColor: "rgba(0, 0, 0, 0.30)",
         }
       : {
-          shadowColor: "#000", // Цвет тени для iOS
-          shadowOffset: { width: 0, height: 11 }, // Смещение тени для iOS
-          shadowOpacity: 0.15, // Прозрачность тени для iOS
-          shadowRadius: 32, // Радиус тени для iOS
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 11 },
+          shadowOpacity: 0.15,
+          shadowRadius: 32,
         };
   return (
     <>
@@ -283,7 +270,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     alignItems: "center",
-    // justifyContent: "center",
     width: 51,
   },
   image: {
@@ -294,7 +280,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.Accent,
     marginTop: -17,
     borderRadius: 30,
-    // width: 70,
+
     height: 70,
   },
   text: { fontWeight: "600", fontSize: 10 },
@@ -310,12 +296,9 @@ const styles = StyleSheet.create({
   surface: {
     shadowColor: "rgba(0, 0, 0, 0.15)",
     shadowOffset: { width: 0, height: 15 },
-    // shadowOpacity: 0.15,
     shadowRadius: 4,
     backgroundColor: "transparent",
     flex: 1,
-    // height: 70,
-
     borderRadius: 30,
   },
   menuContainer: {

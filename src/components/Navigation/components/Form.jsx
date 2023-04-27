@@ -163,7 +163,6 @@ const styles = StyleSheet.create({
 
   errorMessage: {
     ...FONTS.buttonText,
-    // fontSize: 20,
     color: COLORS.Accent,
   },
 });
