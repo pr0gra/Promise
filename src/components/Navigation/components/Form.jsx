@@ -47,6 +47,7 @@ export const Form = ({ time, setIsGoalVisible, noExpand }) => {
       setPostedForm(true);
 
       console.log("Отправлено");
+
       return response.data;
     } catch (error) {
       if (error.response) {

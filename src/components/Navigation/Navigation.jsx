@@ -61,18 +61,18 @@ export const Navigation = ({ navigation }) => {
       },
     [userData]
   );
-  const shadowStyle =
-    Platform.OS === "android"
-      ? {
-          elevation: 4,
-          shadowColor: "rgba(0, 0, 0, 0.30)",
-        }
-      : {
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 11 },
-          shadowOpacity: 0.15,
-          shadowRadius: 32,
-        };
+  // const shadowStyle =
+  //   Platform.OS === "android"
+  //     ? {
+  //         elevation: 4,
+  //         shadowColor: "rgba(0, 0, 0, 0.30)",
+  //       }
+  //     : {
+  //         shadowColor: "#000",
+  //         shadowOffset: { width: 0, height: 11 },
+  //         shadowOpacity: 0.15,
+  //         shadowRadius: 32,
+  //       };
   return (
     <>
       {isMenuVisible && (
@@ -162,35 +162,35 @@ export const Navigation = ({ navigation }) => {
           </TouchableWithoutFeedback>
         )}
 
-        <Surface style={[styles.surface, shadowStyle]}>
-          <Animated.View
-            style={{
-              alignTimes: "center",
-              flexDirection: "row",
-              justifyContent: "center",
+        {/* <Surface style={[styles.surface, shadowStyle]}> */}
+        <Animated.View
+          style={{
+            alignTimes: "center",
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+        >
+          <IconButton
+            onPress={() => {
+              setStateNavigation("CreateGoal");
+              setIsGoalVisible(true);
+              expand();
+              setIsMenuVisible(false);
             }}
-          >
-            <IconButton
-              onPress={() => {
-                setStateNavigation("CreateGoal");
-                setIsGoalVisible(true);
-                expand();
-                setIsMenuVisible(false);
-              }}
-              size={30}
-              mode="contained"
-              style={[
-                styles.button,
-                {
-                  width: widthSize,
-                  left: leftPosition,
-                },
-              ]}
-              iconColor={COLORS.LowAccent}
-              icon={require("../../../assets/icons/plus.png")}
-            />
-          </Animated.View>
-        </Surface>
+            size={30}
+            mode="contained"
+            style={[
+              styles.button,
+              {
+                width: widthSize,
+                left: leftPosition,
+              },
+            ]}
+            iconColor={COLORS.LowAccent}
+            icon={require("../../../assets/icons/plus.png")}
+          />
+        </Animated.View>
+        {/* </Surface> */}
 
         {!isGoalVisible && (
           <TouchableWithoutFeedback
@@ -224,11 +224,9 @@ export const Navigation = ({ navigation }) => {
         {!isGoalVisible && (
           <TouchableWithoutFeedback
             onPress={() => {
-
               setStateNavigation("Menu");
               getUserInfo();
               setIsMenuVisible((state) => !state);
-
             }}
           >
             <View style={styles.buttonContainer}>

@@ -156,9 +156,9 @@ export const Goal = ({
 const styles = StyleSheet.create({
   goalContainer: {
     padding: 20,
-    backgroundColor: COLORS.White,
     borderRadius: 20,
     marginBottom: 20,
+    backgroundColor: COLORS.White,
   },
   top: {
     flexDirection: "row",
