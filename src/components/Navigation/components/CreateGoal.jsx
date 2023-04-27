@@ -143,7 +143,11 @@ export const CreateGoal = ({
                 </View>
               </View>
 
-              <Form time={selected} setIsGoalVisible={setIsGoalVisible} />
+              <Form
+                time={selected}
+                setIsGoalVisible={setIsGoalVisible}
+                noExpand={noExpand}
+              />
             </LinearGradient>
           </>
         </Dialog.Content>

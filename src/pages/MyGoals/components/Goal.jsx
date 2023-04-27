@@ -22,6 +22,7 @@ export const Goal = ({
     1: "rgba(153, 204, 145, 1)",
     2: "rgba(203, 204, 145, 1)",
     3: "rgba(204, 145, 145, 1)",
+    4: "transparent",
   };
 
   function calculateDaysProgress(startDate, endDate) {
@@ -104,10 +105,13 @@ export const Goal = ({
                     ? colors[1]
                     : progress < 50
                     ? colors[2]
-                    : colors[3],
+                    : progress < 90
+                    ? colors[3]
+                    : colors[4],
 
                 flexDirection: "row",
                 alignItems: "center",
+
                 paddingHorizontal: 10,
                 paddingVertical: 5,
                 borderRadius: 10,
@@ -115,10 +119,19 @@ export const Goal = ({
               }}
             >
               <Image
-                source={require("../../../../assets/icons/whiteClock.png")}
+                source={
+                  progress < 100
+                    ? require("../../../../assets/icons/whiteClock.png")
+                    : require("../../../../assets/icons/clock.png")
+                }
                 style={styles.image}
               />
-              <Text style={{ ...FONTS.goalTime, color: COLORS.White }}>
+              <Text
+                style={{
+                  ...FONTS.goalTime,
+                  color: progress < 100 ? COLORS.White : COLORS.Accent,
+                }}
+              >
                 {result}
               </Text>
             </View>
@@ -156,8 +169,8 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
   image: {
-    width: 20,
-    height: 20,
+    width: 24,
+    height: 24,
     marginRight: 12,
     // marginLeft: 12,
   },

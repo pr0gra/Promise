@@ -15,13 +15,14 @@ import { FONTS } from "../../../constants/FONTS/FONTS";
 import { useEffect, useRef, useState } from "react";
 import { tokenStore } from "../../../../store";
 import axios from "axios";
+import { CreateGoalButton } from "./CreateGoalButton";
 const validationSchema = yup.object().shape({
   title: yup
     .string()
     .required("Поле обязательно для заполнения")
     .min(8, "Длина текста должна быть не менее 8 символов"),
 });
-export const Form = ({ time, setIsGoalVisible }) => {
+export const Form = ({ time, setIsGoalVisible, noExpand }) => {
   const [checkedNormal, setCheckedNormal] = useState(true);
   const token = tokenStore((state) => state.token);
   const [postedForm, setPostedForm] = useState(false);
@@ -50,12 +51,11 @@ export const Form = ({ time, setIsGoalVisible }) => {
     } catch (error) {
       if (error.response) {
         setErrorMessage(error.response.data.errors.deadline);
+        setDisabled(false);
       } else {
         console.log("NO RESPONSE");
       }
       return error;
-    } finally {
-      setIsGoalVisible(false);
     }
   }
   const handleSubmit = (values) => {
@@ -107,7 +107,9 @@ export const Form = ({ time, setIsGoalVisible }) => {
               <Text style={styles.errorMessage}>{errors.title}</Text>
             )}
             {errorMessage && (
-              <Text style={styles.errorMessage}>Дата должна быть после</Text>
+              <Text style={styles.errorMessage}>
+                Дата не должна быть прошедшей
+              </Text>
             )}
             <TouchableWithoutFeedback
               onPress={() => setCheckedNormal((state) => !state)}
@@ -132,36 +134,13 @@ export const Form = ({ time, setIsGoalVisible }) => {
                 </Text>
               </View>
             </TouchableWithoutFeedback>
-            <Surface
-              style={[styles.surface]}
-              elevation={3}
-              shadowColor={"rgba(145, 155, 204, 0.3)"}
-              shadowOpacity={1}
-            >
-              <Animated.View
-                style={{
-                  alignTimes: "center",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                }}
-              >
-                <IconButton
-                  onPress={() => {
-                    handleSubmit();
-                  }}
-                  size={30}
-                  mode="contained"
-                  style={[styles.button, { width: "100%" }]}
-                  iconColor={COLORS.LowAccent}
-                  icon={
-                    postedForm
-                      ? require("../../../../assets/icons/check.png")
-                      : require("../../../../assets/icons/plus.png")
-                  }
-                  disabled={disabled}
-                />
-              </Animated.View>
-            </Surface>
+
+            <CreateGoalButton
+              onPress={handleSubmit}
+              disabled={disabled}
+              noExpand={noExpand}
+              postedForm={postedForm}
+            />
           </View>
         )}
       </Formik>
@@ -181,24 +160,7 @@ const styles = StyleSheet.create({
     gap: 13,
     marginBottom: 36,
   },
-  button: {
-    backgroundColor: COLORS.Accent,
-    marginTop: -17,
-    borderRadius: 30,
-    // width: 70,
-    height: 70,
-  },
-  surface: {
-    shadowColor: "rgba(0, 0, 0, 0.15)",
-    shadowOffset: { width: 0, height: 15 },
-    // shadowOpacity: 0.15,
-    shadowRadius: 4,
-    backgroundColor: "transparent",
-    flex: 1,
-    // height: 70,
 
-    borderRadius: 30,
-  },
   errorMessage: {
     ...FONTS.buttonText,
     // fontSize: 20,
