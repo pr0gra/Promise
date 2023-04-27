@@ -24,7 +24,6 @@ export default function App() {
 
   return (
     fontsLoaded && (
-
       <Provider>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="SignIn">
@@ -56,7 +55,6 @@ export default function App() {
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>
-
     )
   );
 }

@@ -12,7 +12,7 @@ import { PostsArray } from "./components/PostsArray";
 import { AddingPostInput } from "./components/AddingPostInput";
 import { KeyboardAvoidingView } from "react-native";
 
-export const CertainGoal = () => {
+export const CertainGoal = ({ navigation }) => {
   const goalId = goalStore((state) => state.goalId);
   const [Loading, setLoading] = useState(false);
   const token = tokenStore((state) => state.token);
@@ -131,7 +131,7 @@ export const CertainGoal = () => {
           )}
         </KeyboardAvoidingView>
       </View>
-      <Navigation />
+      <Navigation navigation={navigation} />
     </>
   );
 };

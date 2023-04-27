@@ -63,6 +63,10 @@ export const SignInPage = ({ navigation }) => {
       setToken(response.data.data.token.toString());
 
       // SaveToken("user_token", response.data.data.token);
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "MyGoals" }],
+      });
       navigation.navigate("MyGoals"); //welcome
     } catch (error) {
       console.log(error);

@@ -17,13 +17,14 @@ import axios from "axios";
 import { tokenStore } from "../../../store.js";
 import { FlatList } from "react-native";
 import { Navigation } from "../../components/Navigation/Navigation";
+import SkeletonLoaderGoals from "./components/SkeletonLoadingGoals/SkeletonLoadingGoals";
 
 export const MyGoals = ({ navigation }) => {
   const [Loading, setLoading] = useState(false);
   const [errorState, setErrorState] = useState(null);
   const [goals, setGoals] = useState([]);
   const token = tokenStore((state) => state.token);
-  const [refreshing, setRefreshing] = useState(false);
+
   const handleRefresh = () => {
     getGoals();
   };
@@ -61,7 +62,7 @@ export const MyGoals = ({ navigation }) => {
   return (
     <View
       style={{
-        paddingTop: Platform.OS === "ios" ? 62 : 0,
+        paddingTop: Platform.OS === "ios" ? 62 : 32,
         backgroundColor: COLORS.Background,
         flex: 1,
       }}
@@ -89,7 +90,7 @@ export const MyGoals = ({ navigation }) => {
       </View>
 
       {goals.length === 0 ? (
-        <View style={{ flex: 1 }}></View>
+        <SkeletonLoaderGoals />
       ) : (
         <FlatList
           data={goals}
@@ -117,7 +118,7 @@ export const MyGoals = ({ navigation }) => {
         />
       )}
 
-      <Navigation navigation={navigation} />
+      <Navigation navigation={navigation} setLoading={setLoading} />
     </View>
   );
 };

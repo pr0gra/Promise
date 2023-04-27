@@ -11,37 +11,37 @@ export const CreateGoalButton = ({
   noExpand,
 }) => {
   return (
-    <Surface
-      style={[styles.surface]}
-      elevation={3}
-      shadowColor={"rgba(145, 155, 204, 0.3)"}
-      shadowOpacity={1}
+    // <Surface
+    //   style={[styles.surface]}
+    //   elevation={3}
+    //   shadowColor={"rgba(145, 155, 204, 0.3)"}
+    //   shadowOpacity={1}
+    // >
+    <Animated.View
+      style={{
+        alignTimes: "center",
+        flexDirection: "row",
+        justifyContent: "center",
+      }}
     >
-      <Animated.View
-        style={{
-          alignTimes: "center",
-          flexDirection: "row",
-          justifyContent: "center",
+      <IconButton
+        onPress={() => {
+          onPress();
+          noExpand();
         }}
-      >
-        <IconButton
-          onPress={() => {
-            onPress();
-            noExpand();
-          }}
-          size={30}
-          mode="contained"
-          style={[styles.button, { width: "100%" }]}
-          iconColor={COLORS.LowAccent}
-          icon={
-            postedForm
-              ? require("../../../../assets/icons/check.png")
-              : require("../../../../assets/icons/plus.png")
-          }
-          disabled={disabled}
-        />
-      </Animated.View>
-    </Surface>
+        size={30}
+        mode="contained"
+        style={[styles.button, { width: "100%" }]}
+        iconColor={COLORS.LowAccent}
+        icon={
+          postedForm
+            ? require("../../../../assets/icons/check.png")
+            : require("../../../../assets/icons/plus.png")
+        }
+        disabled={disabled}
+      />
+    </Animated.View>
+    // </Surface>
   );
 };
 
