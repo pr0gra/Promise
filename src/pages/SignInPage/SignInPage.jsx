@@ -77,138 +77,148 @@ export const SignInPage = ({ navigation }) => {
   return (
     <View style={[GlobalStyles.viewBasic]}>
       <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-        }}
-      >
-        <Image
           style={{
             flex: 1,
-            width: 400,
-            marginBottom: -200,
+            alignItems: "center",
           }}
-          source={require("../../../assets/images/rocket-illustration-3d-render.png")}
-        />
-      </View>
-      <Text
-        style={[GlobalStyles.pageTitle, { marginLeft: 30, marginBottom: 20 }]}
+        >
+          <Image
+            style={{
+              flex: 1,
+              width: 400,
+              marginBottom: -200,
+            }}
+            source={require("../../../assets/images/rocket-illustration-3d-render.png")}
+          />
+        </View>
+      <KeyboardAvoidingView
+        behavior="padding"
       >
-        Вход
-      </Text>
+        
+        <Text
+          style={[GlobalStyles.pageTitle, { marginLeft: 30, marginBottom: 20 }]}
+        >
+          Вход
+        </Text>
 
-      <View style={GlobalStyles.inputsContainer}>
-        <View style={{ gap: 20 }}>
-          <TouchableWithoutFeedback
-            onPress={Keyboard.dismiss}
-            accessible={false}
-          >
-            <Formik
-              initialValues={{ email: "", password: "" }}
-              validationSchema={validationSchema}
-              onSubmit={(values) => loginUser(values.email, values.password)}
+        <View style={GlobalStyles.inputsContainer}>
+          <View style={{ gap: 20 }}>
+            <TouchableWithoutFeedback
+              onPress={Keyboard.dismiss}
+              accessible={false}
             >
-              {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
-                <>
-                  <Text
-                    style={{
-                      display: userExistError ? "flex" : "none",
-                      color: "red",
-                    }}
-                  >
-                    Неверный логин или пароль
-                  </Text>
-                  <TextInput
-                    label="Email"
-                    onChangeText={handleChange("email")}
-                    onBlur={handleBlur("email")}
-                    value={values.email}
-                    placeholder="Email"
-                    keyboardType="email-address"
-                    selectionColor={COLORS.Accent}
-                    style={[
-                      GlobalStyles.inputStyles,
-                      errors.email && GlobalStyles.wrongInput,
-                    ]}
-                  />
 
-                  <TextInput
-                    label="Password"
-                    placeholder="Пароль"
-                    leftIcon={{ type: "font-awesome", name: "lock" }}
-                    onBlur={handleBlur("password")}
-                    onChangeText={handleChange("password")}
-                    value={values.password}
-                    secureTextEntry
-                    errorMessage={errors.password}
-                    selectionColor={COLORS.Accent}
-                    style={[
-                      GlobalStyles.inputStyles,
-                      errors.email && GlobalStyles.wrongInput,
-                    ]}
-                  />
+              <Formik
+                initialValues={{ email: "", password: "" }}
+                validationSchema={validationSchema}
+                onSubmit={(values) => loginUser(values.email, values.password)}
+              >
+                {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+                  <>
+                    <Text
+                      style={{
+                        display: userExistError ? "flex" : "none",
+                        color: "red",
+                      }}
+                    >
+                      Неверный логин или пароль
+                    </Text>
 
-                  <Text
-                    style={{
-                      textAlign: "center",
+                    <TextInput
+                      label="Email"
+                      onChangeText={handleChange("email")}
+                      onBlur={handleBlur("email")}
+                      value={values.email}
+                      placeholder="Email"
+                      keyboardType="email-address"
+                      selectionColor={COLORS.Accent}
+                      style={[
+                        GlobalStyles.inputStyles,
+                        errors.email && GlobalStyles.wrongInput,
+                      ]}
+                    />
 
-                      color: COLORS.Accent,
-                      ...FONTS.buttonText,
-                    }}
-                  >
-                    Забыли пароль?
-                  </Text>
+                    <TextInput
+                      label="Password"
+                      placeholder="Пароль"
+                      leftIcon={{ type: "font-awesome", name: "lock" }}
+                      onBlur={handleBlur("password")}
+                      onChangeText={handleChange("password")}
+                      value={values.password}
+                      secureTextEntry
+                      errorMessage={errors.password}
+                      selectionColor={COLORS.Accent}
+                      style={[
+                        GlobalStyles.inputStyles,
+                        errors.email && GlobalStyles.wrongInput,
+                      ]}
+                    />
 
-                  <View style={{ gap: 15 }}>
-                    <View style={{ flexDirection: "row" }}>
-                      <View style={{ flex: 1 }}>
-                        <Button
-                          mode="tonal"
-                          style={[GlobalStyles.boldButton]}
-                          onPress={handleSubmit}
-                          contentStyle={{
-                            paddingVertical: 10,
-                          }}
-                          labelStyle={{ color: COLORS.White }}
-                          loading={loading ? true : false}
-                        >
-                          <Text
-                            style={{ color: COLORS.White, ...FONTS.buttonText }}
+                    <Text
+                      style={{
+                        textAlign: "center",
+
+                        color: COLORS.Accent,
+                        ...FONTS.buttonText,
+                      }}
+                    >
+                      Забыли пароль?
+                    </Text>
+
+                    <View style={{ gap: 15 }}>
+                      <View style={{ flexDirection: "row" }}>
+                        <View style={{ flex: 1 }}>
+                          <Button
+                            mode="tonal"
+                            style={[GlobalStyles.boldButton]}
+                            onPress={handleSubmit}
+                            contentStyle={{
+                              paddingVertical: 10,
+                            }}
+                            labelStyle={{ color: COLORS.White }}
+                            loading={loading ? true : false}
                           >
-                            Войти
-                          </Text>
-                        </Button>
+                            <Text
+                              style={{ color: COLORS.White, ...FONTS.buttonText }}
+                            >
+                              Войти
+                            </Text>
+                          </Button>
+                        </View>
+
+                        <View
+                          style={{
+                            flexDirection: "row",
+
+                            alignItems: "center",
+                          }}
+                        ></View>
                       </View>
 
-                      <View
-                        style={{
-                          flexDirection: "row",
-
-                          alignItems: "center",
+                      <Button
+                        mode="tonal"
+                        style={GlobalStyles.transparentButton}
+                        contentStyle={{
+                          paddingVertical: 10,
                         }}
-                      ></View>
+                        onPress={() => navigation.navigate("SignUp")}
+                      >
+                        <Text style={styles.registationButton}>
+                          Зарегистрироваться
+                        </Text>
+                      </Button>
                     </View>
+                  </>
+                )}
 
-                    <Button
-                      mode="tonal"
-                      style={GlobalStyles.transparentButton}
-                      contentStyle={{
-                        paddingVertical: 10,
-                      }}
-                      onPress={() => navigation.navigate("SignUp")}
-                    >
-                      <Text style={styles.registationButton}>
-                        Зарегистрироваться
-                      </Text>
-                    </Button>
-                  </View>
-                </>
-              )}
-            </Formik>
-          </TouchableWithoutFeedback>
+              </Formik>
+
+            </TouchableWithoutFeedback>
+          </View>
         </View>
-      </View>
-    </View>
+      </KeyboardAvoidingView>
+    </View >
+
   );
 };
 

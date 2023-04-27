@@ -81,6 +81,7 @@ export const Goal = ({
   );
   const { result, color } = formattedDeadline(deadline);
   return (
+
     <>
       <TouchableWithoutFeedback
         onPress={() => {
@@ -140,6 +141,7 @@ export const Goal = ({
             style={{ ...FONTS.goalTime, color: "rgba(145, 155, 204, 0.5)" }}
           >
             {title}
+
           </Text>
           {/* <Button //это для того чтобы удалить цель, это временно, мне нуэно было протестить refreshing
             onPress={async () => {

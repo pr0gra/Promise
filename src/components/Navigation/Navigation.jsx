@@ -224,9 +224,11 @@ export const Navigation = ({ navigation }) => {
         {!isGoalVisible && (
           <TouchableWithoutFeedback
             onPress={() => {
+
               setStateNavigation("Menu");
               getUserInfo();
               setIsMenuVisible((state) => !state);
+
             }}
           >
             <View style={styles.buttonContainer}>
@@ -300,6 +302,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     backgroundColor: "transparent",
     flex: 1,
+
     borderRadius: 30,
   },
   menuContainer: {
