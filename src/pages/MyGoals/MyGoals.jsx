@@ -118,7 +118,11 @@ export const MyGoals = ({ navigation }) => {
         />
       )}
 
-      <Navigation navigation={navigation} setLoading={setLoading} />
+      <Navigation
+        navigation={navigation}
+        setLoading={setLoading}
+        handleRefresh={handleRefresh}
+      />
     </View>
   );
 };

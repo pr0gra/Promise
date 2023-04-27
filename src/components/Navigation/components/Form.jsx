@@ -22,7 +22,7 @@ const validationSchema = yup.object().shape({
     .required("Поле обязательно для заполнения")
     .min(8, "Длина текста должна быть не менее 8 символов"),
 });
-export const Form = ({ time, setIsGoalVisible, noExpand }) => {
+export const Form = ({ time, setIsGoalVisible, noExpand, handleRefresh }) => {
   const [checkedNormal, setCheckedNormal] = useState(true);
   const token = tokenStore((state) => state.token);
   const [postedForm, setPostedForm] = useState(false);
@@ -47,7 +47,7 @@ export const Form = ({ time, setIsGoalVisible, noExpand }) => {
       setPostedForm(true);
 
       console.log("Отправлено");
-
+      handleRefresh();
       return response.data;
     } catch (error) {
       if (error.response) {

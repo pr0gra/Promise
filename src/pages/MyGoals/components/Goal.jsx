@@ -80,6 +80,7 @@ export const Goal = ({
     [deadline]
   );
   const { result, color } = formattedDeadline(deadline);
+
   return (
     <>
       <TouchableWithoutFeedback
@@ -140,9 +141,16 @@ export const Goal = ({
           </Text>
           {/* <Button //это для того чтобы удалить цель, это временно, мне нуэно было протестить refreshing
             onPress={async () => {
-              const response = await axios.delete(`/api/goals/${id}`, {
-                headers: { Authorization: `Bearer ${token}` },
-              });
+              try {
+                console.log(id);
+                const response = await axios.delete(`/api/goals/${id}`, {
+                  headers: { Authorization: `Bearer ${token}` },
+                });
+                console.log(response);
+                return response;
+              } catch (error) {
+                console.log(error);
+              }
             }}
           >
             <Text> удалить таск</Text>

@@ -16,7 +16,7 @@ export const CreateGoal = ({
   setIsGoalVisible,
   isGoalVisible,
   noExpand,
-  setStateNavigation,
+  handleRefresh,
 }) => {
   const [isVisibleCalendar, setIsVisibleCalendar] = useState(false);
   const [selected, setSelected] = useState("");
@@ -147,6 +147,7 @@ export const CreateGoal = ({
                 time={selected}
                 setIsGoalVisible={setIsGoalVisible}
                 noExpand={noExpand}
+                handleRefresh={handleRefresh}
               />
             </LinearGradient>
           </>

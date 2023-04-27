@@ -19,7 +19,7 @@ import { tokenStore } from "../../../store";
 
 import { set } from "react-native-reanimated";
 import { Platform } from "react-native";
-export const Navigation = ({ navigation }) => {
+export const Navigation = ({ navigation, handleRefresh }) => {
   const route = useRoute();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [stateNavigation, setStateNavigation] = useState("");
@@ -90,6 +90,7 @@ export const Navigation = ({ navigation }) => {
           setIsGoalVisible={setIsGoalVisible}
           noExpand={noExpand}
           expand={expand}
+          handleRefresh={handleRefresh}
         />
       )}
 
