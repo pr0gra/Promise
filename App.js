@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import { ActivityIndicator, Button } from "react-native-paper";
+import { ActivityIndicator, Button, Provider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RegistatrionPage } from "./src/pages/RegistationPage/RegistatrionPage";
@@ -24,35 +24,37 @@ export default function App() {
 
   return (
     fontsLoaded && (
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="SignIn">
-          <Stack.Screen
-            name="SignIn"
-            component={SignInPage}
-            options={{ title: "Страница Входа", headerShown: false }}
-          />
-          <Stack.Screen
-            name="SignUp"
-            component={RegistatrionPage}
-            options={{ title: "Страница Входа", headerShown: false }}
-          />
-          <Stack.Screen
-            name="WelcomePage"
-            component={WelcomePage}
-            options={{ title: "Приветственная страница", headerShown: false }}
-          />
-          <Stack.Screen
-            name="MyGoals"
-            component={MyGoals}
-            options={{ title: "Мои цели", headerShown: false }}
-          />
-          <Stack.Screen
-            name="CertainGoal"
-            component={CertainGoal}
-            options={{ title: "Мои цели", headerShown: false }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Provider>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="SignIn">
+            <Stack.Screen
+              name="SignIn"
+              component={SignInPage}
+              options={{ title: "Страница Входа", headerShown: false }}
+            />
+            <Stack.Screen
+              name="SignUp"
+              component={RegistatrionPage}
+              options={{ title: "Страница Входа", headerShown: false }}
+            />
+            <Stack.Screen
+              name="WelcomePage"
+              component={WelcomePage}
+              options={{ title: "Приветственная страница", headerShown: false }}
+            />
+            <Stack.Screen
+              name="MyGoals"
+              component={MyGoals}
+              options={{ title: "Мои цели", headerShown: false }}
+            />
+            <Stack.Screen
+              name="CertainGoal"
+              component={CertainGoal}
+              options={{ title: "Мои цели", headerShown: false }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
     )
   );
 }

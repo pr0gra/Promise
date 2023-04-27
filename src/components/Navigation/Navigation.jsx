@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { COLORS } from "../../constants/Colors/Colors";
 import { useRoute } from "@react-navigation/native";
-import { Image } from "react-native";
+import { Image, Animated } from "react-native";
 import { TouchableWithoutFeedback } from "react-native";
 import {
   Surface,
@@ -12,15 +12,38 @@ import {
   Provider,
 } from "react-native-paper";
 
-import { MenuInNavigation } from "./components/MenuInNavigation";
+import { MenuNavigation } from "./components/MenuNavigation";
+import { CreateGoal } from "./components/CreateGoal";
 import axios from "axios";
 import { tokenStore } from "../../../store";
 
+import { set } from "react-native-reanimated";
+import { Platform } from "react-native";
 export const Navigation = ({ navigation }) => {
   const route = useRoute();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const [stateNavigation, setStateNavigation] = useState("");
   const token = tokenStore((state) => state.token);
   const [userData, setUserData] = useState(null);
+  const widthSize = useRef(new Animated.Value(70)).current;
+  const leftPosition = useRef(new Animated.Value(0)).current;
+  const windowWidth = Dimensions.get("window").width;
+  const [isGoalVisible, setIsGoalVisible] = useState(false);
+
+  const expand = () => {
+    Animated.timing(widthSize, {
+      toValue: windowWidth - 30,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+  };
+  const noExpand = () => {
+    Animated.timing(widthSize, {
+      toValue: 70,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  };
 
   const getUserInfo = useMemo(
     () =>
@@ -38,158 +61,194 @@ export const Navigation = ({ navigation }) => {
       },
     [userData]
   );
+  const shadowStyle =
+    Platform.OS === "android"
+      ? {
+          elevation: 4,
+          shadowColor: "rgba(0, 0, 0, 0.30)",
+        }
+      : {
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 11 },
+          shadowOpacity: 0.15,
+          shadowRadius: 32,
+        };
   return (
     <>
       {isMenuVisible && (
-        <>
+        <MenuNavigation
+          userData={userData}
+          navigation={navigation}
+          isMenuVisible={isMenuVisible}
+          setIsMenuVisible={setIsMenuVisible}
+          noExpand={noExpand}
+        />
+      )}
+      {isGoalVisible && (
+        <CreateGoal
+          isGoalVisible={isGoalVisible}
+          setIsGoalVisible={setIsGoalVisible}
+          noExpand={noExpand}
+          expand={expand}
+        />
+      )}
+
+      <View style={styles.container}>
+        {!isGoalVisible && (
           <TouchableWithoutFeedback
             onPress={() => {
+              setIsMenuVisible(false);
+              navigation.navigate("MyGoals");
+            }}
+          >
+            <View style={styles.buttonContainer}>
+              <View
+                style={
+                  route.name == "MyGoals" &&
+                  !isMenuVisible &&
+                  styles.paramsStyle
+                }
+              >
+                <Image
+                  source={require("../../../assets/icons/target-04.png")}
+                  style={styles.image}
+                />
+              </View>
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    color: COLORS.Accent,
+                    marginTop: route.name == "MyGoals" ? 4 : 8,
+                  },
+                ]}
+              >
+                Мои цели
+              </Text>
+            </View>
+          </TouchableWithoutFeedback>
+        )}
+
+        {!isGoalVisible && (
+          <TouchableWithoutFeedback
+            onPress={() => navigation.navigate("Advices")}
+          >
+            <View style={styles.buttonContainer}>
+              <View
+                style={
+                  route.name == "Advices" &&
+                  !isMenuVisible &&
+                  styles.paramsStyle
+                }
+              >
+                <Image
+                  source={require("../../../assets/icons/rows-01.png")}
+                  style={styles.image}
+                />
+              </View>
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    color: COLORS.Accent,
+                    marginTop:
+                      route.name == "Advices" && !isMenuVisible ? 4 : 8,
+                  },
+                ]}
+              >
+                Лента
+              </Text>
+            </View>
+          </TouchableWithoutFeedback>
+        )}
+
+        <Surface style={[styles.surface, shadowStyle]}>
+          <Animated.View
+            style={{
+              alignTimes: "center",
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            <IconButton
+              onPress={() => {
+                setStateNavigation("CreateGoal");
+                setIsGoalVisible(true);
+                expand();
+              }}
+              size={30}
+              mode="contained"
+              style={[
+                styles.button,
+                {
+                  width: widthSize,
+                  left: leftPosition,
+                },
+              ]}
+              iconColor={COLORS.LowAccent}
+              icon={require("../../../assets/icons/plus.png")}
+            />
+          </Animated.View>
+        </Surface>
+
+        {!isGoalVisible && (
+          <TouchableWithoutFeedback
+            onPress={() => navigation.navigate("Chats")}
+          >
+            <View style={styles.buttonContainer}>
+              <View
+                style={
+                  route.name == "Chats" && !isMenuVisible && styles.paramsStyle
+                }
+              >
+                <Image
+                  source={require("../../../assets/icons/message-square-01.png")}
+                  style={styles.image}
+                />
+              </View>
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    color: COLORS.Accent,
+                    marginTop: route.name == "Chats" && !isMenuVisible ? 4 : 8,
+                  },
+                ]}
+              >
+                Чаты
+              </Text>
+            </View>
+          </TouchableWithoutFeedback>
+        )}
+        {!isGoalVisible && (
+          <TouchableWithoutFeedback
+            onPress={() => {
+              setStateNavigation("Menu");
+              getUserInfo();
               setIsMenuVisible((state) => !state);
             }}
           >
-            <View
-              style={{
-                position: "absolute",
-                zIndex: 1,
-                bottom: 71,
-                backgroundColor: "rgba(0, 0, 0, 0.2)",
-                height: "100%",
-                width: "100%",
-              }}
-            ></View>
+            <View style={styles.buttonContainer}>
+              <View style={isMenuVisible && styles.paramsStyle}>
+                <Image
+                  source={require("../../../assets/icons/menu-01.png")}
+                  style={styles.image}
+                />
+              </View>
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    color: COLORS.Accent,
+                    marginTop: isMenuVisible ? 4 : 8,
+                  },
+                ]}
+              >
+                Меню
+              </Text>
+            </View>
           </TouchableWithoutFeedback>
-          {userData && (
-            <MenuInNavigation userData={userData} navigation={navigation} />
-          )}
-        </>
-      )}
-      <View style={styles.container}>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            setIsMenuVisible(false);
-            navigation.navigate("MyGoals");
-          }}
-        >
-          <View style={styles.buttonContainer}>
-            <View
-              style={
-                route.name == "MyGoals" && !isMenuVisible && styles.paramsStyle
-              }
-            >
-              <Image
-                source={require("../../../assets/icons/target-04.png")}
-                style={styles.image}
-              />
-            </View>
-            <Text
-              style={[
-                styles.text,
-                {
-                  color: COLORS.Accent,
-                  marginTop: route.name == "MyGoals" ? 4 : 8,
-                },
-              ]}
-            >
-              Мои цели
-            </Text>
-          </View>
-        </TouchableWithoutFeedback>
-
-        <TouchableWithoutFeedback
-          onPress={() => navigation.navigate("Advices")}
-        >
-          <View style={styles.buttonContainer}>
-            <View
-              style={
-                route.name == "Advices" && !isMenuVisible && styles.paramsStyle
-              }
-            >
-              <Image
-                source={require("../../../assets/icons/rows-01.png")}
-                style={styles.image}
-              />
-            </View>
-            <Text
-              style={[
-                styles.text,
-                {
-                  color: COLORS.Accent,
-                  marginTop: route.name == "Advices" && !isMenuVisible ? 4 : 8,
-                },
-              ]}
-            >
-              Лента
-            </Text>
-          </View>
-        </TouchableWithoutFeedback>
-
-        <Surface
-          style={[styles.surface]}
-          elevation={3}
-          shadowColor={"rgba(145, 155, 204, 0.3)"}
-        >
-          <IconButton
-            onPress={() => {
-              console.log(123);
-            }}
-            size={30}
-            mode="contained"
-            style={[styles.button]}
-            iconColor={COLORS.LowAccent}
-            icon={require("../../../assets/icons/plus.png")}
-          />
-        </Surface>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate("Chats")}>
-          <View style={styles.buttonContainer}>
-            <View
-              style={
-                route.name == "Chats" && !isMenuVisible && styles.paramsStyle
-              }
-            >
-              <Image
-                source={require("../../../assets/icons/message-square-01.png")}
-                style={styles.image}
-              />
-            </View>
-            <Text
-              style={[
-                styles.text,
-                {
-                  color: COLORS.Accent,
-                  marginTop: route.name == "Chats" && !isMenuVisible ? 4 : 8,
-                },
-              ]}
-            >
-              Чаты
-            </Text>
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            getUserInfo();
-            setIsMenuVisible((state) => !state);
-          }}
-        >
-          <View style={styles.buttonContainer}>
-            <View style={isMenuVisible && styles.paramsStyle}>
-              <Image
-                source={require("../../../assets/icons/menu-01.png")}
-                style={styles.image}
-              />
-            </View>
-            <Text
-              style={[
-                styles.text,
-                {
-                  color: COLORS.Accent,
-                  marginTop: isMenuVisible ? 4 : 8,
-                },
-              ]}
-            >
-              Меню
-            </Text>
-          </View>
-        </TouchableWithoutFeedback>
+        )}
       </View>
     </>
   );
@@ -201,7 +260,7 @@ const styles = StyleSheet.create({
     height: 72,
 
     width: "100%",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
     gap: 17,
     flexDirection: "row",
@@ -211,7 +270,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     alignItems: "center",
-    // justifyContent: "center",
     width: 51,
   },
   image: {
@@ -222,7 +280,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.Accent,
     marginTop: -17,
     borderRadius: 30,
-    width: 70,
+
     height: 70,
   },
   text: { fontWeight: "600", fontSize: 10 },
@@ -236,14 +294,11 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   surface: {
-    shadowColor: "rgba(0, 0, 0, 0.30)",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowColor: "rgba(0, 0, 0, 0.15)",
+    shadowOffset: { width: 0, height: 15 },
     shadowRadius: 4,
     backgroundColor: "transparent",
     flex: 1,
-    height: 70,
-
     borderRadius: 30,
   },
   menuContainer: {

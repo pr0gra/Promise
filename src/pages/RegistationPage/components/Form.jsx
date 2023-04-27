@@ -52,7 +52,7 @@ const Form = ({ navigation }) => {
           password: values.password,
         },
       });
-      navigation.navigate("Welcome");
+      navigation.navigate("SignIn");
       return response.data;
     } catch (error) {
       if (error.response) {
