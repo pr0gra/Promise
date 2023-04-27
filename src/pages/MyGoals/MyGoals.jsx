@@ -38,7 +38,6 @@ export const MyGoals = ({ navigation }) => {
         (a, b) => new Date(b.deadline) - new Date(a.deadline)
       );
 
-      //Мне приходит массив объектов, в котором есть поле deadline: 2023-04-24T23:00Z, как отстортировать этот массив по deadline
       setGoals(sortedData);
 
       return response.data.data;
