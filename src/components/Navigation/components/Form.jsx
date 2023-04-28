@@ -40,6 +40,7 @@ export const Form = ({ time, setIsGoalVisible, noExpand, handleRefresh }) => {
           goal: {
             title: title,
             deadline: deadline,
+            is_public: checkedNormal,
           },
         },
         { headers: { Authorization: `bearer ${token}` } }
