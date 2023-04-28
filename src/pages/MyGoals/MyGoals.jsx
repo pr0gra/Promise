@@ -88,10 +88,10 @@ export const MyGoals = ({ navigation }) => {
           style={{ width: 24, height: 24 }}
         />
       </View>
+      {Loading && <SkeletonLoaderGoals />}
+      {goals.length === 0 && !Loading && <Text>Нет целей</Text>}
 
-      {goals.length === 0 ? (
-        <SkeletonLoaderGoals />
-      ) : (
+      {!Loading && goals.length > 0 && (
         <FlatList
           data={goals}
           renderItem={({ item }) => (
