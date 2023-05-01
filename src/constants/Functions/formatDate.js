@@ -8,12 +8,19 @@ export function formatDate(dateString) {
       hour: '2-digit',
       minute: '2-digit'
     };
-    
+   
     if (date.toDateString() === today.toDateString()) {
-      return `Сегодня, ${date.toLocaleTimeString([], dateOptions).slice(1, -3)}`;
+      return `Сегодня, ${formatHoursAndMinutesDate(date)}`;
     } else if (date.toDateString() === yesterday.toDateString()) {
-      return `Вчера, ${date.toLocaleTimeString([], dateOptions).slice(1, -3)}`;
+      return `Вчера, ${formatHoursAndMinutesDate(date)}`;
     } else {
-      return `${date.toLocaleString().slice(1, -3)}`;
+      return `${ formatHoursAndMinutesDate(date)}`;
     }
+  }
+
+export function formatHoursAndMinutesDate(date) {
+    const formatDate = new Date(date)
+    let hours = date.getHours().toString().padStart(2, "0"); // Получаем часы и добавляем ведущий ноль, если нужно
+    let minutes = formatDate.getMinutes().toString().padStart(2, "0"); // Получаем минуты и добавляем ведущий ноль, если нужно
+    return `${hours}:${minutes}`; // Возвращаем строку в формате "чч:мм"
   }

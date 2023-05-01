@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 
 import { COLORS } from "../../../constants/Colors/Colors";
 import { FONTS } from "../../../constants/FONTS/FONTS";
@@ -40,120 +47,120 @@ export const CreateGoal = ({
     return formattedDate;
   }
   return (
-    <Portal>
-      <Dialog
-        visible={isGoalVisible}
-        onDismiss={() => {
-          setIsGoalVisible(false);
-          noExpand();
-        }}
-        style={{
-          marginLeft: 0,
-          marginRight: 0,
-          marginBottom: 0,
-          position: "absolute",
-          bottom: 0,
-
-          width: "100%",
-        }}
-      >
-        <Dialog.Content
+    
+      <Portal>
+        <Dialog
+          visible={isGoalVisible}
+          onDismiss={() => {
+            setIsGoalVisible(false);
+            noExpand();
+          }}
           style={{
-            paddingHorizontal: 0,
-            marginTop: 0,
-            paddingBottom: 0,
+            marginLeft: 0,
+            marginRight: 0,
+            marginBottom: 0,
+            position: "absolute",
+            bottom: 0,
+
+            width: "100%",
           }}
         >
-          <>
-            {isVisibleCalendar && (
-              <CalendarComponent
-                isVisibleCalendar={isVisibleCalendar}
-                setIsVisibleCalendar={setIsVisibleCalendar}
-                selected={selected}
-                setSelected={setSelected}
-              />
-            )}
-            <LinearGradient
-              colors={["rgba(231, 235, 255, 1)", "rgba(208, 214, 242, 1)"]}
-              start={{
-                x: 1,
-                y: 0,
-              }}
-              end={{
-                x: 1,
-                y: 1,
-              }}
-              style={styles.container}
-            >
-              <View
-                style={{
-                  width: 50,
-                  height: 4,
-                  backgroundColor: COLORS.Accent,
-                  left: "50%",
-                  marginLeft: -25,
-                  borderRadius: 100,
-                  marginBottom: 20,
+          <Dialog.Content
+            style={{
+              paddingHorizontal: 0,
+              marginTop: 0,
+              paddingBottom: 0,
+            }}
+          >
+            <>
+              {isVisibleCalendar && (
+                <CalendarComponent
+                  isVisibleCalendar={isVisibleCalendar}
+                  setIsVisibleCalendar={setIsVisibleCalendar}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+              )}
+              <LinearGradient
+                colors={["rgba(231, 235, 255, 1)", "rgba(208, 214, 242, 1)"]}
+                start={{
+                  x: 1,
+                  y: 0,
                 }}
-              ></View>
-              <View style={styles.top}>
-                <Text style={{ ...FONTS.goalTime, color: COLORS.Accent }}>
-                  Хочу к
-                </Text>
+                end={{
+                  x: 1,
+                  y: 1,
+                }}
+                style={styles.container}
+              >
                 <View
                   style={{
-                    backgroundColor: COLORS.LowAccent,
-                    flexDirection: "row",
-                    gap: 10,
-                    borderRadius: 10,
-                    marginLeft: 10,
-                    alignItems: "center",
-                    paddingHorizontal: 10,
+                    width: 50,
+                    height: 4,
+                    backgroundColor: COLORS.Accent,
+                    left: "50%",
+                    marginLeft: -25,
+                    borderRadius: 100,
+                    marginBottom: 20,
                   }}
-                >
-                  <Image
-                    source={require("../../../../assets/icons/clock.png")}
-                    style={{ width: 24, height: 24 }}
-                  />
-                  <TouchableWithoutFeedback
-                    onPress={() => setIsVisibleCalendar((state) => !state)}
+                ></View>
+                <View style={styles.top}>
+                  <Text style={{ ...FONTS.goalTime, color: COLORS.Accent }}>
+                    Хочу к
+                  </Text>
+                  <View
+                    style={{
+                      backgroundColor: COLORS.LowAccent,
+                      flexDirection: "row",
+                      gap: 10,
+                      borderRadius: 10,
+                      marginLeft: 10,
+                      alignItems: "center",
+                      paddingHorizontal: 10,
+                    }}
                   >
-                    <View
-                      style={{
-                        backgroundColor: COLORS.LowAccent,
-                        borderRadius: 10,
-                        paddingVertical: 5,
-                      }}
+                    <Image
+                      source={require("../../../../assets/icons/clock.png")}
+                      style={{ width: 24, height: 24 }}
+                    />
+                    <TouchableWithoutFeedback
+                      onPress={() => setIsVisibleCalendar((state) => !state)}
                     >
-                      <Text
+                      <View
                         style={{
-                          ...FONTS.typography,
-
-                          color: COLORS.Accent,
-                          textAlign: "left",
-                          marginVertical: "auto",
-                          flexDirection: "row",
-                          maxWidth: "100%",
+                          backgroundColor: COLORS.LowAccent,
+                          borderRadius: 10,
+                          paddingVertical: 5,
                         }}
                       >
-                        {selected ? formatDate(selected) : "Выберите дату"}
-                      </Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                </View>
-              </View>
+                        <Text
+                          style={{
+                            ...FONTS.typography,
 
-              <Form
-                time={selected}
-                setIsGoalVisible={setIsGoalVisible}
-                noExpand={noExpand}
-                handleRefresh={handleRefresh}
-              />
-            </LinearGradient>
-          </>
-        </Dialog.Content>
-      </Dialog>
-    </Portal>
+                            color: COLORS.Accent,
+                            textAlign: "left",
+                            marginVertical: "auto",
+                            flexDirection: "row",
+                            maxWidth: "100%",
+                          }}
+                        >
+                          {selected ? formatDate(selected) : "Выберите дату"}
+                        </Text>
+                      </View>
+                    </TouchableWithoutFeedback>
+                  </View>
+                </View>
+                <Form
+                  time={selected}
+                  setIsGoalVisible={setIsGoalVisible}
+                  noExpand={noExpand}
+                  handleRefresh={handleRefresh}
+                />
+              </LinearGradient>
+            </>
+          </Dialog.Content>
+        </Dialog>
+      </Portal>
   );
 };
 
