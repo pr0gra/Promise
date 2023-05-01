@@ -11,15 +11,19 @@ import { formatDate } from "../../constants/Functions/formatDate";
 import { PostsArray } from "./components/PostsArray";
 import { AddingPostInput } from "./components/AddingPostInput";
 import { KeyboardAvoidingView } from "react-native";
+import { SkeletonLoaderPosts } from "./components/SkeletonLoaderPosts";
 
 export const CertainGoal = ({ navigation }) => {
-  const goalId = goalStore((state) => state.goalId);
-  const [Loading, setLoading] = useState(false);
   const token = tokenStore((state) => state.token);
+  const goalId = goalStore((state) => state.goalId);
+
+  const [Loading, setLoading] = useState(true);
   const [currentGoal, setCurrentGoal] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
+
   const goalInsertedAt = currentGoal && formatDate(currentGoal.inserted_at);
   const fullName = userInfo?.first_name + " " + userInfo?.last_name;
+
   async function getGoalById(goalId, token) {
     setLoading(true);
     try {
@@ -93,43 +97,40 @@ export const CertainGoal = ({ navigation }) => {
             style={{ width: 24, height: 24 }}
           />
         </View>
-
-        <View style={styles.goalContainer}>
-          <View
-            style={{
-              flexDirection: "row",
-              gap: 20,
-              alignItems: "center",
-              marginBottom: 20,
-            }}
-          >
-            <UserAvatar
-              style={{ width: 50 }}
-              size={50}
-              name={fullName}
-              bgColor={COLORS.Accent}
-            />
-            <View style={{ gap: 5 }}>
-              <Text>{fullName}</Text>
-              <Text style={{ color: "rgba(175, 175, 175, 1)" }}>
-                {goalInsertedAt}
-              </Text>
+        {Loading && !userInfo && !currentGoal ? (
+          <SkeletonLoaderPosts />
+        ) : (
+          <>
+            <View style={styles.goalContainer}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  gap: 20,
+                  alignItems: "center",
+                  marginBottom: 20,
+                }}
+              >
+                <UserAvatar
+                  style={{ width: 50 }}
+                  size={50}
+                  name={fullName}
+                  bgColor={COLORS.Accent}
+                />
+                <View style={{ gap: 5 }}>
+                  <Text>{fullName}</Text>
+                  <Text style={{ color: "rgba(175, 175, 175, 1)" }}>
+                    {goalInsertedAt}
+                  </Text>
+                </View>
+              </View>
+              <View>
+                <Text>{currentGoal?.title}</Text>
+              </View>
             </View>
-          </View>
-          <View>
-            <Text>{currentGoal?.title}</Text>
-          </View>
-        </View>
 
-        <PostsArray fullName={fullName} goalId={currentGoal?.id} />
-        <KeyboardAvoidingView behavior="padding">
-          {currentGoal && (
-            <AddingPostInput
-              fullName={fullName}
-              currentGoalId={currentGoal.id}
-            />
-          )}
-        </KeyboardAvoidingView>
+            <PostsArray fullName={fullName} goalId={currentGoal?.id} />
+          </>
+        )}
       </View>
       <Navigation navigation={navigation} />
     </>

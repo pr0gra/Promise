@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Dimensions, KeyboardAvoidingView, Platform } from "react-native";
 import { COLORS } from "../../constants/Colors/Colors";
 import { useRoute } from "@react-navigation/native";
 import { Image, Animated } from "react-native";
@@ -11,14 +11,12 @@ import {
   Divider,
   Provider,
 } from "react-native-paper";
-
 import { MenuNavigation } from "./components/MenuNavigation";
 import { CreateGoal } from "./components/CreateGoal";
 import axios from "axios";
 import { tokenStore } from "../../../store";
-
 import { set } from "react-native-reanimated";
-import { Platform } from "react-native";
+
 export const Navigation = ({ navigation, handleRefresh }) => {
   const route = useRoute();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -85,6 +83,7 @@ export const Navigation = ({ navigation, handleRefresh }) => {
         />
       )}
       {isGoalVisible && (
+        
         <CreateGoal
           isGoalVisible={isGoalVisible}
           setIsGoalVisible={setIsGoalVisible}
@@ -92,6 +91,7 @@ export const Navigation = ({ navigation, handleRefresh }) => {
           expand={expand}
           handleRefresh={handleRefresh}
         />
+
       )}
 
       <View style={styles.container}>

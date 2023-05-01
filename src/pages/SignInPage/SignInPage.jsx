@@ -78,7 +78,7 @@ export const SignInPage = ({ navigation }) => {
       setLoading(false);
     }
   }
-
+  console.log(new Date())
   return (
     <View style={[GlobalStyles.viewBasic]}>
       <View
