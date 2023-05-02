@@ -18,16 +18,14 @@ export const InteractionButtons = () => {
   return (
     <View style={styles.container}>
       <Button
-        onPress={() => console.log(123123123)}
+        onPress={() => console.log("Подписаться")}
         mode="contained-tonal"
         style={styles.firstButton}
-        labelStyle={{ color: COLORS.White }}
-        contentStyle={
-          {
-            // paddingVertical: 10,
-            // paddingHorizontal: 20,
-          }
-        }
+        labelStyle={{
+          color: COLORS.White,
+          // paddingHorizontal: 20,
+          // paddingVertical: 10,
+        }}
       >
         <Text style={styles.firstButtonText}>Подписаться</Text>
       </Button>
@@ -35,15 +33,14 @@ export const InteractionButtons = () => {
         onPress={() => console.log("написать сообщение")}
         mode="outlined"
         style={styles.secondButton}
-        labelStyle={{ color: COLORS.White }}
-        contentStyle={
-          {
-            // paddingVertical: 10,
-            // paddingHorizontal: 20,
-          }
-        }
+        labelStyle={{ color: COLORS.White, marginHorizontal: 0 }}
       >
-        <Text style={[styles.secondButtonText, { flexWrap: "wrap" }]}>
+        <Text
+          style={[
+            styles.secondButtonText,
+            { flexWrap: "wrap", alignSelf: "stretch" },
+          ]}
+        >
           Написать сообщение
         </Text>
       </Button>
@@ -61,25 +58,20 @@ const styles = StyleSheet.create({
   },
   firstButton: {
     backgroundColor: COLORS.Accent,
-    flex: 1,
+    // flex: 1,
     borderRadius: 10,
-    // width: "100%",
-    // paddingHorizontal: 20,
-    // paddingVertical: 10,
   },
   secondButton: {
     backgroundColor: "transparent",
     flex: 2,
-    width: "50%",
+    // width: "50%",
     borderWidth: 1,
     borderRadius: 10,
     borderColor: COLORS.Accent,
-    // paddingVertical: 10,
   },
   firstButtonText: {
     color: COLORS.White,
     ...FONTS.buttonText,
-    // width: "100%",
   },
   secondButtonText: {
     color: COLORS.Accent,

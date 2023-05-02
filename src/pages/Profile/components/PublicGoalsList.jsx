@@ -81,7 +81,7 @@ export const PublicGoalsList = ({ token }) => {
       ) : (
         <FlatList
           data={goals}
-          renderItem={({ item }) => <PublicGoal item={item} />}
+          renderItem={({ item }) => <PublicGoal item={item} token={token} />}
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={true}

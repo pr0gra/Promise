@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Image,
   Platform,
@@ -18,12 +18,21 @@ import { tokenStore } from "../../../store.js";
 import { FlatList } from "react-native";
 import { Navigation } from "../../components/Navigation/Navigation";
 import SkeletonLoading from "../../components/SkeletonLoading/SkeletonLoading";
+import { useRoute } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 
 export const MyGoals = ({ navigation }) => {
   const [Loading, setLoading] = useState(false);
   const [errorState, setErrorState] = useState(null);
   const [goals, setGoals] = useState([]);
   const token = tokenStore((state) => state.token);
+
+  useFocusEffect(
+    //Этаа функция для обновления списка после удалкения цели
+    useCallback(() => {
+      handleRefresh();
+    }, [])
+  );
 
   const handleRefresh = () => {
     getGoals();
@@ -54,6 +63,7 @@ export const MyGoals = ({ navigation }) => {
       setLoading(false);
     }
   }
+
   useEffect(() => {
     getGoals();
   }, []);
