@@ -1,7 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { View, StyleSheet, Animated } from "react-native";
 
-const SkeletonLoading = ({ loading = true, repeat = 1, ...rest }) => {
+const SkeletonLoading = ({
+  loading = true,
+  repeat = 1,
+  backgroundColor = "white",
+  ...rest
+}) => {
   const opacity = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
@@ -36,8 +41,8 @@ const SkeletonLoading = ({ loading = true, repeat = 1, ...rest }) => {
           <View style={styles.container} key={index}>
             <Animated.View
               style={[
-                styles.skeleton,
                 {
+                  backgroundColor,
                   ...rest,
                 },
               ]}
@@ -53,9 +58,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
     alignItems: "stretch",
-  },
-  skeleton: {
-    backgroundColor: "white",
   },
 });
 

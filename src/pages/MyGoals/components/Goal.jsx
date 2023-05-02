@@ -17,7 +17,7 @@ export const Goal = ({
 }) => {
   const setGoalId = goalStore((state) => state.setGoalId);
   const goalId = goalStore((state) => state.goalId);
-  // const token = tokenStore((state) => state.token);
+  const token = tokenStore((state) => state.token);
   const colors = {
     1: "rgba(153, 204, 145, 1)",
     2: "rgba(203, 204, 145, 1)",
@@ -25,26 +25,26 @@ export const Goal = ({
     4: "transparent",
   };
 
-  function calculateDaysProgress(startDate, endDate) {
-    const oneDay = 24 * 60 * 60 * 1000;
-    const currentDate = new Date();
+  function getPercentage(startDate, endDate) {
+    const oneDay = 24 * 60 * 60 * 1000; // Количество миллисекунд в одном дне
+    const today = new Date(); // Сегодняшняя дата
+
+    // Преобразование дат из строкового формата в формат даты
     const start = new Date(startDate);
     const end = new Date(endDate);
-    if (currentDate < start) {
-      return 0;
-    }
-    if (currentDate > end) {
-      return 100;
-    }
-    const totalDays = Math.round(Math.abs((end - start) / oneDay));
-    const daysLeft = Math.round(Math.abs((end - currentDate) / oneDay));
-    const progress = Math.round(((totalDays - daysLeft) / totalDays) * 100);
-    return progress;
-  }
 
-  const start = startDate.split("T")[0];
-  const end = deadline.split("T")[0];
-  const progress = calculateDaysProgress(start, end);
+    // Вычисление разницы в днях между сегодняшней датой и датой окончания
+    const diffDays = Math.round(Math.abs((today - end) / oneDay));
+
+    // Вычисление процента оставшегося времени
+    const percentage = Math.max(
+      0,
+      Math.min(100, Math.round((diffDays / 100) * 100))
+    );
+
+    return percentage;
+  }
+  const progress = getPercentage(startDate, deadline);
 
   const formattedDeadline = useMemo(
     () =>
@@ -74,12 +74,12 @@ export const Goal = ({
         } else {
           result = `${day} ${monthName}`;
         }
-        const color = colors[1];
-        return { result, color };
+
+        return result;
       },
     [deadline]
   );
-  const { result, color } = formattedDeadline(deadline);
+  const result = formattedDeadline(deadline);
 
   return (
     <>
@@ -99,11 +99,11 @@ export const Goal = ({
             <View
               style={{
                 backgroundColor:
-                  progress < 20
+                  progress > 70
                     ? colors[1]
-                    : progress < 50
+                    : progress > 25
                     ? colors[2]
-                    : progress < 90
+                    : progress > 0
                     ? colors[3]
                     : colors[4],
 
@@ -118,7 +118,7 @@ export const Goal = ({
             >
               <Image
                 source={
-                  progress < 100
+                  progress > 0
                     ? require("../../../../assets/icons/whiteClock.png")
                     : require("../../../../assets/icons/clock.png")
                 }
@@ -127,7 +127,7 @@ export const Goal = ({
               <Text
                 style={{
                   ...FONTS.goalTime,
-                  color: progress < 100 ? COLORS.White : COLORS.Accent,
+                  color: progress > 0 ? COLORS.White : COLORS.Accent,
                 }}
               >
                 {result}

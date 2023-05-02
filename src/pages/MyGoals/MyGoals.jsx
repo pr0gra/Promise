@@ -86,7 +86,7 @@ export const MyGoals = ({ navigation }) => {
           style={{ width: 24, height: 24 }}
         />
       </View>
-      {goals.length === 0 ? (
+      {goals.length === 0 && Loading ? (
         <ScrollView>
           <SkeletonLoading
             width="100%"
@@ -97,7 +97,16 @@ export const MyGoals = ({ navigation }) => {
           />
         </ScrollView>
       ) : goals.length === 0 && !Loading ? (
-        <Text>Нет целей</Text>
+        <Text
+          style={{
+            ...FONTS.goalTime,
+            color: COLORS.Accent,
+            flex: 1,
+            marginLeft: 20,
+          }}
+        >
+          Нет целей
+        </Text>
       ) : (
         <FlatList
           data={goals}

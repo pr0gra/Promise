@@ -106,27 +106,31 @@ export const CertainGoal = ({ navigation }) => {
         ) : (
           <>
             <View style={styles.goalContainer}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  gap: 20,
-                  alignItems: "center",
-                  marginBottom: 20,
-                }}
-              >
-                <UserAvatar
-                  style={{ width: 50 }}
-                  size={50}
-                  name={fullName}
-                  bgColor={COLORS.Accent}
-                />
-                <View style={{ gap: 5 }}>
-                  <Text>{fullName}</Text>
-                  <Text style={{ color: "rgba(175, 175, 175, 1)" }}>
-                    {goalInsertedAt}
-                  </Text>
+              {fullName !== "undefined undefined" && (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    gap: 20,
+                    alignItems: "center",
+                    marginBottom: 20,
+                  }}
+                >
+                  <UserAvatar
+                    style={{ width: 50 }}
+                    size={50}
+                    name={fullName !== "undefined undefined" ? fullName : ""}
+                    bgColor={COLORS.Accent}
+                  />
+                  <View style={{ gap: 5 }}>
+                    <Text>
+                      {fullName !== "undefined undefined" && fullName}
+                    </Text>
+                    <Text style={{ color: "rgba(175, 175, 175, 1)" }}>
+                      {goalInsertedAt}
+                    </Text>
+                  </View>
                 </View>
-              </View>
+              )}
               <View>
                 <Text>{currentGoal?.title}</Text>
               </View>

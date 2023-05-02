@@ -93,7 +93,12 @@ export const MenuNavigation = memo(
                   />
                 </View>
                 {!data?.first_name && !data?.last_name ? (
-                  <SkeletonLoading width={100} height={25} borderRadius={20} />
+                  <SkeletonLoading
+                    width={100}
+                    height={25}
+                    borderRadius={20}
+                    backgroundColor={COLORS.LowAccent}
+                  />
                 ) : (
                   <Text
                     style={{
