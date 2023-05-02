@@ -29,6 +29,7 @@ export const CertainGoal = ({ navigation }) => {
         headers: { Authorization: `bearer ${token}` },
       });
       setCurrentGoal(response.data.data);
+
       getUserInfo(response.data.data.user_id, token);
     } catch (error) {
       if (error.response) {
