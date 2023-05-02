@@ -64,14 +64,9 @@ export const Form = ({ time, setIsGoalVisible, noExpand, handleRefresh }) => {
   }
   const handleSubmit = (values) => {
     const cantPost = !values.title || !time;
-    const now = new Date();
-    console.log(now.getMinutes());
-    const hoursMinutes = `T${now.getHours()}:${
-      now.getMinutes() < 10 ? "0" + now.getMinutes() : now.getMinutes()
-    }`;
 
     if (!cantPost) {
-      createGoal(values.title, time + hoursMinutes);
+      createGoal(values.title, time + "T23:59");
     }
   };
 
