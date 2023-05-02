@@ -13,6 +13,7 @@ import axios from "axios";
 import { MyGoals } from "./src/pages/MyGoals/MyGoals";
 import { useState } from "react";
 import { CertainGoal } from "./src/pages/CertainGoal/CertainGoal";
+import { Profile } from "./src/pages/Profile/Profile";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -51,6 +52,11 @@ export default function App() {
               name="CertainGoal"
               component={CertainGoal}
               options={{ title: "Мои цели", headerShown: false }}
+            />
+            <Stack.Screen
+              name="Profile"
+              component={Profile}
+              options={{ title: "Профиль", headerShown: false }}
             />
           </Stack.Navigator>
         </NavigationContainer>
