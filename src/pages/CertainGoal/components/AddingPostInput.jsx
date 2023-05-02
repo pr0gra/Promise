@@ -1,5 +1,5 @@
 import { View, TextInput } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, IconButton } from "react-native-paper";
 import { COLORS } from "../../../constants/Colors/Colors";
 import UserAvatar from "react-native-user-avatar";
 import { Image } from "react-native";
@@ -34,7 +34,6 @@ export function AddingPostInput({ fullName, currentGoalId, setIsRefresh }) {
         console.log("NO RESPONSE");
       }
       throw new Error("Ошибка в создании Поста");
-      return error;
     } finally {
       setLoading(false);
     }
@@ -50,7 +49,7 @@ export function AddingPostInput({ fullName, currentGoalId, setIsRefresh }) {
         marginBottom: 20,
         paddingLeft: 20,
         paddingRight: 60,
-        marginTop: 5,
+        marginTop: 10,
         paddingVertical: 10,
         alignItems: "center",
       }}
@@ -71,17 +70,18 @@ export function AddingPostInput({ fullName, currentGoalId, setIsRefresh }) {
         />
       </View>
 
-      <Button
+      <IconButton
+        mode="contained"
         onPress={() => {
           createPost(inputText, currentGoalId);
           setIsRefresh((prev) => !prev);
+          setInputText("");
         }}
-      >
-        <Image
-          style={{ width: 20, height: 20 }}
-          source={require("../../../../assets/icons/send-02.png")}
-        />
-      </Button>
+        icon={require("../../../../assets/icons/send-02.png")}
+        iconColor={COLORS.Accent}
+        style={{ backgroundColor: "transparent" }}
+        disabled={!inputText}
+      />
     </View>
   );
 }

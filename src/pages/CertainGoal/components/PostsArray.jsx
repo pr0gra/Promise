@@ -50,7 +50,7 @@ export function PostsArray({ fullName, goalId }) {
           <Post fullName={fullName} text={item.text} postId={item.id} />
         )}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ flexGrow: 0, gap: 10 }}
+        contentContainerStyle={{ gap: 10 }}
         showsVerticalScrollIndicator={true}
         indicatorStyle={COLORS.Accent}
         refreshControl={
@@ -60,6 +60,7 @@ export function PostsArray({ fullName, goalId }) {
             refreshing={loading}
           />
         }
+        style={{ flexGrow: 0 }}
       />
       <AddingPostInput
         setIsRefresh={setIsRefresh}

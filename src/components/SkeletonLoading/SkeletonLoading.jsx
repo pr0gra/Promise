@@ -1,16 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { View, StyleSheet, Animated } from "react-native";
 
-const SkeletonLoading = ({
-  loading = true,
-  children,
-  width = 30,
-  height = 30,
-  marginBottom = 0,
-  padding = 0,
-  borderRadius = 0,
-  repeat = 1,
-}) => {
+const SkeletonLoading = ({ loading = true, repeat = 1, ...rest }) => {
   const opacity = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
@@ -47,12 +38,7 @@ const SkeletonLoading = ({
               style={[
                 styles.skeleton,
                 {
-                  opacity,
-                  width,
-                  height,
-                  marginBottom,
-                  padding,
-                  borderRadius,
+                  ...rest,
                 },
               ]}
             />
@@ -62,7 +48,7 @@ const SkeletonLoading = ({
     );
   }
 
-  return children;
+  // return children;
 };
 
 const styles = StyleSheet.create({

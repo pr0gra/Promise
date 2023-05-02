@@ -51,9 +51,7 @@ export const MyGoals = ({ navigation }) => {
       }
       throw new Error("Ошибка в получении целей");
     } finally {
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+      setLoading(false);
     }
   }
   useEffect(() => {

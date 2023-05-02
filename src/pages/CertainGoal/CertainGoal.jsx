@@ -9,9 +9,7 @@ import { Navigation } from "../../components/Navigation/Navigation";
 import UserAvatar from "react-native-user-avatar";
 import { formatDate } from "../../constants/Functions/formatDate";
 import { PostsArray } from "./components/PostsArray";
-import { AddingPostInput } from "./components/AddingPostInput";
-import { KeyboardAvoidingView } from "react-native";
-import { SkeletonLoaderPosts } from "./components/SkeletonLoaderPosts";
+import SkeletonLoading from "../../components/SkeletonLoading/SkeletonLoading";
 
 export const CertainGoal = ({ navigation }) => {
   const token = tokenStore((state) => state.token);
@@ -71,7 +69,7 @@ export const CertainGoal = ({ navigation }) => {
     <>
       <View
         style={{
-          paddingTop: Platform.OS === "ios" ? 62 : 0,
+          paddingTop: Platform.OS === "ios" ? 62 : 32,
           backgroundColor: COLORS.Background,
           flex: 1,
         }}
@@ -98,7 +96,13 @@ export const CertainGoal = ({ navigation }) => {
           />
         </View>
         {Loading && !userInfo && !currentGoal ? (
-          <SkeletonLoaderPosts />
+          <SkeletonLoading
+            padding={20}
+            borderRadius={20}
+            marginBottom={20}
+            width={"100%"}
+            height={120}
+          />
         ) : (
           <>
             <View style={styles.goalContainer}>
@@ -142,6 +146,6 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: COLORS.White,
     borderRadius: 20,
-    marginBottom: 20,
+    marginBottom: 10,
   },
 });
