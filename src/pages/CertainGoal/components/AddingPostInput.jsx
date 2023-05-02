@@ -26,6 +26,7 @@ export function AddingPostInput({ fullName, currentGoalId, setIsRefresh }) {
           },
         }
       );
+      console.log(response.data.data);
       return response.data;
     } catch (error) {
       if (error.response) {
