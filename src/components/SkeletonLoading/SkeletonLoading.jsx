@@ -47,8 +47,6 @@ const SkeletonLoading = ({ loading = true, repeat = 1, ...rest }) => {
       </>
     );
   }
-
-  // return children;
 };
 
 const styles = StyleSheet.create({
