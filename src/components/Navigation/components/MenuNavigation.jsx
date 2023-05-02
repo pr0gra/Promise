@@ -10,6 +10,7 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { LinearGradient } from "expo-linear-gradient";
 import { Dialog, Portal } from "react-native-paper";
 import UserAvatar from "react-native-user-avatar";
+import SkeletonLoading from "../../SkeletonLoading/SkeletonLoading";
 export const MenuNavigation = memo(
   ({ userData, navigation, setIsMenuVisible, isMenuVisible, noExpand }) => {
     const data = JSON.parse(userData);
@@ -91,15 +92,19 @@ export const MenuNavigation = memo(
                     style={{ width: 24, height: 24, marginBottom: -5 }}
                   />
                 </View>
-                <Text
-                  style={{
-                    fontWeight: "400",
-                    fontSize: 14,
-                    color: COLORS.Accent,
-                  }}
-                >
-                  {data?.first_name} {data?.last_name}
-                </Text>
+                {!data?.first_name && !data?.last_name ? (
+                  <SkeletonLoading width={100} height={25} borderRadius={20} />
+                ) : (
+                  <Text
+                    style={{
+                      fontWeight: "400",
+                      fontSize: 14,
+                      color: COLORS.Accent,
+                    }}
+                  >
+                    {data?.first_name} {data?.last_name}
+                  </Text>
+                )}
               </View>
             </View>
           </TouchableWithoutFeedback>

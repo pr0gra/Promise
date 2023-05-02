@@ -17,7 +17,7 @@ import axios from "axios";
 import { tokenStore } from "../../../store.js";
 import { FlatList } from "react-native";
 import { Navigation } from "../../components/Navigation/Navigation";
-import SkeletonLoaderGoals from "./components/SkeletonLoadingGoals/SkeletonLoadingGoals";
+import SkeletonLoading from "../../components/SkeletonLoading/SkeletonLoading";
 
 export const MyGoals = ({ navigation }) => {
   const [Loading, setLoading] = useState(false);
@@ -88,10 +88,19 @@ export const MyGoals = ({ navigation }) => {
           style={{ width: 24, height: 24 }}
         />
       </View>
-      {Loading && <SkeletonLoaderGoals />}
-      {goals.length === 0 && !Loading && <Text>Нет целей</Text>}
-
-      {!Loading && goals.length > 0 && (
+      {goals.length === 0 ? (
+        <ScrollView>
+          <SkeletonLoading
+            width="100%"
+            height={120}
+            borderRadius={20}
+            marginBottom={10}
+            repeat={4}
+          />
+        </ScrollView>
+      ) : goals.length === 0 && !Loading ? (
+        <Text>Нет целей</Text>
+      ) : (
         <FlatList
           data={goals}
           renderItem={({ item }) => (
