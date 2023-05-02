@@ -5,6 +5,7 @@ const SkeletonLoading = ({
   loading = true,
   repeat = 1,
   backgroundColor = "white",
+  frequency = 350,
   ...rest
 }) => {
   const opacity = useRef(new Animated.Value(1)).current;
@@ -15,12 +16,12 @@ const SkeletonLoading = ({
         Animated.sequence([
           Animated.timing(opacity, {
             toValue: 0.5,
-            duration: 350,
+            duration: frequency,
             useNativeDriver: false,
           }),
           Animated.timing(opacity, {
             toValue: 1,
-            duration: 350,
+            duration: frequency,
             useNativeDriver: false,
           }),
         ])
@@ -42,6 +43,7 @@ const SkeletonLoading = ({
             <Animated.View
               style={[
                 {
+                  opacity,
                   backgroundColor,
                   ...rest,
                 },

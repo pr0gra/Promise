@@ -92,6 +92,7 @@ export const MenuNavigation = memo(
                     style={{ width: 24, height: 24, marginBottom: -5 }}
                   />
                 </View>
+
                 {!data?.first_name && !data?.last_name ? (
                   <SkeletonLoading
                     width={100}
