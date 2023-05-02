@@ -64,91 +64,92 @@ export const Form = ({ time, setIsGoalVisible, noExpand, handleRefresh }) => {
   }
   const handleSubmit = (values) => {
     const cantPost = !values.title || !time;
+
     if (!cantPost) {
-      createGoal(values.title, time + "T23:00");
+      createGoal(values.title, time + "T23:59");
     }
   };
 
   return (
-      <View style={styles.container}>
-        <Formik
-          initialValues={{ title: "" }}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-        >
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            errors,
-            touched,
-          }) => (
+    <View style={styles.container}>
+      <Formik
+        initialValues={{ title: "" }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          errors,
+          touched,
+        }) => (
+          <View>
             <View>
-              <View>
-                <TextInput
-                  autoFocus={true}
-                  label="Расскажи о себе"
-                  placeholder="Расскажи о себе"
-                  value={values.title}
-                  onChangeText={handleChange("title")}
-                  onBlur={handleBlur("title")}
-                  textAlignVertical="top"
-                  selectionColor={COLORS.LowAccent}
-                  placeholderTextColor={"rgba(145, 155, 204, 0.3)"}
-                  style={[
-                    styles.input,
-                    {
-                      textAlign: "auto",
-                      ...FONTS.typography,
-                      color: "rgba(145, 155, 204, 0.7)",
-                    },
-                  ]}
-                />
-              </View>
-
-              {touched.title && errors.title && (
-                <Text style={styles.errorMessage}>{errors.title}</Text>
-              )}
-              {errorMessage && (
-                <Text style={styles.errorMessage}>
-                  Дата не должна быть прошедшей
-                </Text>
-              )}
-              <TouchableWithoutFeedback
-                onPress={() => setCheckedNormal((state) => !state)}
-                style={{ height: 50 }}
-              >
-                <View style={styles.checkboxContainer}>
-                  <View pointerEvents="none">
-                    <Checkbox
-                      status={checkedNormal ? "checked" : "unchecked"}
-                      color={COLORS.Accent}
-                    />
-                  </View>
-                  <Text
-                    style={{
-                      fontWeight: "600",
-                      fontSize: 15,
-                      lineHeight: 18,
-                      color: COLORS.Accent,
-                    }}
-                  >
-                    Опубликовать
-                  </Text>
-                </View>
-              </TouchableWithoutFeedback>
-
-              <CreateGoalButton
-                onPress={handleSubmit}
-                disabled={disabled}
-                noExpand={noExpand}
-                postedForm={postedForm}
+              <TextInput
+                autoFocus={true}
+                label="Расскажи о себе"
+                placeholder="Расскажи о себе"
+                value={values.title}
+                onChangeText={handleChange("title")}
+                onBlur={handleBlur("title")}
+                textAlignVertical="top"
+                selectionColor={COLORS.LowAccent}
+                placeholderTextColor={"rgba(145, 155, 204, 0.3)"}
+                style={[
+                  styles.input,
+                  {
+                    textAlign: "auto",
+                    ...FONTS.typography,
+                    color: "rgba(145, 155, 204, 0.7)",
+                  },
+                ]}
               />
             </View>
-          )}
-        </Formik>
-      </View>
+
+            {touched.title && errors.title && (
+              <Text style={styles.errorMessage}>{errors.title}</Text>
+            )}
+            {errorMessage && (
+              <Text style={styles.errorMessage}>
+                Дата не должна быть прошедшей
+              </Text>
+            )}
+            <TouchableWithoutFeedback
+              onPress={() => setCheckedNormal((state) => !state)}
+              style={{ height: 50 }}
+            >
+              <View style={styles.checkboxContainer}>
+                <View pointerEvents="none">
+                  <Checkbox
+                    status={checkedNormal ? "checked" : "unchecked"}
+                    color={COLORS.Accent}
+                  />
+                </View>
+                <Text
+                  style={{
+                    fontWeight: "600",
+                    fontSize: 15,
+                    lineHeight: 18,
+                    color: COLORS.Accent,
+                  }}
+                >
+                  Опубликовать
+                </Text>
+              </View>
+            </TouchableWithoutFeedback>
+
+            <CreateGoalButton
+              onPress={handleSubmit}
+              disabled={disabled}
+              noExpand={noExpand}
+              postedForm={postedForm}
+            />
+          </View>
+        )}
+      </Formik>
+    </View>
   );
 };
 
@@ -168,6 +169,5 @@ const styles = StyleSheet.create({
   errorMessage: {
     ...FONTS.buttonText,
     color: COLORS.Red,
-    
   },
 });

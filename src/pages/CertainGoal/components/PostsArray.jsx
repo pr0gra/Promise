@@ -12,13 +12,13 @@ import { AddingPostInput } from "./AddingPostInput";
 export function PostsArray({ fullName, goalId }) {
   const [loading, setLoading] = useState(false);
   const [postsArray, setPostsArray] = useState([]);
-  const [isRefresh, setIsRefresh] = useState(false)
+  const [isRefresh, setIsRefresh] = useState(false);
   const token = tokenStore((state) => state.token);
-  
+
   function handleRefresh() {
     getGoalPosts(goalId);
   }
-  
+
   async function getGoalPosts(goalId) {
     setLoading(true);
     try {
@@ -50,14 +50,23 @@ export function PostsArray({ fullName, goalId }) {
           <Post fullName={fullName} text={item.text} postId={item.id} />
         )}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ flexGrow: 0, gap: 10 }}
+        contentContainerStyle={{ gap: 10 }}
         showsVerticalScrollIndicator={true}
         indicatorStyle={COLORS.Accent}
         refreshControl={
-          <RefreshControl onRefresh={handleRefresh} colors={[COLORS.Accent]} />
+          <RefreshControl
+            onRefresh={handleRefresh}
+            colors={[COLORS.Accent]}
+            refreshing={loading}
+          />
         }
+        style={{ flexGrow: 0 }}
       />
-      <AddingPostInput setIsRefresh={setIsRefresh} fullName={fullName} currentGoalId={goalId} />
+      <AddingPostInput
+        setIsRefresh={setIsRefresh}
+        fullName={fullName}
+        currentGoalId={goalId}
+      />
     </>
   );
 }

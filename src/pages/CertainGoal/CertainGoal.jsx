@@ -9,9 +9,7 @@ import { Navigation } from "../../components/Navigation/Navigation";
 import UserAvatar from "react-native-user-avatar";
 import { formatDate } from "../../constants/Functions/formatDate";
 import { PostsArray } from "./components/PostsArray";
-import { AddingPostInput } from "./components/AddingPostInput";
-import { KeyboardAvoidingView } from "react-native";
-import { SkeletonLoaderPosts } from "./components/SkeletonLoaderPosts";
+import SkeletonLoading from "../../components/SkeletonLoading/SkeletonLoading";
 
 export const CertainGoal = ({ navigation }) => {
   const token = tokenStore((state) => state.token);
@@ -31,6 +29,7 @@ export const CertainGoal = ({ navigation }) => {
         headers: { Authorization: `bearer ${token}` },
       });
       setCurrentGoal(response.data.data);
+
       getUserInfo(response.data.data.user_id, token);
     } catch (error) {
       if (error.response) {
@@ -71,7 +70,7 @@ export const CertainGoal = ({ navigation }) => {
     <>
       <View
         style={{
-          paddingTop: Platform.OS === "ios" ? 62 : 0,
+          paddingTop: Platform.OS === "ios" ? 62 : 32,
           backgroundColor: COLORS.Background,
           flex: 1,
         }}
@@ -98,31 +97,41 @@ export const CertainGoal = ({ navigation }) => {
           />
         </View>
         {Loading && !userInfo && !currentGoal ? (
-          <SkeletonLoaderPosts />
+          <SkeletonLoading
+            padding={20}
+            borderRadius={20}
+            marginBottom={20}
+            width={"100%"}
+            height={120}
+          />
         ) : (
           <>
             <View style={styles.goalContainer}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  gap: 20,
-                  alignItems: "center",
-                  marginBottom: 20,
-                }}
-              >
-                <UserAvatar
-                  style={{ width: 50 }}
-                  size={50}
-                  name={fullName}
-                  bgColor={COLORS.Accent}
-                />
-                <View style={{ gap: 5 }}>
-                  <Text>{fullName}</Text>
-                  <Text style={{ color: "rgba(175, 175, 175, 1)" }}>
-                    {goalInsertedAt}
-                  </Text>
+              {fullName !== "undefined undefined" && (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    gap: 20,
+                    alignItems: "center",
+                    marginBottom: 20,
+                  }}
+                >
+                  <UserAvatar
+                    style={{ width: 50 }}
+                    size={50}
+                    name={fullName !== "undefined undefined" ? fullName : ""}
+                    bgColor={COLORS.Accent}
+                  />
+                  <View style={{ gap: 5 }}>
+                    <Text>
+                      {fullName !== "undefined undefined" && fullName}
+                    </Text>
+                    <Text style={{ color: "rgba(175, 175, 175, 1)" }}>
+                      {goalInsertedAt}
+                    </Text>
+                  </View>
                 </View>
-              </View>
+              )}
               <View>
                 <Text>{currentGoal?.title}</Text>
               </View>
@@ -142,6 +151,6 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: COLORS.White,
     borderRadius: 20,
-    marginBottom: 20,
+    marginBottom: 10,
   },
 });
