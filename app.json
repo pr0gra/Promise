@@ -6,7 +6,6 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "light",
-
     "splash": {
       "image": "./assets/images/Splashscreen-сontent.png",
       "resizeMode": "cover",
@@ -22,15 +21,18 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/rocket-illustration-3d-render.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.promise.promiseApp"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
     },
-    "config": {
-      "VK_APP_ID": "51600354",
-      "VK_APP_SECRET": "G0Uc7SixtXMOyRIgLiOh"
-    },
-    "scheme": "mycoolredirect"
+
+    "scheme": "mycoolredirect",
+    "extra": {
+      "eas": {
+        "projectId": "a880852b-a6fc-4f72-81b4-a290a3f71e92"
+      }
+    }
   }
 }

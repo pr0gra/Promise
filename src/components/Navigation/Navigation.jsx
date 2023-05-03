@@ -104,7 +104,7 @@ export const Navigation = ({ navigation, handleRefresh }) => {
           <TouchableWithoutFeedback
             onPress={() => {
               setIsMenuVisible(false);
-              // navigation.navigate("MyGoals");
+              navigation.navigate("MyGoals");
             }}
           >
             <View style={styles.buttonContainer}>
