@@ -116,8 +116,10 @@ export const MenuNavigation = memo(
           <View style={{ flexDirection: "column", gap: 20, marginTop: 20 }}>
             <TouchableWithoutFeedback
               onPress={() => {
-                navigation.navigate("friends");
-                setIsMenuVisible(false);
+                // navigation.navigate("friends");
+                // setIsMenuVisible(false);
+                {
+                }
               }}
             >
               <View
@@ -138,8 +140,8 @@ export const MenuNavigation = memo(
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback
               onPress={() => {
-                navigation.navigate("settings");
-                setIsMenuVisible(false);
+                // navigation.navigate("settings");
+                // setIsMenuVisible(false);
               }}
             >
               <View
@@ -160,8 +162,8 @@ export const MenuNavigation = memo(
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback
               onPress={() => {
-                navigation.navigate("aboutApp");
-                setIsMenuVisible(false);
+                // navigation.navigate("aboutApp");
+                // setIsMenuVisible(false);
               }}
             >
               <View

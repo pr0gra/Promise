@@ -104,7 +104,7 @@ export const Navigation = ({ navigation, handleRefresh }) => {
           <TouchableWithoutFeedback
             onPress={() => {
               setIsMenuVisible(false);
-              navigation.navigate("MyGoals");
+              // navigation.navigate("MyGoals");
             }}
           >
             <View style={styles.buttonContainer}>
@@ -137,7 +137,10 @@ export const Navigation = ({ navigation, handleRefresh }) => {
 
         {!isGoalVisible && (
           <TouchableWithoutFeedback
-            onPress={() => navigation.navigate("Advices")}
+            onPress={
+              () => {}
+              // navigation.navigate("Advices")
+            }
           >
             <View style={styles.buttonContainer}>
               <View
@@ -200,7 +203,10 @@ export const Navigation = ({ navigation, handleRefresh }) => {
 
         {!isGoalVisible && (
           <TouchableWithoutFeedback
-            onPress={() => navigation.navigate("Chats")}
+            onPress={
+              () => {}
+              //  navigation.navigate("Chats")
+            }
           >
             <View style={styles.buttonContainer}>
               <View

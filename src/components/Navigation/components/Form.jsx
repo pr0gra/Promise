@@ -86,12 +86,14 @@ export const Form = ({ time, setIsGoalVisible, noExpand, handleRefresh }) => {
           touched,
         }) => (
           <View>
-            <View>
+            <View style={{ marginBottom: 18 }}>
               <TextInput
                 autoFocus={true}
-                label="Расскажи о себе"
-                placeholder="Расскажи о себе"
+                label="добиться цели"
+                placeholder="добиться цели"
                 value={values.title}
+                multiline
+                numberOfLines={2}
                 onChangeText={handleChange("title")}
                 onBlur={handleBlur("title")}
                 textAlignVertical="top"
@@ -106,16 +108,16 @@ export const Form = ({ time, setIsGoalVisible, noExpand, handleRefresh }) => {
                   },
                 ]}
               />
+              {touched.title && errors.title && (
+                <Text style={styles.errorMessage}>{errors.title}</Text>
+              )}
+              {errorMessage && (
+                <Text style={styles.errorMessage}>
+                  Дата не должна быть прошедшей
+                </Text>
+              )}
             </View>
 
-            {touched.title && errors.title && (
-              <Text style={styles.errorMessage}>{errors.title}</Text>
-            )}
-            {errorMessage && (
-              <Text style={styles.errorMessage}>
-                Дата не должна быть прошедшей
-              </Text>
-            )}
             <TouchableWithoutFeedback
               onPress={() => setCheckedNormal((state) => !state)}
               style={{ height: 50 }}
@@ -156,8 +158,8 @@ export const Form = ({ time, setIsGoalVisible, noExpand, handleRefresh }) => {
 const styles = StyleSheet.create({
   input: {
     backgroundColor: "transparent",
-    height: 50,
-    marginBottom: 18,
+
+    // marginBottom: 18,
   },
   checkboxContainer: {
     flexDirection: "row",
