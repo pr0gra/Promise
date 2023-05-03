@@ -69,7 +69,6 @@ export const MenuNavigation = memo(
                   imageStyle={{ width: 62.6, height: 62.6, borderRadius: 15 }}
                   name={`${data?.first_name} ${data?.last_name}`}
                   style={{ width: 62.6, height: 62.6, borderRadius: 15 }}
-                  src={"https://dummyimage.com/100x100/000/fff"}
                   bgColor={COLORS.Accent}
                 />
               ) : (

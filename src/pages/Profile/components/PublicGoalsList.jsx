@@ -13,7 +13,7 @@ import { FONTS } from "../../../constants/FONTS/FONTS";
 import { COLORS } from "../../../constants/Colors/Colors";
 import SkeletonLoading from "../../../components/SkeletonLoading/SkeletonLoading";
 import { PublicGoal } from "./PublicGoal";
-export const PublicGoalsList = ({ token }) => {
+export const PublicGoalsList = ({ token, firstName, lastName }) => {
   const [loading, setLoading] = useState(false);
   const [goals, setGoals] = useState([]);
   async function getPublicGoals() {
@@ -56,7 +56,6 @@ export const PublicGoalsList = ({ token }) => {
   };
   return (
     <>
-      {/* //Можно ли сделать get запрос с помощью axios Чтобы пришел список с полоем, которое равно true? */}
       {goals?.length === 0 && loading ? (
         <ScrollView>
           <SkeletonLoading
@@ -81,7 +80,14 @@ export const PublicGoalsList = ({ token }) => {
       ) : (
         <FlatList
           data={goals}
-          renderItem={({ item }) => <PublicGoal item={item} token={token} />}
+          renderItem={({ item }) => (
+            <PublicGoal
+              item={item}
+              token={token}
+              firstName={firstName}
+              lastName={lastName}
+            />
+          )}
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={true}

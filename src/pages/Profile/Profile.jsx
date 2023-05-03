@@ -21,7 +21,7 @@ export const Profile = ({ navigation }) => {
       });
 
       setUserData(response.data.data);
-      console.log(userData);
+
       return response.data.data;
     } catch (error) {
       console.log(error);
@@ -61,7 +61,11 @@ export const Profile = ({ navigation }) => {
       )}
 
       <InteractionButtons />
-      <PublicGoalsList token={token} />
+      <PublicGoalsList
+        token={token}
+        firstName={userData?.first_name}
+        lastName={userData?.last_name}
+      />
       <Navigation navigation={navigation} />
     </View>
   );

@@ -52,7 +52,7 @@ export const CertainGoal = ({ navigation }) => {
         headers: { Authorization: `bearer ${token}` },
       });
 
-      await setUserInfo(response.data.data);
+      setUserInfo(response.data.data);
     } catch (error) {
       if (error.response) {
         console.log(error.response);
@@ -83,7 +83,6 @@ export const CertainGoal = ({ navigation }) => {
               position: "absolute",
               top: 0,
               right: 0,
-              padding: 10,
             }}
           >
             <Dialog.Content
