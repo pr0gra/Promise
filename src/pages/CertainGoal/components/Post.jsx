@@ -4,7 +4,7 @@ import UserAvatar from "react-native-user-avatar";
 import { COLORS } from "../../../constants/Colors/Colors";
 import { formatDate } from "../../../constants/Functions/formatDate";
 
-export function Post({ text, postId, fullName }) {
+export function Post({ text, postId, fullName, inserted_at }) {
   return (
     <View
       style={{
@@ -13,7 +13,7 @@ export function Post({ text, postId, fullName }) {
         marginLeft: 20,
         flexDirection: "column",
         paddingLeft: 20,
-        paddingRight: 60,
+        paddingRight: 20,
         paddingVertical: 10,
         gap: 15,
       }}
@@ -26,7 +26,7 @@ export function Post({ text, postId, fullName }) {
           bgColor={COLORS.Accent}
         />
         <Text style={{ color: "rgba(175, 175, 175, 1)" }}>
-          {formatDate(new Date())}
+          {formatDate(new Date(inserted_at))}
         </Text>
       </View>
       <Text>{text}</Text>

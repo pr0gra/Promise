@@ -139,22 +139,6 @@ export const Goal = ({
           >
             {title}
           </Text>
-          {/* <Button //это для того чтобы удалить цель, это временно, мне нуэно было протестить refreshing
-            onPress={async () => {
-              try {
-                console.log(id);
-                const response = await axios.delete(`/api/goals/${id}`, {
-                  headers: { Authorization: `Bearer ${token}` },
-                });
-                console.log(response);
-                return response;
-              } catch (error) {
-                console.log(error);
-              }
-            }}
-          >
-            <Text> удалить таск</Text>
-          </Button> */}
         </View>
       </TouchableWithoutFeedback>
     </>

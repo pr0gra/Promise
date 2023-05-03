@@ -26,7 +26,11 @@ export function PostsArray({ fullName, goalId }) {
         headers: { Authorization: `bearer ${token}` },
       });
 
-      setPostsArray([...response.data.data]);
+      const sortedData = response.data.data.sort((a, b) => {
+        return new Date(b.inserted_at) - new Date(a.inserted_at);
+      });
+
+      setPostsArray(sortedData);
     } catch (error) {
       if (error.response) {
         console.log(error.response);
@@ -47,7 +51,12 @@ export function PostsArray({ fullName, goalId }) {
       <FlatList
         data={postsArray}
         renderItem={({ item }) => (
-          <Post fullName={fullName} text={item.text} postId={item.id} />
+          <Post
+            fullName={fullName}
+            text={item.text}
+            postId={item.id}
+            inserted_at={item.inserted_at}
+          />
         )}
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ gap: 10 }}

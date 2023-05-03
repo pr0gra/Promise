@@ -1,5 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { View, Text, StyleSheet, Dimensions, KeyboardAvoidingView, Platform } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { COLORS } from "../../constants/Colors/Colors";
 import { useRoute } from "@react-navigation/native";
 import { Image, Animated } from "react-native";
@@ -83,7 +90,6 @@ export const Navigation = ({ navigation, handleRefresh }) => {
         />
       )}
       {isGoalVisible && (
-        
         <CreateGoal
           isGoalVisible={isGoalVisible}
           setIsGoalVisible={setIsGoalVisible}
@@ -91,7 +97,6 @@ export const Navigation = ({ navigation, handleRefresh }) => {
           expand={expand}
           handleRefresh={handleRefresh}
         />
-
       )}
 
       <View style={styles.container}>
@@ -132,7 +137,10 @@ export const Navigation = ({ navigation, handleRefresh }) => {
 
         {!isGoalVisible && (
           <TouchableWithoutFeedback
-            onPress={() => navigation.navigate("Advices")}
+            onPress={
+              () => {}
+              // navigation.navigate("Advices")
+            }
           >
             <View style={styles.buttonContainer}>
               <View
@@ -195,7 +203,10 @@ export const Navigation = ({ navigation, handleRefresh }) => {
 
         {!isGoalVisible && (
           <TouchableWithoutFeedback
-            onPress={() => navigation.navigate("Chats")}
+            onPress={
+              () => {}
+              //  navigation.navigate("Chats")
+            }
           >
             <View style={styles.buttonContainer}>
               <View

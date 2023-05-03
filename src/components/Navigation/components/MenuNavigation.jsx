@@ -58,19 +58,23 @@ export const MenuNavigation = memo(
 
           <TouchableWithoutFeedback
             onPress={() => {
-              navigation.navigate("WelcomePage");
+              navigation.navigate("Profile");
               setIsMenuVisible(false);
             }}
           >
             <View style={styles.avatarContainer}>
-              <UserAvatar
-                size={62}
-                imageStyle={{ width: 62.6, height: 62.6, borderRadius: 15 }}
-                name={`${data?.first_name} ${data?.last_name}`}
-                style={{ width: 62.6, height: 62.6, borderRadius: 15 }}
-                src={"https://dummyimage.com/100x100/000/fff"}
-                bgColor={COLORS.Accent}
-              />
+              {data?.first_name && data?.last_name ? (
+                <UserAvatar
+                  size={62}
+                  imageStyle={{ width: 62.6, height: 62.6, borderRadius: 15 }}
+                  name={`${data?.first_name} ${data?.last_name}`}
+                  style={{ width: 62.6, height: 62.6, borderRadius: 15 }}
+                  bgColor={COLORS.Accent}
+                />
+              ) : (
+                <SkeletonLoading width={62.5} height={62.5} borderRadius={15} />
+              )}
+
               <View style={styles.profileLinkContainer}>
                 <View
                   style={{
@@ -94,12 +98,7 @@ export const MenuNavigation = memo(
                 </View>
 
                 {!data?.first_name && !data?.last_name ? (
-                  <SkeletonLoading
-                    width={100}
-                    height={25}
-                    borderRadius={20}
-                    backgroundColor={COLORS.LowAccent}
-                  />
+                  <SkeletonLoading width={100} height={25} borderRadius={20} />
                 ) : (
                   <Text
                     style={{
@@ -117,8 +116,10 @@ export const MenuNavigation = memo(
           <View style={{ flexDirection: "column", gap: 20, marginTop: 20 }}>
             <TouchableWithoutFeedback
               onPress={() => {
-                navigation.navigate("friends");
-                setIsMenuVisible(false);
+                // navigation.navigate("friends");
+                // setIsMenuVisible(false);
+                {
+                }
               }}
             >
               <View
@@ -139,8 +140,8 @@ export const MenuNavigation = memo(
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback
               onPress={() => {
-                navigation.navigate("settings");
-                setIsMenuVisible(false);
+                // navigation.navigate("settings");
+                // setIsMenuVisible(false);
               }}
             >
               <View
@@ -161,8 +162,8 @@ export const MenuNavigation = memo(
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback
               onPress={() => {
-                navigation.navigate("aboutApp");
-                setIsMenuVisible(false);
+                // navigation.navigate("aboutApp");
+                // setIsMenuVisible(false);
               }}
             >
               <View

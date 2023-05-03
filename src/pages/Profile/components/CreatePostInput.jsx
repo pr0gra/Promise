@@ -1,22 +1,22 @@
-import { View, TextInput } from "react-native";
-import { Button, IconButton } from "react-native-paper";
+import { StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import { TextInput } from "react-native";
+import { IconButton } from "react-native-paper";
 import { COLORS } from "../../../constants/Colors/Colors";
 import UserAvatar from "react-native-user-avatar";
-import { Image } from "react-native";
-import { useState } from "react";
 import axios from "axios";
-import { tokenStore } from "../../../../store";
-
-export function AddingPostInput({ fullName, currentGoalId, setIsRefresh }) {
+export const CreatePostInput = ({
+  handleRefresh,
+  goalId,
+  token,
+  firstName,
+  lastName,
+}) => {
   const [inputText, setInputText] = useState("");
-  const [loading, setLoading] = useState(false);
-  const token = tokenStore((state) => state.token);
-
-  async function createPost(inputText, currentGoalId) {
-    setLoading(true);
+  async function createPost(inputText, goalId) {
     try {
       const response = await axios.post(
-        `/api/goals/${currentGoalId}/posts`,
+        `/api/goals/${goalId}/posts`,
         {
           post: { text: inputText },
         },
@@ -35,8 +35,6 @@ export function AddingPostInput({ fullName, currentGoalId, setIsRefresh }) {
         console.log("NO RESPONSE");
       }
       throw new Error("Ошибка в создании Поста");
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -50,8 +48,8 @@ export function AddingPostInput({ fullName, currentGoalId, setIsRefresh }) {
         marginBottom: 20,
         paddingLeft: 20,
         paddingRight: 60,
-        marginTop: 10,
-        paddingVertical: 10,
+        // marginTop: 10,
+        paddingVertical: 5,
         alignItems: "center",
       }}
     >
@@ -59,7 +57,7 @@ export function AddingPostInput({ fullName, currentGoalId, setIsRefresh }) {
         <UserAvatar
           style={{ width: 20, height: 20 }}
           size={25}
-          name={fullName}
+          name={`${firstName} ${lastName}`}
           bgColor={COLORS.Accent}
         />
         <TextInput
@@ -74,8 +72,8 @@ export function AddingPostInput({ fullName, currentGoalId, setIsRefresh }) {
       <IconButton
         mode="contained"
         onPress={() => {
-          createPost(inputText, currentGoalId);
-          setIsRefresh((prev) => !prev);
+          createPost(inputText, goalId);
+          handleRefresh();
           setInputText("");
         }}
         icon={require("../../../../assets/icons/send-02.png")}
@@ -85,4 +83,6 @@ export function AddingPostInput({ fullName, currentGoalId, setIsRefresh }) {
       />
     </View>
   );
-}
+};
+
+const styles = StyleSheet.create({});

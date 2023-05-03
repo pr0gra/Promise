@@ -10,6 +10,7 @@ import UserAvatar from "react-native-user-avatar";
 import { formatDate } from "../../constants/Functions/formatDate";
 import { PostsArray } from "./components/PostsArray";
 import SkeletonLoading from "../../components/SkeletonLoading/SkeletonLoading";
+import { Button, Dialog, IconButton, Portal } from "react-native-paper";
 
 export const CertainGoal = ({ navigation }) => {
   const token = tokenStore((state) => state.token);
@@ -18,6 +19,7 @@ export const CertainGoal = ({ navigation }) => {
   const [Loading, setLoading] = useState(true);
   const [currentGoal, setCurrentGoal] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
+  const [modalIsVisible, setModalIsVisible] = useState(false);
 
   const goalInsertedAt = currentGoal && formatDate(currentGoal.inserted_at);
   const fullName = userInfo?.first_name + " " + userInfo?.last_name;
@@ -50,7 +52,7 @@ export const CertainGoal = ({ navigation }) => {
         headers: { Authorization: `bearer ${token}` },
       });
 
-      await setUserInfo(response.data.data);
+      setUserInfo(response.data.data);
     } catch (error) {
       if (error.response) {
         console.log(error.response);
@@ -68,6 +70,50 @@ export const CertainGoal = ({ navigation }) => {
 
   return (
     <>
+      {modalIsVisible && (
+        <Portal>
+          <Dialog
+            visible={modalIsVisible}
+            onDismiss={() => {
+              setModalIsVisible(false);
+            }}
+            style={{
+              marginRight: 0,
+
+              position: "absolute",
+              top: 0,
+              right: 0,
+            }}
+          >
+            <Dialog.Content
+              style={{
+                paddingHorizontal: 0,
+                marginTop: 0,
+                paddingBottom: 0,
+              }}
+            >
+              <Button
+                onPress={async () => {
+                  try {
+                    const response = await axios.delete(
+                      `/api/goals/${goalId}`,
+                      {
+                        headers: { Authorization: `Bearer ${token}` },
+                      }
+                    );
+                    navigation.goBack();
+                    return response;
+                  } catch (error) {
+                    console.log(error);
+                  }
+                }}
+              >
+                <Text> Удалить цель</Text>
+              </Button>
+            </Dialog.Content>
+          </Dialog>
+        </Portal>
+      )}
       <View
         style={{
           paddingTop: Platform.OS === "ios" ? 62 : 32,
@@ -91,9 +137,14 @@ export const CertainGoal = ({ navigation }) => {
           >
             Цель
           </Text>
-          <Image
-            source={require("../../../assets/icons/bell-01.png")}
-            style={{ width: 24, height: 24 }}
+
+          <IconButton
+            mode="contained"
+            onPress={() => setModalIsVisible(true)}
+            size={24}
+            icon={require("../../../assets/icons/dots-vertical.png")}
+            style={[{ backgroundColor: "transparent" }]}
+            iconColor={COLORS.Accent}
           />
         </View>
         {Loading && !userInfo && !currentGoal ? (
