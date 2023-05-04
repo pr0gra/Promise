@@ -6,7 +6,7 @@ import { FONTS } from "../../../constants/FONTS/FONTS";
 import axios from "axios";
 import { goalStore, tokenStore } from "../../../../store";
 import { TouchableWithoutFeedback } from "react-native";
-
+import { useRoute } from "@react-navigation/native";
 export const Goal = ({
   title,
   id,
@@ -18,6 +18,8 @@ export const Goal = ({
   const setGoalId = goalStore((state) => state.setGoalId);
   const goalId = goalStore((state) => state.goalId);
   const token = tokenStore((state) => state.token);
+  const route = useRoute();
+
   const colors = {
     1: "rgba(153, 204, 145, 1)",
     2: "rgba(203, 204, 145, 1)",
@@ -85,10 +87,11 @@ export const Goal = ({
     <>
       <TouchableWithoutFeedback
         onPress={() => {
-          if (goalId !== id) {
-            setGoalId(id);
-          }
-          navigation.navigate("CertainGoal");
+          // if (goalId !== id) {
+          //   // setGoalId(id);
+
+          // }
+          navigation.navigate("CertainGoal", { goalId: id });
         }}
       >
         <View style={styles.goalContainer}>

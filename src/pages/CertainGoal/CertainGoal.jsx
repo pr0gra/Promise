@@ -11,10 +11,9 @@ import { formatDate } from "../../constants/Functions/formatDate";
 import { PostsArray } from "./components/PostsArray";
 import SkeletonLoading from "../../components/SkeletonLoading/SkeletonLoading";
 import { Button, Dialog, IconButton, Portal } from "react-native-paper";
-
+import { useRoute } from "@react-navigation/native";
 export const CertainGoal = ({ navigation }) => {
   const token = tokenStore((state) => state.token);
-  const goalId = goalStore((state) => state.goalId);
 
   const [Loading, setLoading] = useState(true);
   const [currentGoal, setCurrentGoal] = useState(null);
@@ -23,6 +22,10 @@ export const CertainGoal = ({ navigation }) => {
 
   const goalInsertedAt = currentGoal && formatDate(currentGoal.inserted_at);
   const fullName = userInfo?.first_name + " " + userInfo?.last_name;
+
+  const route = useRoute();
+  console.log(route);
+  const goalId = route.params.goalId; //Саня, тепер id цели получаешь крч не через store а через route, я его запихнул в params когда нажимаешь на цель вот так  navigation.navigate("CertainGoal", { goalId: id }); так что сделашь чтонить с этим
 
   async function getGoalById(goalId, token) {
     setLoading(true);
