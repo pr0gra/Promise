@@ -18,10 +18,6 @@
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/rocket-illustration-3d-render.png",
-        "backgroundColor": "#ffffff"
-      },
       "package": "com.promise.promiseApp"
     },
     "web": {
