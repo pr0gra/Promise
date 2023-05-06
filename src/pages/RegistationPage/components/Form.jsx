@@ -68,7 +68,7 @@ const Form = ({ navigation }) => {
       setLoading(false);
     }
   }
-  //Как сделать чтобы в поле в TextInput автоматически был trim() у текста, если форма использует formik для валидации
+
   return (
     <View style={styles.formContainer}>
       <ScrollView>
