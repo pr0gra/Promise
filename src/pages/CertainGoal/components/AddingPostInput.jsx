@@ -7,7 +7,12 @@ import { useState } from "react";
 import axios from "axios";
 import { tokenStore } from "../../../../store";
 
-export function AddingPostInput({ fullName, currentGoalId, setIsRefresh }) {
+export function AddingPostInput({
+  fullName,
+  currentGoalId,
+
+  handleRefresh,
+}) {
   const [inputText, setInputText] = useState("");
   const [loading, setLoading] = useState(false);
   const token = tokenStore((state) => state.token);
@@ -26,7 +31,7 @@ export function AddingPostInput({ fullName, currentGoalId, setIsRefresh }) {
           },
         }
       );
-
+      handleRefresh();
       return response.data;
     } catch (error) {
       if (error.response) {
@@ -50,7 +55,7 @@ export function AddingPostInput({ fullName, currentGoalId, setIsRefresh }) {
         marginBottom: 20,
         paddingLeft: 20,
         paddingRight: 60,
-        marginTop: 10,
+
         paddingVertical: 10,
         alignItems: "center",
       }}
@@ -75,7 +80,7 @@ export function AddingPostInput({ fullName, currentGoalId, setIsRefresh }) {
         mode="contained"
         onPress={() => {
           createPost(inputText, currentGoalId);
-          setIsRefresh((prev) => !prev);
+          // setIsRefresh((prev) => !prev);
           setInputText("");
         }}
         icon={require("../../../../assets/icons/send-02.png")}

@@ -9,10 +9,10 @@ import { RefreshControl } from "react-native-gesture-handler";
 import { Post } from "./Post";
 import { AddingPostInput } from "./AddingPostInput";
 
-export function PostsArray({ fullName, goalId }) {
+export function PostsArray({ fullName, goalId, inProfile, postsLimit }) {
   const [loading, setLoading] = useState(false);
   const [postsArray, setPostsArray] = useState([]);
-  const [isRefresh, setIsRefresh] = useState(false);
+
   const token = tokenStore((state) => state.token);
 
   function handleRefresh() {
@@ -44,12 +44,16 @@ export function PostsArray({ fullName, goalId }) {
   }
   useEffect(() => {
     getGoalPosts(goalId);
-  }, [goalId, isRefresh]);
+  }, []);
 
   return (
     <>
       <FlatList
-        data={postsArray}
+        data={
+          inProfile
+            ? postsArray.slice(0, postsLimit ? 1 : postsArray.length)
+            : postsArray
+        }
         renderItem={({ item }) => (
           <Post
             fullName={fullName}
@@ -59,7 +63,6 @@ export function PostsArray({ fullName, goalId }) {
           />
         )}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ gap: 10 }}
         showsVerticalScrollIndicator={true}
         indicatorStyle={COLORS.Accent}
         refreshControl={
@@ -72,9 +75,9 @@ export function PostsArray({ fullName, goalId }) {
         style={{ flexGrow: 0 }}
       />
       <AddingPostInput
-        setIsRefresh={setIsRefresh}
         fullName={fullName}
         currentGoalId={goalId}
+        handleRefresh={handleRefresh}
       />
     </>
   );

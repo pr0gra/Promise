@@ -35,8 +35,6 @@ export const FONTS = {
     fontWeight: "500",
     fontSize: 14,
     lineHeight: 16,
-
-    color: "#000000",
   },
   label: {
     // fontFamily: "RobotoFlex",

@@ -4,33 +4,28 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { tokenStore } from "../../../../store";
+
 import axios from "axios";
 import { FONTS } from "../../../constants/FONTS/FONTS";
 import { COLORS } from "../../../constants/Colors/Colors";
 import SkeletonLoading from "../../../components/SkeletonLoading/SkeletonLoading";
-import { PublicGoal } from "./PublicGoal";
-export const PublicGoalsList = ({ token, firstName, lastName }) => {
+
+import { CertainGoalComponent } from "../../../components/CertainGoalComponent/CertainGoalComponent";
+export const PublicGoalsList = ({ token, setScrollY }) => {
   const [loading, setLoading] = useState(false);
   const [goals, setGoals] = useState([]);
+
+  // const [prevScrollY, setPrevScrollY] = useState(0);
+
   async function getPublicGoals() {
     setLoading(true);
 
     try {
-      const response = await axios.get(
-        `/api/goals`,
-        {
-          headers: { Authorization: `bearer ${token}` },
-        }
-        // {
-        //   params: {
-        //     is_public: true,
-        //   },
-        // }
-      );
+      const response = await axios.get(`/api/goals`, {
+        headers: { Authorization: `bearer ${token}` },
+      });
 
       const filtered = response.data.data.filter((e) => {
         if (e.is_public === true) return true;
@@ -54,6 +49,15 @@ export const PublicGoalsList = ({ token, firstName, lastName }) => {
   const handleRefresh = () => {
     getPublicGoals();
   };
+  // const handleScroll = (event) => {
+  //   const currentScrollY = event.nativeEvent.contentOffset.y;
+  //   if (currentScrollY > prevScrollY) {
+  //     setScrollY("down");
+  //   } else if (currentScrollY < prevScrollY) {
+  //     setScrollY("up");
+  //   }
+  //   setPrevScrollY(currentScrollY);
+  // };
   return (
     <>
       {goals?.length === 0 && loading ? (
@@ -81,17 +85,18 @@ export const PublicGoalsList = ({ token, firstName, lastName }) => {
         <FlatList
           data={goals}
           renderItem={({ item }) => (
-            <PublicGoal
-              item={item}
+            <CertainGoalComponent
+              goalId={item.id}
               token={token}
-              firstName={firstName}
-              lastName={lastName}
+              inProfile={true}
             />
           )}
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={true}
           indicatorStyle={COLORS.Accent}
+          // onScroll={handleScroll}
+          // scrollEventThrottle={500}
           refreshControl={
             <RefreshControl
               refreshing={loading}
