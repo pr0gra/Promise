@@ -16,6 +16,7 @@ export const CertainGoalComponent = ({ goalId, token, inProfile = false }) => {
   const [currentGoal, setCurrentGoal] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [postsLimit, setPostsLimit] = useState(true);
+
   const fullName = userInfo?.first_name + " " + userInfo?.last_name;
 
   const goalInsertedAt = currentGoal && formatDate(currentGoal.inserted_at);
@@ -62,6 +63,7 @@ export const CertainGoalComponent = ({ goalId, token, inProfile = false }) => {
   useEffect(() => {
     getGoalById(goalId, token);
   }, []);
+
   return (
     <>
       {!userInfo && !currentGoal ? (
@@ -77,7 +79,7 @@ export const CertainGoalComponent = ({ goalId, token, inProfile = false }) => {
           <View
             style={[styles.goalContainer, { marginBottom: inProfile ? 0 : 10 }]}
           >
-            {fullName !== "undefined undefined" && (
+            {fullName !== "undefined undefined" ? (
               <View
                 style={{
                   flexDirection: "row",
@@ -99,11 +101,46 @@ export const CertainGoalComponent = ({ goalId, token, inProfile = false }) => {
                   </Text>
                 </View>
               </View>
+            ) : (
+              <View style={{ flexDirection: "row", gap: 10, marginBottom: 10 }}>
+                <SkeletonLoading
+                  padding={20}
+                  borderRadius={100}
+                  height={61}
+                  width={61}
+                  backgroundColor={COLORS.LowAccent}
+                />
+                <View
+                  style={{
+                    flexDirection: "column",
+                    gap: 10,
+
+                    justifyContent: "center",
+                  }}
+                >
+                  <SkeletonLoading
+                    borderRadius={10}
+                    height={10}
+                    width={100}
+                    backgroundColor={COLORS.LowAccent}
+                  />
+                  <SkeletonLoading
+                    borderRadius={10}
+                    height={10}
+                    width={100}
+                    backgroundColor={COLORS.LowAccent}
+                  />
+                </View>
+              </View>
             )}
             <View>
               <Text>{currentGoal?.title}</Text>
             </View>
-            <PostButtons />
+            <PostButtons
+              goalId={goalId}
+              deadline={currentGoal?.deadline}
+              isPublic={currentGoal?.is_public}
+            />
           </View>
           {inProfile && (
             <View style={styles.buttonContainer}>

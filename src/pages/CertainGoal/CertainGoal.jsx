@@ -10,6 +10,7 @@ import { Navigation } from "../../components/Navigation/Navigation";
 import { Button, Dialog, IconButton, Portal } from "react-native-paper";
 import { useRoute } from "@react-navigation/native";
 import { CertainGoalComponent } from "../../components/CertainGoalComponent/CertainGoalComponent";
+import { FONTS } from "../../constants/FONTS/FONTS";
 
 export const CertainGoal = ({ navigation }) => {
   const token = tokenStore((state) => state.token);
@@ -60,8 +61,11 @@ export const CertainGoal = ({ navigation }) => {
                     console.log(error);
                   }
                 }}
+                labelStyle={{ paddingHorizontal: 10, paddingVertical: 10 }}
               >
-                <Text> Удалить цель</Text>
+                <Text style={{ ...FONTS.postButtonText, color: COLORS.Accent }}>
+                  Удалить цель
+                </Text>
               </Button>
             </Dialog.Content>
           </Dialog>

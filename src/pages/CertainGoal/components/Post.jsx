@@ -6,7 +6,8 @@ import { formatDate } from "../../../constants/Functions/formatDate";
 import { ButtonReaction } from "./ButtonReaction";
 import Rocket from "../../../../assets/icons/Rocket.png";
 import MessageSquare from "../../../../assets/icons/message-square-01.png";
-export function Post({ text, postId, fullName, inserted_at }) {
+import SkeletonLoading from "../../../components/SkeletonLoading/SkeletonLoading";
+export function Post({ text, postId, fullName, inserted_at = "" }) {
   return (
     <View
       style={{
@@ -22,15 +23,33 @@ export function Post({ text, postId, fullName, inserted_at }) {
       }}
     >
       <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
-        <UserAvatar
-          style={{ width: 20, height: 20 }}
-          size={25}
-          name={fullName}
-          bgColor={COLORS.Accent}
-        />
-        <Text style={{ color: "rgba(175, 175, 175, 1)" }}>
-          {formatDate(new Date(inserted_at))}
-        </Text>
+        {fullName !== "undefined undefined" ? (
+          <UserAvatar
+            style={{ width: 20, height: 20 }}
+            size={25}
+            name={fullName}
+            bgColor={COLORS.Accent}
+          />
+        ) : (
+          <SkeletonLoading
+            borderRadius={100}
+            height={15}
+            width={15}
+            backgroundColor={COLORS.LowAccent}
+          />
+        )}
+        {inserted_at !== "" ? (
+          <Text style={{ color: "rgba(175, 175, 175, 1)" }}>
+            {formatDate(new Date(inserted_at))}
+          </Text>
+        ) : (
+          <SkeletonLoading
+            borderRadius={20}
+            height={10}
+            width={100}
+            backgroundColor={COLORS.LowAccent}
+          />
+        )}
       </View>
       <Text>{text}</Text>
       <View style={{ flexDirection: "row", gap: 10 }}>

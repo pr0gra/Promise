@@ -4,7 +4,7 @@ import { Button, Text } from "react-native-paper";
 import { GlobalStyles } from "../../../constants/GlobalStyles";
 import { COLORS } from "../../../constants/Colors/Colors";
 import { FONTS } from "../../../constants/FONTS/FONTS";
-
+import { useRoute } from "@react-navigation/native";
 export const FormSection = ({ navigation }) => {
   const [city, setCity] = useState("");
   const [school, setSchool] = useState("");
@@ -12,6 +12,7 @@ export const FormSection = ({ navigation }) => {
   const [course, setCourse] = useState("");
   const [email, setEmail] = useState("");
   const [about, setAbout] = useState("");
+  const route = useRoute();
   const handleCityChange = (value) => {
     setCity(value);
   };
@@ -42,6 +43,11 @@ export const FormSection = ({ navigation }) => {
       course: course,
       email: email,
       about: about,
+      first_name: "Piotr",
+      last_name: "Makarov",
+      email: "piotr.makarov@gmail.com",
+      city: "Yekaterinburg",
+      bio: "Hello, I'm 18 y.o. React programmer! I love JS and all relaited stuff.",
     };
 
     console.log(formData);
