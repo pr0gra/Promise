@@ -16,13 +16,17 @@ import plus from "../../../../assets/icons/plus.png";
 import { tokenStore } from "../../../../store";
 import axios from "axios";
 import { FONTS } from "../../../constants/FONTS/FONTS";
-export const PostButtons = ({ goalId, deadline, isPublic }) => {
+export const PostButtons = ({
+  goalId,
+  deadline,
+  isPublic,
+  currentGoalTitle,
+  isJoined,
+}) => {
   const token = tokenStore((state) => state.token);
   const [isError, setIsError] = useState(false);
-  const [isJoined, setIsJoined] = useState(false);
+  const [isJoinedState, setIsJoinedState] = useState(isJoined);
   const joinGoal = useCallback(async function joinGoal() {
-    setIsError(false);
-    setIsJoined(false);
     try {
       const response = await axios.post(
         `/api/goals/${goalId}/join`,
@@ -38,16 +42,15 @@ export const PostButtons = ({ goalId, deadline, isPublic }) => {
           },
         }
       );
-      console.log(response.data.data, "AAAAAAAAAAAAAAAA");
-      setIsJoined(true);
 
       return response.data.data;
     } catch (error) {
       setIsError(true);
-      setIsJoined(false);
+
       console.log(
         `Не получилось присоединиться, ошибка ${error.response.data.errors.user_id}`
       );
+      setIsJoinedState(true);
     } finally {
       setTimeout(() => {
         setIsError(false);
@@ -56,6 +59,7 @@ export const PostButtons = ({ goalId, deadline, isPublic }) => {
   });
   const deleteGoal = useCallback(async function deleteGoal() {
     setIsError(false);
+
     try {
       const response = await axios.delete(
         `/api/goals/${goalId}/join`,
@@ -67,7 +71,7 @@ export const PostButtons = ({ goalId, deadline, isPublic }) => {
         }
       );
       console.log("Ушел");
-
+      setIsJoinedState(false);
       return response.data.data;
     } catch (error) {
       setIsError(true);
@@ -80,14 +84,20 @@ export const PostButtons = ({ goalId, deadline, isPublic }) => {
       }, 3000);
     }
   });
+
   return (
     <View style={styles.container}>
       <View style={{ marginBottom: 10, flexDirection: "row" }}>
         <ButtonReaction
-          image={plus}
-          onPress={() => joinGoal()}
-          text={"Присоединиться"}
+          image={isJoinedState ? messageSquare : plus}
+          onPress={
+            isJoinedState
+              ? () => console.log("Уже присоединен")
+              : () => joinGoal()
+          }
+          text={isJoinedState ? "Открыть чат" : "Присоединиться"}
         />
+
         <ButtonReaction
           image={plus}
           onPress={() => deleteGoal()}

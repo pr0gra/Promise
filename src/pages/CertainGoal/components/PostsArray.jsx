@@ -9,7 +9,7 @@ import { RefreshControl } from "react-native-gesture-handler";
 import { Post } from "./Post";
 import { AddingPostInput } from "./AddingPostInput";
 
-export function PostsArray({ fullName, goalId, inProfile, postsLimit }) {
+export function PostsArray({ fullName, goalId, unwrap, postsLimit }) {
   const [loading, setLoading] = useState(false);
   const [postsArray, setPostsArray] = useState([]);
 
@@ -48,32 +48,61 @@ export function PostsArray({ fullName, goalId, inProfile, postsLimit }) {
 
   return (
     <>
-      <FlatList
-        data={
-          inProfile
-            ? postsArray.slice(0, postsLimit ? 1 : postsArray.length)
-            : postsArray
-        }
-        renderItem={({ item }) => (
-          <Post
-            fullName={fullName}
-            text={item.text}
-            postId={item.id}
-            inserted_at={item.inserted_at}
-          />
-        )}
-        keyExtractor={(item) => item.id}
-        showsVerticalScrollIndicator={true}
-        indicatorStyle={COLORS.Accent}
-        refreshControl={
-          <RefreshControl
-            onRefresh={handleRefresh}
-            colors={[COLORS.Accent]}
-            refreshing={loading}
-          />
-        }
-        style={{ flexGrow: 0 }}
-      />
+      {unwrap ? (
+        unwrap ? (
+          postsArray.slice(0, postsLimit ? 1 : postsArray.length).map((e) => {
+            return (
+              <Post
+                key={e.id}
+                fullName={fullName}
+                text={e.text}
+                postId={e.id}
+                inserted_at={e.inserted_at}
+              />
+            );
+          })
+        ) : (
+          postsArray.map((e) => {
+            return (
+              <Post
+                key={e.id}
+                fullName={fullName}
+                text={e.text}
+                postId={e.id}
+                inserted_at={e.inserted_at}
+              />
+            );
+          })
+        )
+      ) : (
+        <FlatList
+          data={
+            unwrap
+              ? postsArray.slice(0, postsLimit ? 1 : postsArray.length)
+              : postsArray
+          }
+          renderItem={({ item }) => (
+            <Post
+              key={item.id}
+              fullName={fullName}
+              text={item.text}
+              postId={item.id}
+              inserted_at={item.inserted_at}
+            />
+          )}
+          keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={true}
+          indicatorStyle={COLORS.Accent}
+          refreshControl={
+            <RefreshControl
+              onRefresh={handleRefresh}
+              colors={[COLORS.Accent]}
+              refreshing={loading}
+            />
+          }
+          style={{ flexGrow: 0 }}
+        />
+      )}
       <AddingPostInput
         fullName={fullName}
         currentGoalId={goalId}

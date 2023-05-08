@@ -11,7 +11,7 @@ import { Button } from "react-native-paper";
 import { PostButtons } from "../../pages/CertainGoal/components/PostButtons";
 import { FONTS } from "../../constants/FONTS/FONTS";
 
-export const CertainGoalComponent = ({ goalId, token, inProfile = false }) => {
+export const CertainGoalComponent = ({ goalId, token, unwrap = false }) => {
   const [loading, setLoading] = useState(true);
   const [currentGoal, setCurrentGoal] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
@@ -65,7 +65,7 @@ export const CertainGoalComponent = ({ goalId, token, inProfile = false }) => {
   }, []);
 
   return (
-    <>
+    <View key={goalId}>
       {!userInfo && !currentGoal ? (
         <SkeletonLoading
           padding={20}
@@ -77,7 +77,7 @@ export const CertainGoalComponent = ({ goalId, token, inProfile = false }) => {
       ) : (
         <>
           <View
-            style={[styles.goalContainer, { marginBottom: inProfile ? 0 : 10 }]}
+            style={[styles.goalContainer, { marginBottom: unwrap ? 0 : 10 }]}
           >
             {fullName !== "undefined undefined" ? (
               <View
@@ -127,7 +127,7 @@ export const CertainGoalComponent = ({ goalId, token, inProfile = false }) => {
                   <SkeletonLoading
                     borderRadius={10}
                     height={10}
-                    width={100}
+                    width={50}
                     backgroundColor={COLORS.LowAccent}
                   />
                 </View>
@@ -140,16 +140,18 @@ export const CertainGoalComponent = ({ goalId, token, inProfile = false }) => {
               goalId={goalId}
               deadline={currentGoal?.deadline}
               isPublic={currentGoal?.is_public}
+              currentGoalTitle={currentGoal?.title}
+              isJoined={currentGoal?.is_joined}
             />
           </View>
-          {inProfile && (
+          {unwrap && (
             <View style={styles.buttonContainer}>
               <Button
                 style={{ alignItems: "flex-start", marginLeft: 20 }}
                 icon={
                   postsLimit
-                    ? require("../../../assets/icons/chevron-down.png")
-                    : require("../../../assets/icons/chevron-right.png")
+                    ? require("../../../assets/icons/chevron-right.png")
+                    : require("../../../assets/icons/chevron-down.png")
                 }
                 size={24}
                 onPress={() => {
@@ -164,13 +166,13 @@ export const CertainGoalComponent = ({ goalId, token, inProfile = false }) => {
           <PostsArray
             fullName={fullName}
             goalId={goalId}
-            inProfile={inProfile}
+            unwrap={unwrap}
             postsLimit={postsLimit}
             setPostsLimit={setPostsLimit}
           />
         </>
       )}
-    </>
+    </View>
   );
 };
 
@@ -180,6 +182,8 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     backgroundColor: COLORS.White,
     borderRadius: 20,
+    zIndex: 0,
+    elevation: 0,
   },
   buttonContainer: {
     width: "100%",

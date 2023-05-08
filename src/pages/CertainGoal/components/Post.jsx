@@ -10,6 +10,7 @@ import SkeletonLoading from "../../../components/SkeletonLoading/SkeletonLoading
 export function Post({ text, postId, fullName, inserted_at = "" }) {
   return (
     <View
+      key={postId}
       style={{
         backgroundColor: COLORS.White,
         borderRadius: 20,
