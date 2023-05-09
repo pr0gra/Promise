@@ -20,7 +20,8 @@ import { tokenStore } from "../../../store";
 import SkeletonLoading from "../../components/SkeletonLoading/SkeletonLoading";
 
 import { CertainGoalComponent } from "../../components/CertainGoalComponent/CertainGoalComponent";
-import { HideSmoothlyComponent } from "../../components/HideSmoothlyComponent/HideSmoothlyComponent";
+
+import { IconButton } from "react-native-paper";
 
 export const Profile = ({ navigation }) => {
   const token = tokenStore((state) => state.token);
@@ -28,7 +29,6 @@ export const Profile = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [goals, setGoals] = useState([]);
 
-  const scrollY = new Animated.Value(0);
   async function getUserInfo() {
     setLoading(true);
     try {
@@ -77,22 +77,59 @@ export const Profile = ({ navigation }) => {
     getUserInfo();
     getPublicGoals();
   }, []);
-  const diffClamp = Animated.diffClamp(scrollY, 0, 150);
-  const translateY = diffClamp.interpolate({
-    inputRange: [0, 150],
-    outputRange: [0, -150],
+
+  const scrollY = new Animated.Value(0);
+  const diffClampBigHeader = Animated.diffClamp(scrollY, 0, 240);
+  const translateYBigHeader = diffClampBigHeader.interpolate({
+    inputRange: [0, 240],
+    outputRange: [0, -240],
   });
-  const diffClampName = Animated.diffClamp(scrollY, 0, 15);
-  const translateYName = diffClampName.interpolate({
-    inputRange: [0, 15],
-    outputRange: [0, 50],
-  });
+
+  const heightSize = useRef(new Animated.Value(0)).current;
+  const expandMiniHeader = () => {
+    Animated.timing(heightSize, {
+      toValue: 0,
+      duration: 100,
+      useNativeDriver: true,
+    }).start();
+  };
+  const noExpandMiniHeader = () => {
+    Animated.timing(heightSize, {
+      toValue: -100,
+      duration: 0,
+      useNativeDriver: true,
+    }).start();
+  };
+  useEffect(() => {
+    translateYBigHeader.addListener(({ value }) => {
+      if (value < -190) {
+        expandMiniHeader();
+      } else {
+        noExpandMiniHeader();
+      }
+    });
+  }, [translateYBigHeader]);
 
   return (
     <>
       <View style={[styles.container]}>
-        <HideSmoothlyComponent scrollY={scrollY} height={160}>
-          <>
+        <Animated.View
+          style={{
+            transform: [{ translateY: translateYBigHeader }],
+            zIndex: 5,
+          }}
+        >
+          <View
+            style={{
+              position: "absolute",
+              paddingBottom: 20,
+              right: 0,
+              left: 0,
+              paddingTop: Platform.OS === "ios" ? 64 : 32,
+              marginTop: Platform.OS === "ios" ? -64 : -32,
+              backgroundColor: COLORS.Background,
+            }}
+          >
             {userData?.first_name && userData?.last_name ? (
               <ProfileImageContainer
                 navigation={navigation}
@@ -106,15 +143,9 @@ export const Profile = ({ navigation }) => {
               </View>
             )}
             {userData?.first_name && userData?.last_name ? (
-              <Animated.View
-                style={{
-                  transform: [{ translateY: translateYName }],
-                }}
-              >
-                <Text
-                  style={[styles.name]}
-                >{`${userData?.first_name} ${userData?.last_name}`}</Text>
-              </Animated.View>
+              <Text
+                style={[styles.name]}
+              >{`${userData?.first_name} ${userData?.last_name}`}</Text>
             ) : (
               <View style={{ justifyContent: "center", alignItems: "center" }}>
                 <SkeletonLoading
@@ -125,13 +156,58 @@ export const Profile = ({ navigation }) => {
                 />
               </View>
             )}
-            <Animated.View style={{ transform: [{ translateY: translateY }] }}>
-              <InteractionButtons />
-            </Animated.View>
-          </>
-        </HideSmoothlyComponent>
+
+            <InteractionButtons />
+          </View>
+        </Animated.View>
+
+        <Animated.View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingHorizontal: 20,
+            transform: [{ translateY: heightSize }],
+            zIndex: 4,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: COLORS.Background,
+            gap: 20,
+          }}
+        >
+          <IconButton
+            mode="contained"
+            onPress={() => navigation.goBack()}
+            size={24}
+            icon={require("../../../assets/icons/arrow-narrow-left.png")}
+            style={{ backgroundColor: "transparent", borderRadius: 20 }}
+            iconColor={COLORS.Accent}
+            zIndex={150}
+          />
+          {userData?.first_name && userData?.last_name ? (
+            <Text
+              style={[styles.name, { marginTop: 0 }]}
+            >{`${userData?.first_name} ${userData?.last_name}`}</Text>
+          ) : (
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <SkeletonLoading
+                width={200}
+                height={25}
+                borderRadius={20}
+                marginTop={20}
+              />
+            </View>
+          )}
+          <IconButton
+            mode="contained"
+            onPress={() => console.log("...")}
+            size={24}
+            icon={require("../../../assets/icons/dots-vertical.png")}
+            style={{ backgroundColor: "transparent", borderRadius: 20 }}
+            iconColor={COLORS.Accent}
+          />
+        </Animated.View>
         <ScrollView
-          contentContainerStyle={{ flexGrow: 0, paddingTop: 240 }}
+          contentContainerStyle={{ flexGrow: 0, paddingTop: 189 }}
           showsVerticalScrollIndicator={true}
           indicatorStyle={COLORS.Accent}
           refreshControl={
@@ -169,6 +245,7 @@ export const Profile = ({ navigation }) => {
               goals?.map((e) => {
                 return (
                   <CertainGoalComponent
+                    key={e.id}
                     goalId={e.id}
                     token={token}
                     unwrap={true}

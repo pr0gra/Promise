@@ -4,7 +4,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { IconButton } from "react-native-paper";
 import { COLORS } from "../../../constants/Colors/Colors";
 import UserAvatar from "react-native-user-avatar";
-import { HideSmoothlyComponent } from "../../../components/HideSmoothlyComponent/HideSmoothlyComponent";
+
 export const ProfileImageContainer = ({
   navigation,
   firstName,
@@ -23,50 +23,39 @@ export const ProfileImageContainer = ({
   });
   return (
     <View style={[styles.imageContainer]}>
-      <Animated.View
-        style={{ transform: [{ translateY: translateYnavigationButtons }] }}
-      >
-        <IconButton
-          mode="contained"
-          onPress={() => navigation.goBack()}
-          size={24}
-          icon={require("../../../../assets/icons/arrow-narrow-left.png")}
-          style={[styles.buttonBack]}
-          iconColor={COLORS.Accent}
-          zIndex={150}
-        />
-      </Animated.View>
+      <IconButton
+        mode="contained"
+        onPress={() => navigation.goBack()}
+        size={24}
+        icon={require("../../../../assets/icons/arrow-narrow-left.png")}
+        style={[styles.buttonBack]}
+        iconColor={COLORS.Accent}
+        zIndex={150}
+      />
+
       {firstName && lastName && (
-        <Animated.View style={{ transform: [{ translateY: translateY }] }}>
-          <UserAvatar
-            size={100}
-            // imageStyle={{ borderRadius: 100 }}
-            name={`${firstName} ${lastName}`}
-            style={{
-              borderRadius: 100,
-              width: 100,
-              // marginLeft: -50
-            }}
-            // src={"https://dummyimage.com/100x100/000/fff"}
-            bgColor={COLORS.Accent}
-          />
-        </Animated.View>
-      )}
-      <Animated.View
-        style={{
-          transform: [{ translateY: translateYnavigationButtons }],
-          zIndex: 100,
-        }}
-      >
-        <IconButton
-          mode="contained"
-          onPress={() => console.log("...")}
-          size={24}
-          icon={require("../../../../assets/icons/dots-vertical.png")}
-          style={[styles.buttonBack]}
-          iconColor={COLORS.Accent}
+        <UserAvatar
+          size={100}
+          // imageStyle={{ borderRadius: 100 }}
+          name={`${firstName} ${lastName}`}
+          style={{
+            borderRadius: 100,
+            width: 100,
+            // marginLeft: -50
+          }}
+          // src={"https://dummyimage.com/100x100/000/fff"}
+          bgColor={COLORS.Accent}
         />
-      </Animated.View>
+      )}
+
+      <IconButton
+        mode="contained"
+        onPress={() => console.log("...")}
+        size={24}
+        icon={require("../../../../assets/icons/dots-vertical.png")}
+        style={[styles.buttonBack]}
+        iconColor={COLORS.Accent}
+      />
     </View>
   );
 };
