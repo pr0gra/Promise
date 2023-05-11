@@ -21,7 +21,7 @@ import SkeletonLoading from "../../components/SkeletonLoading/SkeletonLoading";
 
 import { CertainGoalComponent } from "../../components/CertainGoalComponent/CertainGoalComponent";
 
-import { IconButton } from "react-native-paper";
+import { Button, IconButton } from "react-native-paper";
 
 export const Profile = ({ navigation }) => {
   const token = tokenStore((state) => state.token);
@@ -72,6 +72,7 @@ export const Profile = ({ navigation }) => {
 
   const handleRefresh = () => {
     getPublicGoals();
+    console.log("refresh");
   };
   useEffect(() => {
     getUserInfo();
@@ -79,10 +80,10 @@ export const Profile = ({ navigation }) => {
   }, []);
 
   const scrollY = new Animated.Value(0);
-  const diffClampBigHeader = Animated.diffClamp(scrollY, 0, 240);
+  const diffClampBigHeader = Animated.diffClamp(scrollY, 0, 300);
   const translateYBigHeader = diffClampBigHeader.interpolate({
-    inputRange: [0, 240],
-    outputRange: [0, -240],
+    inputRange: [0, 300],
+    outputRange: [0, -300],
   });
 
   const heightSize = useRef(new Animated.Value(0)).current;
@@ -109,14 +110,23 @@ export const Profile = ({ navigation }) => {
       }
     });
   }, [translateYBigHeader]);
-
+  const handleScroll = (event) => {
+    const contentOffset = event.contentOffset;
+    const layoutMeasurement = event.layoutMeasurement;
+    const contentSize = event.contentSize;
+    const isScrolledToEnd =
+      contentOffset.y >= contentSize.height - layoutMeasurement.height;
+    if (isScrolledToEnd && Platform.OS === "ios") {
+      event.preventDefault(); // prevent further scroll
+    }
+  };
   return (
     <>
       <View style={[styles.container]}>
         <Animated.View
           style={{
             transform: [{ translateY: translateYBigHeader }],
-            zIndex: 5,
+            zIndex: 10,
           }}
         >
           <View
@@ -206,8 +216,12 @@ export const Profile = ({ navigation }) => {
             iconColor={COLORS.Accent}
           />
         </Animated.View>
+
         <ScrollView
-          contentContainerStyle={{ flexGrow: 0, paddingTop: 189 }}
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingTop: 189,
+          }}
           showsVerticalScrollIndicator={true}
           indicatorStyle={COLORS.Accent}
           refreshControl={
@@ -217,10 +231,14 @@ export const Profile = ({ navigation }) => {
               colors={[COLORS.Accent]}
             />
           }
+          scrollEventThrottle={16}
           onScroll={(e) => {
-            scrollY.setValue(e.nativeEvent.contentOffset.y);
+            scrollY.setValue(e.nativeEvent.contentOffset.y); //отсюда берутся коорды при скролле
+            handleScroll(e.nativeEvent);
           }}
+          style={{ zIndex: 1 }}
         >
+          {/* //При проведении пальцем вниз, при скролле компонента scrollView, происходит refreshing, на android, список останавливается в верхней точке, а если продолжать скрллить на айфоне, то список начнет сильно уезжать вниз, что вызывает визуальные баги, как предотвратить возможномть дальнейшего скролла на айфоне? */}
           <>
             {goals?.length === 0 && loading ? (
               <SkeletonLoading
@@ -257,7 +275,7 @@ export const Profile = ({ navigation }) => {
         </ScrollView>
       </View>
 
-      <Navigation navigation={navigation} />
+      <Navigation navigation={navigation} handleRefresh={handleRefresh} />
     </>
   );
 };
