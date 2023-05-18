@@ -52,4 +52,10 @@ export const FONTS = {
     fontSize: 24,
     lineHeight: 28.13,
   },
+
+  postSubheader: {
+    fontWeight: 400,
+    fontSize: 13,
+    lineHeight: 15.23,
+  },
 };

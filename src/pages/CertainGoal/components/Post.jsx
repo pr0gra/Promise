@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { Image, TouchableHighlight, View } from "react-native";
 import { Text } from "react-native";
 import UserAvatar from "react-native-user-avatar";
 import { COLORS } from "../../../constants/Colors/Colors";
@@ -7,7 +7,41 @@ import { ButtonReaction } from "./ButtonReaction";
 import Rocket from "../../../../assets/icons/Rocket.png";
 import MessageSquare from "../../../../assets/icons/message-square-01.png";
 import SkeletonLoading from "../../../components/SkeletonLoading/SkeletonLoading";
-export function Post({ text, postId, fullName, inserted_at = "" }) {
+import axios from "axios";
+import { useState } from "react";
+import { FONTS } from "../../../constants/FONTS/FONTS";
+import { tokenStore } from "../../../../store";
+export function Post({
+  text,
+  postId,
+  fullName,
+  inserted_at = "",
+  goalId,
+
+  handleRefreshPosts,
+}) {
+  const [showModal, setShowModal] = useState(false);
+  const token = tokenStore((state) => state.token);
+  async function deletePost() {
+    try {
+      const response = await axios.delete(
+        `/api/goals/${goalId}/posts/${postId}`,
+
+        {
+          headers: { Authorization: `bearer ${token}` },
+        }
+      );
+
+      handleRefreshPosts();
+      console.log("Удалил");
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Не удалил");
+    } finally {
+      setShowModal(false);
+    }
+  }
   return (
     <View
       key={postId}
@@ -16,41 +50,77 @@ export function Post({ text, postId, fullName, inserted_at = "" }) {
         borderRadius: 20,
         marginLeft: 20,
         flexDirection: "column",
-        paddingLeft: 20,
-        paddingRight: 20,
-        paddingVertical: 10,
+        paddingHorizontal: 20,
+        paddingVertical: 15,
         gap: 15,
         marginBottom: 10,
+        position: "relative",
       }}
     >
-      <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
-        {fullName !== "undefined undefined" ? (
-          <UserAvatar
-            style={{ width: 20, height: 20 }}
-            size={25}
-            name={fullName}
-            bgColor={COLORS.Accent}
-          />
-        ) : (
-          <SkeletonLoading
-            borderRadius={100}
-            height={15}
-            width={15}
-            backgroundColor={COLORS.LowAccent}
-          />
-        )}
-        {inserted_at !== "" ? (
-          <Text style={{ color: "rgba(175, 175, 175, 1)" }}>
-            {formatDate(new Date(inserted_at))}
+      {showModal && (
+        <TouchableHighlight
+          style={{
+            position: "absolute",
+            top: 50,
+            right: 10,
+            backgroundColor: COLORS.Accent,
+            paddingVertical: 10,
+            paddingHorizontal: 10,
+            borderRadius: 100,
+            zIndex: 2,
+          }}
+          onPress={() => {
+            deletePost();
+          }}
+        >
+          <Text style={{ color: COLORS.White, ...FONTS.postButtonText }}>
+            удалить
           </Text>
-        ) : (
-          <SkeletonLoading
-            borderRadius={20}
-            height={10}
-            width={100}
-            backgroundColor={COLORS.LowAccent}
-          />
-        )}
+        </TouchableHighlight>
+      )}
+      <View
+        style={{
+          flexDirection: "row",
+
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+          {fullName !== "undefined undefined" ? (
+            <UserAvatar
+              style={{ width: 20, height: 20 }}
+              size={25}
+              name={fullName}
+              bgColor={COLORS.Accent}
+            />
+          ) : (
+            <SkeletonLoading
+              borderRadius={100}
+              height={15}
+              width={15}
+              backgroundColor={COLORS.LowAccent}
+            />
+          )}
+          {inserted_at !== "" ? (
+            <Text style={{ color: "rgba(175, 175, 175, 1)" }}>
+              {formatDate(new Date(inserted_at))}
+            </Text>
+          ) : (
+            <SkeletonLoading
+              borderRadius={20}
+              height={10}
+              width={100}
+              backgroundColor={COLORS.LowAccent}
+            />
+          )}
+        </View>
+        <ButtonReaction
+          image={require("../../../../assets/icons/dots-vertical.png")}
+          onPress={() => {
+            setShowModal((state) => !state);
+          }}
+        />
       </View>
       <Text>{text}</Text>
       <View style={{ flexDirection: "row", gap: 10 }}>
@@ -62,7 +132,6 @@ export function Post({ text, postId, fullName, inserted_at = "" }) {
         <ButtonReaction
           image={MessageSquare}
           onPress={() => console.log("Rocket")}
-          text={"Советы"}
         />
       </View>
     </View>

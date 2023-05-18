@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import UserAvatar from "react-native-user-avatar";
 import { PostsArray } from "../../pages/CertainGoal/components/PostsArray";
@@ -15,11 +15,63 @@ export const CertainGoalComponent = ({ goalId, token, unwrap = false }) => {
   const [loading, setLoading] = useState(true);
   const [currentGoal, setCurrentGoal] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
-  const [postsLimit, setPostsLimit] = useState(true);
+
+  const [progress, setProgress] = useState(0);
+  const [result, setResult] = useState("");
 
   const fullName = userInfo?.first_name + " " + userInfo?.last_name;
-
   const goalInsertedAt = currentGoal && formatDate(currentGoal.inserted_at);
+
+  function getPercentage(startDate, endDate) {
+    const oneDay = 24 * 60 * 60 * 1000; // Количество миллисекунд в одном дне
+    const today = new Date(); // Сегодняшняя дата
+
+    // Преобразование дат из строкового формата в формат даты
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // Вычисление разницы в днях между сегодняшней датой и датой окончания
+    const diffDays = Math.round(Math.abs((today - end) / oneDay));
+
+    // Вычисление процента оставшегося времени
+    const percentage = Math.max(
+      0,
+      Math.min(100, Math.round((diffDays / 100) * 100))
+    );
+
+    return percentage;
+  }
+  const formattedDeadline = useCallback(function getDayAndMonth(
+    dateTimeString
+  ) {
+    const [date, time] = dateTimeString.split("T");
+    const [year, month, day] = date.split("-");
+
+    const monthNames = [
+      "января",
+      "февраля",
+      "марта",
+      "апреля",
+      "мая",
+      "июня",
+      "июля",
+      "августа",
+      "сентября",
+      "октября",
+      "ноября",
+      "декабря",
+    ];
+    const monthName = monthNames[parseInt(month) - 1];
+    let result;
+    if (Number(day) < 10) {
+      result = `${day[1]} ${monthName}`;
+    } else {
+      result = `${day} ${monthName}`;
+    }
+
+    return result;
+  });
+
   async function getGoalById(goalId, token) {
     setLoading(true);
     try {
@@ -28,6 +80,13 @@ export const CertainGoalComponent = ({ goalId, token, unwrap = false }) => {
       });
       setCurrentGoal(response.data.data);
 
+      const progress = getPercentage(
+        response.data.data.inserted_at,
+        response.data.data.deadline
+      );
+      const result = formattedDeadline(response.data.data.deadline);
+      setProgress(progress);
+      setResult(result);
       getUserInfo(response.data.data.user_id, token);
     } catch (error) {
       if (error.response) {
@@ -64,122 +123,191 @@ export const CertainGoalComponent = ({ goalId, token, unwrap = false }) => {
     getGoalById(goalId, token);
   }, []);
 
+  const colors = {
+    1: "rgba(153, 204, 145, 1)",
+    2: "rgba(203, 204, 145, 1)",
+    3: "rgba(204, 145, 145, 1)",
+    4: "transparent",
+  };
+
   return (
-    <View key={goalId}>
-      {!userInfo && !currentGoal ? (
-        <SkeletonLoading
-          padding={20}
-          borderRadius={20}
-          marginBottom={20}
-          width={"100%"}
-          height={120}
-        />
-      ) : (
-        <>
-          <View
-            style={[styles.goalContainer, { marginBottom: unwrap ? 0 : 10 }]}
-          >
-            {fullName !== "undefined undefined" ? (
-              <View
-                style={{
-                  flexDirection: "row",
-                  gap: 20,
-                  alignItems: "center",
-                  marginBottom: 20,
-                }}
-              >
-                <UserAvatar
-                  style={{ width: 50 }}
-                  size={50}
-                  name={fullName !== "undefined undefined" ? fullName : ""}
-                  bgColor={COLORS.Accent}
-                />
-                <View style={{ gap: 5 }}>
-                  <Text>{fullName !== "undefined undefined" && fullName}</Text>
-                  <Text style={{ color: "rgba(175, 175, 175, 1)" }}>
-                    {goalInsertedAt}
-                  </Text>
-                </View>
-              </View>
-            ) : (
-              <View style={{ flexDirection: "row", gap: 10, marginBottom: 10 }}>
-                <SkeletonLoading
-                  padding={20}
-                  borderRadius={100}
-                  height={61}
-                  width={61}
-                  backgroundColor={COLORS.LowAccent}
-                />
+    <ScrollView>
+      <View key={goalId}>
+        {!userInfo && !currentGoal ? (
+          <SkeletonLoading
+            padding={20}
+            borderRadius={20}
+            marginBottom={20}
+            width={"100%"}
+            height={120}
+          />
+        ) : (
+          <>
+            <View
+              style={[styles.goalContainer, { marginBottom: unwrap ? 0 : 10 }]}
+            >
+              {fullName !== "undefined undefined" ? (
                 <View
                   style={{
-                    flexDirection: "column",
+                    flexDirection: "row",
                     gap: 10,
-
-                    justifyContent: "center",
+                    alignItems: "center",
+                    marginBottom: 15,
+                  }}
+                >
+                  <UserAvatar
+                    style={{ width: 20 }}
+                    size={20}
+                    name={fullName !== "undefined undefined" ? fullName : ""}
+                    bgColor={COLORS.Accent}
+                  />
+                  <View style={{ gap: 5, flexDirection: "row" }}>
+                    <Text
+                      style={[
+                        {
+                          color: "rgba(175, 175, 175, 1)",
+                          ...FONTS.postSubheader,
+                        },
+                      ]}
+                    >
+                      {fullName !== "undefined undefined" && fullName}
+                    </Text>
+                    <Text
+                      style={{
+                        color: "rgba(175, 175, 175, 1)",
+                        ...FONTS.postSubheader,
+                      }}
+                    >
+                      •
+                    </Text>
+                    <Text
+                      style={{
+                        color: "rgba(175, 175, 175, 1)",
+                        ...FONTS.postSubheader,
+                      }}
+                    >
+                      {goalInsertedAt}
+                    </Text>
+                  </View>
+                </View>
+              ) : (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    gap: 5,
+                    marginBottom: 10,
+                    alignItems: "center",
                   }}
                 >
                   <SkeletonLoading
-                    borderRadius={10}
-                    height={10}
-                    width={100}
-                    backgroundColor={COLORS.LowAccent}
+                    borderRadius={100}
+                    height={20}
+                    width={20}
+                    backgroundColor={COLORS.Accent}
                   />
-                  <SkeletonLoading
-                    borderRadius={10}
-                    height={10}
-                    width={50}
-                    backgroundColor={COLORS.LowAccent}
-                  />
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      gap: 5,
+                      justifyContent: "center",
+                    }}
+                  >
+                    <SkeletonLoading
+                      borderRadius={10}
+                      height={10}
+                      width={100}
+                      backgroundColor={"rgba(175, 175, 175, 1)"}
+                    />
+                    <SkeletonLoading
+                      borderRadius={10}
+                      height={10}
+                      width={50}
+                      backgroundColor={"rgba(175, 175, 175, 1)"}
+                    />
+                  </View>
                 </View>
+              )}
+
+              <View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginBottom: 2,
+                  }}
+                >
+                  <Text style={{ ...FONTS.goalTime, color: COLORS.Accent }}>
+                    Хочу к
+                  </Text>
+                  <View
+                    style={{
+                      backgroundColor:
+                        progress > 70
+                          ? colors[1]
+                          : progress > 25
+                          ? colors[2]
+                          : progress > 0
+                          ? colors[3]
+                          : colors[4],
+
+                      flexDirection: "row",
+                      alignItems: "center",
+
+                      paddingHorizontal: 10,
+                      paddingVertical: 5,
+                      borderRadius: 10,
+                      marginLeft: 10,
+                    }}
+                  >
+                    <Image
+                      source={
+                        progress > 0
+                          ? require("../../../assets/icons/whiteClock.png")
+                          : require("../../../assets/icons/clock.png")
+                      }
+                      style={{ width: 24, height: 24, marginRight: 12 }}
+                    />
+                    <Text
+                      style={{
+                        ...FONTS.goalTime,
+                        color: progress > 0 ? COLORS.White : COLORS.Accent,
+                      }}
+                    >
+                      {result}
+                    </Text>
+                  </View>
+                </View>
+                <Text
+                  style={{
+                    ...FONTS.goalTime,
+                    color: "rgba(145, 155, 204, 0.5)",
+                  }}
+                >
+                  {currentGoal?.title}
+                </Text>
               </View>
-            )}
-            <View>
-              <Text>{currentGoal?.title}</Text>
+              <PostButtons
+                goalId={goalId}
+                deadline={currentGoal?.deadline}
+                isPublic={currentGoal?.is_public}
+                currentGoalTitle={currentGoal?.title}
+                isJoined={currentGoal?.is_joined}
+              />
             </View>
-            <PostButtons
-              goalId={goalId}
-              deadline={currentGoal?.deadline}
-              isPublic={currentGoal?.is_public}
-              currentGoalTitle={currentGoal?.title}
-              isJoined={currentGoal?.is_joined}
-            />
-          </View>
-          {unwrap && (
-            <View style={styles.buttonContainer}>
-              <Button
-                style={{ alignItems: "flex-start", marginLeft: 20 }}
-                icon={
-                  postsLimit
-                    ? require("../../../assets/icons/chevron-right.png")
-                    : require("../../../assets/icons/chevron-down.png")
-                }
-                size={24}
-                onPress={() => {
-                  setPostsLimit((state) => !state);
-                }}
-                labelStyle={{ color: COLORS.Accent }}
-              >
-                <Text style={{ color: COLORS.Accent }}>Развернуть</Text>
-              </Button>
-            </View>
-          )}
-          <PostsArray
-            fullName={fullName}
-            goalId={goalId}
-            unwrap={unwrap}
-            postsLimit={postsLimit}
-            setPostsLimit={setPostsLimit}
-          />
-        </>
-      )}
-    </View>
+
+            <PostsArray fullName={fullName} goalId={goalId} unwrap={unwrap} />
+          </>
+        )}
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   goalContainer: {
     paddingHorizontal: 20,
-    paddingVertical: 15,
+    paddingVertical: 20,
+
     backgroundColor: COLORS.White,
     borderRadius: 20,
     zIndex: 0,

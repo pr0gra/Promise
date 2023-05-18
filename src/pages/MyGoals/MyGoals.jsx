@@ -45,7 +45,7 @@ export const MyGoals = ({ navigation }) => {
         headers: { Authorization: `bearer ${token}` },
       });
       const sortedData = response.data.data.sort(
-        (a, b) => new Date(b.deadline) - new Date(a.deadline)
+        (a, b) => new Date(a.deadline) - new Date(b.deadline)
       );
 
       setGoals(sortedData);

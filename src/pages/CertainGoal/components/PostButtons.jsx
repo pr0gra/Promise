@@ -42,7 +42,7 @@ export const PostButtons = ({
           },
         }
       );
-
+      setIsJoinedState(true);
       return response.data.data;
     } catch (error) {
       setIsError(true);
@@ -92,17 +92,19 @@ export const PostButtons = ({
           image={isJoinedState ? messageSquare : plus}
           onPress={
             isJoinedState
-              ? () => console.log("Уже присоединен")
+              ? () => console.log("Тут логика открытия чата")
               : () => joinGoal()
           }
           text={isJoinedState ? "Открыть чат" : "Присоединиться"}
         />
 
-        <ButtonReaction
-          image={plus}
-          onPress={() => deleteGoal()}
-          text={"Уйти"}
-        />
+        {isJoinedState && (
+          <ButtonReaction
+            image={plus}
+            onPress={() => deleteGoal()}
+            text={"Уйти"}
+          />
+        )}
       </View>
       {isError && (
         <Text style={{ ...FONTS.postButtonText, color: "red" }}>

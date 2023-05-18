@@ -15,10 +15,10 @@ export const Goal = ({
   navigation,
   startDate,
 }) => {
-  const setGoalId = goalStore((state) => state.setGoalId);
-  const goalId = goalStore((state) => state.goalId);
-  const token = tokenStore((state) => state.token);
-  const route = useRoute();
+  // const setGoalId = goalStore((state) => state.setGoalId);
+  // const goalId = goalStore((state) => state.goalId);
+  // const token = tokenStore((state) => state.token);
+  // const route = useRoute();
 
   const colors = {
     1: "rgba(153, 204, 145, 1)",
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   goalContainer: {
     padding: 20,
     borderRadius: 20,
-    marginBottom: 20,
+    marginBottom: 10,
     backgroundColor: COLORS.White,
   },
   top: {

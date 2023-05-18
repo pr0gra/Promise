@@ -11,6 +11,7 @@ import { Button, Dialog, IconButton, Portal } from "react-native-paper";
 import { useRoute } from "@react-navigation/native";
 import { CertainGoalComponent } from "../../components/CertainGoalComponent/CertainGoalComponent";
 import { FONTS } from "../../constants/FONTS/FONTS";
+import { ScrollView } from "react-native-gesture-handler";
 
 export const CertainGoal = ({ navigation }) => {
   const token = tokenStore((state) => state.token);
@@ -104,6 +105,7 @@ export const CertainGoal = ({ navigation }) => {
             iconColor={COLORS.Accent}
           />
         </View>
+
         {goalId && <CertainGoalComponent goalId={goalId} token={token} />}
       </View>
       <Navigation navigation={navigation} />

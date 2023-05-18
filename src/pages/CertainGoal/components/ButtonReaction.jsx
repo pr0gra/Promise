@@ -9,10 +9,16 @@ import {
 import { COLORS } from "../../../constants/Colors/Colors";
 import { FONTS } from "../../../constants/FONTS/FONTS";
 
-export const ButtonReaction = ({ image, onPress, text, ...rest }) => {
+export const ButtonReaction = ({
+  image,
+  onPress,
+  text,
+  disabled = false,
+  ...rest
+}) => {
   return (
     <TouchableHighlight
-      onPress={onPress}
+      onPress={disabled ? console.log("Кнопка выключена") : onPress}
       underlayColor={COLORS.LowAccent}
       style={{ borderRadius: 100 }}
     >
@@ -27,9 +33,11 @@ export const ButtonReaction = ({ image, onPress, text, ...rest }) => {
         }}
       >
         <Image source={image} style={{ width: 24, height: 24 }} />
-        <Text style={{ color: COLORS.Accent, ...FONTS.postButtonText }}>
-          {text}
-        </Text>
+        {text && (
+          <Text style={{ color: COLORS.Accent, ...FONTS.postButtonText }}>
+            {text}
+          </Text>
+        )}
       </View>
     </TouchableHighlight>
   );
