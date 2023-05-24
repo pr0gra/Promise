@@ -22,12 +22,14 @@ import SkeletonLoading from "../../components/SkeletonLoading/SkeletonLoading";
 import { CertainGoalComponent } from "../../components/CertainGoalComponent/CertainGoalComponent";
 
 import { Button, IconButton } from "react-native-paper";
+import { ProfileModalContainer } from "./components/ProfileModalContainer";
 
 export const Profile = ({ navigation }) => {
   const token = tokenStore((state) => state.token);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [goals, setGoals] = useState([]);
+  const [isModalVisible, setModalIsVisible] = useState(false);
 
   async function getUserInfo() {
     setLoading(true);
@@ -110,6 +112,7 @@ export const Profile = ({ navigation }) => {
       }
     });
   }, [translateYBigHeader]);
+
   const handleScroll = (event) => {
     const contentOffset = event.contentOffset;
     const layoutMeasurement = event.layoutMeasurement;
@@ -117,11 +120,18 @@ export const Profile = ({ navigation }) => {
     const isScrolledToEnd =
       contentOffset.y >= contentSize.height - layoutMeasurement.height;
     if (isScrolledToEnd && Platform.OS === "ios") {
-      event.preventDefault(); // prevent further scroll
+      event.preventDefault();
     }
   };
   return (
     <>
+      {isModalVisible && (
+        <ProfileModalContainer
+          isModalVisible={isModalVisible}
+          setModalIsVisible={setModalIsVisible}
+          navigation={navigation}
+        />
+      )}
       <View style={[styles.container]}>
         <Animated.View
           style={{
@@ -146,6 +156,7 @@ export const Profile = ({ navigation }) => {
                 firstName={userData?.first_name}
                 lastName={userData?.last_name}
                 scrollY={scrollY}
+                setModalIsVisible={setModalIsVisible}
               />
             ) : (
               <View style={{ justifyContent: "center", alignItems: "center" }}>
@@ -209,7 +220,7 @@ export const Profile = ({ navigation }) => {
           )}
           <IconButton
             mode="contained"
-            onPress={() => console.log("...")}
+            onPress={() => setModalIsVisible((state) => !state)}
             size={24}
             icon={require("../../../assets/icons/dots-vertical.png")}
             style={{ backgroundColor: "transparent", borderRadius: 20 }}

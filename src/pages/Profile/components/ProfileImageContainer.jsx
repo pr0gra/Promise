@@ -10,6 +10,7 @@ export const ProfileImageContainer = ({
   firstName,
   lastName,
   scrollY,
+  setModalIsVisible,
 }) => {
   const diffClamp = Animated.diffClamp(scrollY, 0, 150);
   const translateY = diffClamp.interpolate({
@@ -50,7 +51,7 @@ export const ProfileImageContainer = ({
 
       <IconButton
         mode="contained"
-        onPress={() => console.log("...")}
+        onPress={() => setModalIsVisible((state) => !state)}
         size={24}
         icon={require("../../../../assets/icons/dots-vertical.png")}
         style={[styles.buttonBack]}

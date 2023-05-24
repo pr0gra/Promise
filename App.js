@@ -14,6 +14,7 @@ import { MyGoals } from "./src/pages/MyGoals/MyGoals";
 import { useState } from "react";
 import { CertainGoal } from "./src/pages/CertainGoal/CertainGoal";
 import { Profile } from "./src/pages/Profile/Profile";
+import { EditProfile } from "./src/pages/EditProfile/EditProfile";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -57,6 +58,11 @@ export default function App() {
               name="Profile"
               component={Profile}
               options={{ title: "Профиль", headerShown: false }}
+            />
+            <Stack.Screen
+              name="EditProfile"
+              component={EditProfile}
+              options={{ title: "Редактировать профиль", headerShown: false }}
             />
           </Stack.Navigator>
         </NavigationContainer>
