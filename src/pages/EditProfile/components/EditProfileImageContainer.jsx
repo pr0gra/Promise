@@ -1,10 +1,20 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
+import { EditProfileImage } from "./EditProfileImage";
+import { EditProfileNameInput } from "./EditProfileNameInput";
 
 export const EditProfileImageContainer = () => {
   return (
-    <View style={{ height: 200 }}>
-      <Text>EditProfileImageContainer</Text>
+    <View
+      style={{
+        flexDirection: "row",
+        gap: 20,
+        alignItems: "center",
+        marginHorizontal: 20,
+      }}
+    >
+      <EditProfileImage />
+      <EditProfileNameInput />
     </View>
   );
 };

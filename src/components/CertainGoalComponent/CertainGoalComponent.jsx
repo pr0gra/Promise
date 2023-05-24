@@ -10,6 +10,7 @@ import SkeletonLoading from "../SkeletonLoading/SkeletonLoading";
 import { Button } from "react-native-paper";
 import { PostButtons } from "../../pages/CertainGoal/components/PostButtons";
 import { FONTS } from "../../constants/FONTS/FONTS";
+import { userInformationStore } from "../../../store";
 
 export const CertainGoalComponent = ({ goalId, token, unwrap = false }) => {
   const [loading, setLoading] = useState(true);

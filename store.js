@@ -23,3 +23,15 @@ export const goalStore = create((set) => ({
 //   setId: (newId) => set({ id: newId }),
 //   setLastName: (newLastName) => set({ lastName: newLastName }),
 // }));
+export const userInformationStore = create((set) => ({
+  userInformation: {
+    bio: null,
+    city: null,
+    email: null,
+    firstName: null,
+    id: null,
+    lastName: null,
+  },
+  setUserInformation: (newInformation) =>
+    set({ userInformation: newInformation }),
+}));
