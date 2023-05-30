@@ -35,8 +35,6 @@ export const FONTS = {
     fontWeight: "500",
     fontSize: 14,
     lineHeight: 16,
-
-    color: "#000000",
   },
   label: {
     // fontFamily: "RobotoFlex",
@@ -53,5 +51,11 @@ export const FONTS = {
     fontWeight: "900",
     fontSize: 24,
     lineHeight: 28.13,
+  },
+
+  postSubheader: {
+    fontWeight: 400,
+    fontSize: 13,
+    lineHeight: 15.23,
   },
 };

@@ -66,18 +66,7 @@ export const Navigation = ({ navigation, handleRefresh }) => {
       },
     [userData]
   );
-  // const shadowStyle =
-  //   Platform.OS === "android"
-  //     ? {
-  //         elevation: 4,
-  //         shadowColor: "rgba(0, 0, 0, 0.30)",
-  //       }
-  //     : {
-  //         shadowColor: "#000",
-  //         shadowOffset: { width: 0, height: 11 },
-  //         shadowOpacity: 0.15,
-  //         shadowRadius: 32,
-  //       };
+
   return (
     <>
       {isMenuVisible && (

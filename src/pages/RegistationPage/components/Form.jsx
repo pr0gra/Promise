@@ -12,12 +12,13 @@ import { KeyboardAvoidingView } from "react-native";
 const validationSchema = yup.object().shape({
   firstName: yup
     .string()
-    .matches(/^[a-zA-Zа-яА-Я]+$/, "Имя должно содержать только буквы")
+    .matches(/^[a-zA-Zа-яА-Я\s]+$/, "Имя должно содержать только буквы")
     .label("Имя")
     .required("Введите имя"),
+
   lastName: yup
     .string()
-    .matches(/^[a-zA-Zа-яА-Я]+$/, "Фамилия должна содержать только буквы")
+    .matches(/^[a-zA-Zа-яА-Я\s]+$/, "Фамилия должна содержать только буквы")
     .label("Фамилия")
     .required("Введите фамилию"),
   email: yup
@@ -47,10 +48,10 @@ const Form = ({ navigation }) => {
     try {
       const response = await axios.post("/api/users", {
         user: {
-          first_name: values.firstName,
-          last_name: values.lastName,
-          email: values.email,
-          password: values.password,
+          first_name: values.firstName.trim(),
+          last_name: values.lastName.trim(),
+          email: values.email.trim(),
+          password: values.password.trim(),
         },
       });
       navigation.navigate("SignIn");
@@ -64,185 +65,179 @@ const Form = ({ navigation }) => {
 
       return error;
     } finally {
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+      setLoading(false);
     }
   }
 
   return (
-    
-      <View style={styles.formContainer}>
-
-        <ScrollView>
-          <Formik
-            initialValues={{
-              firstName: "",
-              lastName: "",
-              email: "",
-              password: "",
-              confirmPassword: "",
-            }}
-            onSubmit={(values) => {
-              registerUser(values);
-            }}
-            validationSchema={validationSchema}
-          >
-            {({
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              values,
-              errors,
-              touched,
-            }) => (
-              <>
-                <View style={styles.inputContainer}>
-                  <View>
-                    <TextInput
-                      style={[
-                        styles.inputStyles,
-                        touched.firstName &&
+    <View style={styles.formContainer}>
+      <ScrollView>
+        <Formik
+          initialValues={{
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+          }}
+          onSubmit={(values) => {
+            registerUser(values);
+          }}
+          validationSchema={validationSchema}
+        >
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+          }) => (
+            <>
+              <View style={styles.inputContainer}>
+                <View>
+                  <TextInput
+                    style={[
+                      styles.inputStyles,
+                      touched.firstName &&
                         errors.firstName &&
                         styles.wrongInput,
-                      ]}
-                      placeholder="Имя"
-                      value={values.firstName}
-                      onBlur={handleBlur("firstName")}
-                      onChangeText={handleChange("firstName")}
-                      selectionColor={COLORS.Accent}
-                    />
+                    ]}
+                    placeholder="Имя"
+                    value={values.firstName}
+                    onBlur={handleBlur("firstName")}
+                    onChangeText={handleChange("firstName")}
+                    selectionColor={COLORS.Accent}
+                  />
 
-                    {touched.firstName && errors.firstName && (
-                      <Text style={styles.errorMessage}>{errors.firstName}</Text>
-                    )}
-                  </View>
-
-                  <View>
-                    <TextInput
-                      style={[
-                        styles.inputStyles,
-                        touched.lastName && errors.lastName && styles.wrongInput,
-                      ]}
-                      onChangeText={handleChange("lastName")}
-                      onBlur={handleBlur("lastName")}
-                      value={values.lastName}
-                      placeholder="Фамилия"
-                      selectionColor={COLORS.Accent}
-                    />
-                    {touched.lastName && errors.lastName && (
-                      <Text style={styles.errorMessage}>{errors.lastName}</Text>
-                    )}
-                  </View>
-
-                  <View>
-                    <TextInput
-                      style={[
-                        styles.inputStyles,
-                        touched.email && errors.email && styles.wrongInput,
-                      ]}
-                      onChangeText={handleChange("email")}
-                      onBlur={handleBlur("email")}
-                      value={values.email}
-                      placeholder="email"
-                      keyboardType="email-address"
-                      selectionColor={COLORS.Accent}
-                    />
-
-                    {touched.email && (
-                      <Text style={[styles.errorMessage, styles.errorWithMargin]}>
-                        {touched.email && errors?.email}
-
-                        {errorEmail && " " + errorEmail}
-                      </Text>
-                    )}
-                  </View>
-                  <View>
-                    <TextInput
-                      style={[
-                        styles.inputStyles,
-                        touched.password && errors.password && styles.wrongInput,
-                      ]}
-                      onChangeText={handleChange("password")}
-                      onBlur={handleBlur("password")}
-                      value={values.password}
-                      placeholder="Пароль"
-                      secureTextEntry={true}
-                      selectionColor={COLORS.Accent}
-                    />
-                    {touched.password && errors.password && (
-                      <Text style={styles.errorMessage}>{errors.password}</Text>
-                    )}
-                  </View>
-
-                  <View>
-                    <TextInput
-                      style={[
-                        styles.inputStyles,
-                        touched.confirmPassword &&
-                        errors.confirmPassword &&
-                        styles.wrongInput,
-                      ]}
-                      onChangeText={handleChange("confirmPassword")}
-                      onBlur={handleBlur("confirmPassword")}
-                      value={values.confirmPassword}
-                      placeholder="Повторите пароль"
-                      secureTextEntry={true}
-                      selectionColor={COLORS.Accent}
-                    />
-                    {touched.confirmPassword && errors.confirmPassword && (
-                      <Text style={styles.errorMessage}>
-                        {errors.confirmPassword}
-                      </Text>
-                    )}
-                  </View>
+                  {touched.firstName && errors.firstName && (
+                    <Text style={styles.errorMessage}>{errors.firstName}</Text>
+                  )}
                 </View>
 
-                <Button
-                  title="Submit"
-                  onPress={handleSubmit}
-                  mode="contained-tonal"
-                  style={styles.postButton}
-                  labelStyle={{ color: COLORS.White }}
-                  loading={Loading ? true : false}
-                  contentStyle={{
-                    paddingVertical: 10,
-                  }}
-                >
-                  <Text style={{ color: COLORS.White, ...FONTS.buttonText }}>
-                    Зарегистрироваться
-                  </Text>
-                </Button>
-                <Button
-                  onPress={() => navigation.goBack()}
-                  mode="contained-tonal"
-                  contentStyle={{
-                    paddingVertical: 10,
-                  }}
-                  style={{
-                    marginTop: 15,
-                    backgroundColor: COLORS.Gray,
-                    borderRadius: 10,
+                <View>
+                  <TextInput
+                    style={[
+                      styles.inputStyles,
+                      touched.lastName && errors.lastName && styles.wrongInput,
+                    ]}
+                    onChangeText={handleChange("lastName")}
+                    onBlur={handleBlur("lastName")}
+                    value={values.lastName}
+                    placeholder="Фамилия"
+                    selectionColor={COLORS.Accent}
+                  />
+                  {touched.lastName && errors.lastName && (
+                    <Text style={styles.errorMessage}>{errors.lastName}</Text>
+                  )}
+                </View>
 
-                    fontSize: 12,
-                    // fontFamily: "RobotoFlex",
-                    fontStyle: "normal",
-                    fontWeight: 600,
-                    lineHeight: 16,
-                    textAlign: "center",
-                  }}
-                >
-                  <Text style={{ ...FONTS.buttonText, color: COLORS.Accent }}>
-                    Назад
-                  </Text>
-                </Button>
-              </>
-            )}
-          </Formik>
-        </ScrollView>
+                <View>
+                  <TextInput
+                    style={[
+                      styles.inputStyles,
+                      touched.email && errors.email && styles.wrongInput,
+                    ]}
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    value={values.email}
+                    placeholder="email"
+                    keyboardType="email-address"
+                    selectionColor={COLORS.Accent}
+                  />
 
-      </View>
-   
+                  {touched.email && (
+                    <Text style={[styles.errorMessage, styles.errorWithMargin]}>
+                      {touched.email && errors?.email}
+
+                      {errorEmail && " " + errorEmail}
+                    </Text>
+                  )}
+                </View>
+                <View>
+                  <TextInput
+                    style={[
+                      styles.inputStyles,
+                      touched.password && errors.password && styles.wrongInput,
+                    ]}
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                    value={values.password}
+                    placeholder="Пароль"
+                    secureTextEntry={true}
+                    selectionColor={COLORS.Accent}
+                  />
+                  {touched.password && errors.password && (
+                    <Text style={styles.errorMessage}>{errors.password}</Text>
+                  )}
+                </View>
+
+                <View>
+                  <TextInput
+                    style={[
+                      styles.inputStyles,
+                      touched.confirmPassword &&
+                        errors.confirmPassword &&
+                        styles.wrongInput,
+                    ]}
+                    onChangeText={handleChange("confirmPassword")}
+                    onBlur={handleBlur("confirmPassword")}
+                    value={values.confirmPassword}
+                    placeholder="Повторите пароль"
+                    secureTextEntry={true}
+                    selectionColor={COLORS.Accent}
+                  />
+                  {touched.confirmPassword && errors.confirmPassword && (
+                    <Text style={styles.errorMessage}>
+                      {errors.confirmPassword}
+                    </Text>
+                  )}
+                </View>
+              </View>
+
+              <Button
+                title="Submit"
+                onPress={handleSubmit}
+                mode="contained-tonal"
+                style={styles.postButton}
+                labelStyle={{ color: COLORS.White }}
+                loading={Loading ? true : false}
+                contentStyle={{
+                  paddingVertical: 10,
+                }}
+              >
+                <Text style={{ color: COLORS.White, ...FONTS.buttonText }}>
+                  Зарегистрироваться
+                </Text>
+              </Button>
+              <Button
+                onPress={() => navigation.goBack()}
+                mode="contained-tonal"
+                contentStyle={{
+                  paddingVertical: 10,
+                }}
+                style={{
+                  marginTop: 15,
+                  backgroundColor: COLORS.Gray,
+                  borderRadius: 10,
+
+                  fontSize: 12,
+                  // fontFamily: "RobotoFlex",
+                  fontStyle: "normal",
+                  fontWeight: 600,
+                  lineHeight: 16,
+                  textAlign: "center",
+                }}
+              >
+                <Text style={{ ...FONTS.buttonText, color: COLORS.Accent }}>
+                  Назад
+                </Text>
+              </Button>
+            </>
+          )}
+        </Formik>
+      </ScrollView>
+    </View>
   );
 };
 

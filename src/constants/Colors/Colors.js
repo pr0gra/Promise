@@ -8,5 +8,6 @@ export const COLORS = {
   White: "#FFFFFF",
   GrayText: "#AFAFAF",
   StatusbarText: "#272222",
-  Red: "rgba(255, 0, 0, 1)"
+  Red: "rgba(255, 0, 0, 1)",
+  LowRed: "rgba(204, 145, 145, 1)",
 };

@@ -1,18 +1,19 @@
 import { useState, useEffect, useCallback } from "react";
-import { View } from "react-native";
+import { KeyboardAvoidingView, Platform, Text, View } from "react-native";
 import { tokenStore } from "../../../../store";
 import axios from "axios";
-
+import { Button } from "react-native-paper";
 import { COLORS } from "../../../constants/Colors/Colors";
 import { FlatList } from "react-native";
 import { RefreshControl } from "react-native-gesture-handler";
 import { Post } from "./Post";
 import { AddingPostInput } from "./AddingPostInput";
 
-export function PostsArray({ fullName, goalId }) {
+export function PostsArray({ fullName, goalId, unwrap }) {
   const [loading, setLoading] = useState(false);
   const [postsArray, setPostsArray] = useState([]);
-  const [isRefresh, setIsRefresh] = useState(false);
+  const [postsLimit, setPostsLimit] = useState(true);
+
   const token = tokenStore((state) => state.token);
 
   function handleRefresh() {
@@ -32,34 +33,88 @@ export function PostsArray({ fullName, goalId }) {
 
       setPostsArray(sortedData);
     } catch (error) {
-      if (error.response) {
-        console.log(error.response);
-      } else {
-        console.log("NO RESPONSE");
-      }
-      throw new Error("Ошибка в получении постов");
+      console.log("Ошибка в получении постов", error);
+
+      // throw new Error("Ошибка в получении постов");
     } finally {
       setLoading(false);
     }
   }
   useEffect(() => {
     getGoalPosts(goalId);
-  }, [goalId, isRefresh]);
+  }, []);
 
   return (
     <>
-      <FlatList
-        data={postsArray}
+      {unwrap && postsArray.length > 1 ? (
+        <View style={{ width: "100%" }}>
+          <Button
+            style={{ alignItems: "flex-start", marginLeft: 20 }}
+            icon={
+              postsLimit
+                ? require("../../../../assets/icons/chevron-right.png")
+                : require("../../../../assets/icons/chevron-down.png")
+            }
+            size={24}
+            onPress={() => {
+              setPostsLimit((state) => !state);
+            }}
+            labelStyle={{ color: COLORS.Accent }}
+          >
+            <Text style={{ color: COLORS.Accent }}>
+              {postsLimit ? "Развернуть" : "Свернуть"}
+            </Text>
+          </Button>
+        </View>
+      ) : (
+        unwrap && <View style={{ height: 10 }} />
+      )}
+      {/* {unwrap ? (
+        unwrap ? (
+          postsArray.slice(0, postsLimit ? 1 : postsArray.length).map((e) => {
+            return (
+              <Post
+                key={e.id}
+                fullName={fullName}
+                text={e.text}
+                postId={e.id}
+                inserted_at={e.inserted_at}
+              />
+            );
+          })
+        ) : (
+          postsArray.map((e) => {
+            return (
+              <Post
+                key={e.id}
+                fullName={fullName}
+                text={e.text}
+                postId={e.id}
+                inserted_at={e.inserted_at}
+              />
+            );
+          })
+        )
+      ) : ( */}
+      {/* <FlatList
+        data={
+          unwrap
+            ? postsArray.slice(0, postsLimit ? 1 : postsArray.length)
+            : postsArray
+        }
         renderItem={({ item }) => (
           <Post
+            key={item.id}
             fullName={fullName}
             text={item.text}
             postId={item.id}
+            goalId={goalId}
+            token={token}
+            handleRefreshPosts={handleRefresh}
             inserted_at={item.inserted_at}
           />
         )}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ gap: 10 }}
         showsVerticalScrollIndicator={true}
         indicatorStyle={COLORS.Accent}
         refreshControl={
@@ -70,11 +125,42 @@ export function PostsArray({ fullName, goalId }) {
           />
         }
         style={{ flexGrow: 0 }}
-      />
+      /> */}
+      {unwrap
+        ? postsArray.slice(0, postsLimit ? 1 : postsArray.length).map((e) => {
+            return (
+              <Post
+                key={e.id}
+                fullName={fullName}
+                text={e.text}
+                postId={e.id}
+                goalId={goalId}
+                token={token}
+                handleRefreshPosts={handleRefresh}
+                inserted_at={e.inserted_at}
+              />
+            );
+          })
+        : postsArray.map((e) => {
+            return (
+              <Post
+                key={e.id}
+                fullName={fullName}
+                text={e.text}
+                postId={e.id}
+                goalId={goalId}
+                token={token}
+                handleRefreshPosts={handleRefresh}
+                inserted_at={e.inserted_at}
+              />
+            );
+          })}
+      {/* )} */}
+
       <AddingPostInput
-        setIsRefresh={setIsRefresh}
         fullName={fullName}
         currentGoalId={goalId}
+        handleRefresh={handleRefresh}
       />
     </>
   );

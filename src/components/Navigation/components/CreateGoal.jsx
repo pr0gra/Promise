@@ -46,6 +46,7 @@ export const CreateGoal = ({
     }
     return formattedDate;
   }
+
   return (
     <Portal>
       <Dialog

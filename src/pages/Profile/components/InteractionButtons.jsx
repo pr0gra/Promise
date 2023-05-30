@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     gap: 15,
     flexDirection: "row",
     marginTop: 15,
-    marginBottom: 20,
+    // marginBottom: 20,
   },
   firstButton: {
     backgroundColor: COLORS.Accent,

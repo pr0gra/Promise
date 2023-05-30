@@ -14,7 +14,7 @@ import { GlobalStyles } from "../../constants/GlobalStyles";
 import { FONTS } from "../../constants/FONTS/FONTS";
 import { Goal } from "./components/Goal.jsx";
 import axios from "axios";
-import { tokenStore } from "../../../store.js";
+import { tokenStore, userInformationStore } from "../../../store.js";
 import { FlatList } from "react-native";
 import { Navigation } from "../../components/Navigation/Navigation";
 import SkeletonLoading from "../../components/SkeletonLoading/SkeletonLoading";
@@ -26,7 +26,9 @@ export const MyGoals = ({ navigation }) => {
   const [errorState, setErrorState] = useState(null);
   const [goals, setGoals] = useState([]);
   const token = tokenStore((state) => state.token);
-
+  const setUserInformation = userInformationStore(
+    (state) => state.setUserInformation
+  );
   useFocusEffect(
     //Этаа функция для обновления списка после удалкения цели
     useCallback(() => {
@@ -45,27 +47,37 @@ export const MyGoals = ({ navigation }) => {
         headers: { Authorization: `bearer ${token}` },
       });
       const sortedData = response.data.data.sort(
-        (a, b) => new Date(b.deadline) - new Date(a.deadline)
+        (a, b) => new Date(a.deadline) - new Date(b.deadline)
       );
 
       setGoals(sortedData);
 
       return response.data.data;
     } catch (error) {
-      if (error.response) {
-        console.log(error.response);
-        setErrorState(error.response.status);
-      } else {
-        console.log("NO RESPONSE");
-      }
-      throw new Error("Ошибка в получении целей");
+      console.log("Ошибка в получении целей", error.response);
+      setErrorState(error.response.status);
+
+      // throw new Error("Ошибка в получении целей");
     } finally {
       setLoading(false);
     }
   }
+  async function getUserInfo() {
+    try {
+      const response = await axios.get(`/api/profile`, {
+        headers: { Authorization: `bearer ${token}` },
+      });
 
+      setUserInformation(response.data.data);
+    } catch (error) {
+      console.log("Ошибка в получении пользователя", error);
+
+      // throw new Error("Ошибка в получении пользователя");
+    }
+  }
   useEffect(() => {
     getGoals();
+    getUserInfo();
   }, []);
   return (
     <View

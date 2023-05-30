@@ -14,6 +14,9 @@ import SkeletonLoading from "../../SkeletonLoading/SkeletonLoading";
 export const MenuNavigation = memo(
   ({ userData, navigation, setIsMenuVisible, isMenuVisible, noExpand }) => {
     const data = JSON.parse(userData);
+    const userInformation = userInformationStore(
+      (state) => state.userInformation
+    );
 
     return (
       <>
@@ -63,11 +66,11 @@ export const MenuNavigation = memo(
             }}
           >
             <View style={styles.avatarContainer}>
-              {data?.first_name && data?.last_name ? (
+              {userInformation.first_name && userInformation.last_name ? (
                 <UserAvatar
                   size={62}
                   imageStyle={{ width: 62.6, height: 62.6, borderRadius: 15 }}
-                  name={`${data?.first_name} ${data?.last_name}`}
+                  name={`${userInformation.first_name} ${userInformation.last_name}`}
                   style={{ width: 62.6, height: 62.6, borderRadius: 15 }}
                   bgColor={COLORS.Accent}
                 />
@@ -97,7 +100,7 @@ export const MenuNavigation = memo(
                   />
                 </View>
 
-                {!data?.first_name && !data?.last_name ? (
+                {!userInformation.first_name && !userInformation.last_name ? (
                   <SkeletonLoading width={100} height={25} borderRadius={20} />
                 ) : (
                   <Text
@@ -107,7 +110,7 @@ export const MenuNavigation = memo(
                       color: COLORS.Accent,
                     }}
                   >
-                    {data?.first_name} {data?.last_name}
+                    {userInformation.first_name} {userInformation.last_name}
                   </Text>
                 )}
               </View>

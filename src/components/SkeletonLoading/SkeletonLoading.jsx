@@ -17,12 +17,12 @@ const SkeletonLoading = ({
           Animated.timing(opacity, {
             toValue: 0.5,
             duration: frequency,
-            useNativeDriver: false,
+            useNativeDriver: true,
           }),
           Animated.timing(opacity, {
             toValue: 1,
             duration: frequency,
-            useNativeDriver: false,
+            useNativeDriver: true,
           }),
         ])
       ).start();
@@ -30,7 +30,7 @@ const SkeletonLoading = ({
       Animated.timing(opacity, {
         toValue: 1,
         duration: 0,
-        useNativeDriver: false,
+        useNativeDriver: true,
       }).start();
     }
   }, [loading]);
