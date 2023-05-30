@@ -33,12 +33,9 @@ export function PostsArray({ fullName, goalId, unwrap }) {
 
       setPostsArray(sortedData);
     } catch (error) {
-      if (error.response) {
-        console.log(error.response);
-      } else {
-        console.log("NO RESPONSE");
-      }
-      throw new Error("Ошибка в получении постов");
+      console.log("Ошибка в получении постов", error);
+
+      // throw new Error("Ошибка в получении постов");
     } finally {
       setLoading(false);
     }

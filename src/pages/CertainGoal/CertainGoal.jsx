@@ -108,7 +108,7 @@ export const CertainGoal = ({ navigation }) => {
 
         {goalId && <CertainGoalComponent goalId={goalId} token={token} />}
       </View>
-      <Navigation navigation={navigation} />
+      <Navigation navigation={navigation} handleRefresh={() => {}} />
     </>
   );
 };

@@ -3,7 +3,7 @@ import React from "react";
 import { EditProfileImage } from "./EditProfileImage";
 import { EditProfileNameInput } from "./EditProfileNameInput";
 
-export const EditProfileImageContainer = () => {
+export const EditProfileImageContainer = ({ handleNameChange, name }) => {
   return (
     <View
       style={{
@@ -14,7 +14,7 @@ export const EditProfileImageContainer = () => {
       }}
     >
       <EditProfileImage />
-      <EditProfileNameInput />
+      <EditProfileNameInput handleNameChange={handleNameChange} name={name} />
     </View>
   );
 };

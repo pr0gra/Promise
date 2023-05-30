@@ -34,12 +34,9 @@ export function AddingPostInput({
       handleRefresh();
       return response.data;
     } catch (error) {
-      if (error.response) {
-        console.log(error.response);
-      } else {
-        console.log("NO RESPONSE");
-      }
-      throw new Error("Ошибка в создании Поста");
+      console.log("Ошибка в создании Поста", error);
+
+      // throw new Error("Ошибка в создании Поста");
     } finally {
       setLoading(false);
     }

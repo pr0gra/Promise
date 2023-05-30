@@ -1,4 +1,11 @@
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import UserAvatar from "react-native-user-avatar";
@@ -16,7 +23,7 @@ export const CertainGoalComponent = ({ goalId, token, unwrap = false }) => {
   const [loading, setLoading] = useState(true);
   const [currentGoal, setCurrentGoal] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
-
+  const windowWidth = Dimensions.get("window").width;
   const [progress, setProgress] = useState(0);
   const [result, setResult] = useState("");
 
@@ -90,12 +97,9 @@ export const CertainGoalComponent = ({ goalId, token, unwrap = false }) => {
       setResult(result);
       getUserInfo(response.data.data.user_id, token);
     } catch (error) {
-      if (error.response) {
-        console.log(error.response);
-      } else {
-        console.log("NO RESPONSE");
-      }
-      throw new Error("Ошибка в получении подпостов к цели");
+      console.log("Ошибка в получении подпостов к цели", error);
+
+      // throw new Error("Ошибка в получении подпостов к цели");
     } finally {
       setLoading(false);
     }
@@ -110,12 +114,9 @@ export const CertainGoalComponent = ({ goalId, token, unwrap = false }) => {
 
       setUserInfo(response.data.data);
     } catch (error) {
-      if (error.response) {
-        console.log(error.response);
-      } else {
-        console.log("NO RESPONSE");
-      }
-      throw new Error("Ошибка в получении пользователя");
+      console.log("Ошибка в получении пользователя", error);
+
+      // throw new Error("Ошибка в получении пользователя");
     } finally {
       setLoading(false);
     }
@@ -154,6 +155,8 @@ export const CertainGoalComponent = ({ goalId, token, unwrap = false }) => {
                     gap: 10,
                     alignItems: "center",
                     marginBottom: 15,
+                    // flexWrap: "wrap",
+                    // maxWidth: windowWidth - 40 - 20 - 20,
                   }}
                 >
                   <UserAvatar
@@ -162,7 +165,15 @@ export const CertainGoalComponent = ({ goalId, token, unwrap = false }) => {
                     name={fullName !== "undefined undefined" ? fullName : ""}
                     bgColor={COLORS.Accent}
                   />
-                  <View style={{ gap: 5, flexDirection: "row" }}>
+                  <View
+                    style={{
+                      gap: 5,
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+
+                      maxWidth: windowWidth - 40 - 20 - 20,
+                    }}
+                  >
                     <Text
                       style={[
                         {

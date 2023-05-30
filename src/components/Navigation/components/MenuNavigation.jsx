@@ -17,7 +17,7 @@ export const MenuNavigation = memo(
     const userInformation = userInformationStore(
       (state) => state.userInformation
     );
-    console.log(userInformation.first_name, userInformation.last_name);
+
     return (
       <>
         <TouchableWithoutFeedback

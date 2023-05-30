@@ -30,6 +30,9 @@ export const EditProfileImage = () => {
         style={{
           width: 35,
           height: 35,
+          marginTop: -30,
+          zIndex: 5,
+          marginLeft: 40,
         }}
         source={require("../../../../assets/icons/edit-photo-of-profile.png")}
       />

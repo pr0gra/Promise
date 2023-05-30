@@ -36,8 +36,8 @@ export function Post({
       console.log("Удалил");
       return response;
     } catch (error) {
-      console.log(error);
-      throw new Error("Не удалил");
+      console.log("Не удалил", error);
+      // throw new Error("Не удалил");
     } finally {
       setShowModal(false);
     }

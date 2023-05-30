@@ -54,13 +54,10 @@ export const MyGoals = ({ navigation }) => {
 
       return response.data.data;
     } catch (error) {
-      if (error.response) {
-        console.log(error.response);
-        setErrorState(error.response.status);
-      } else {
-        console.log("NO RESPONSE");
-      }
-      throw new Error("Ошибка в получении целей");
+      console.log("Ошибка в получении целей", error.response);
+      setErrorState(error.response.status);
+
+      // throw new Error("Ошибка в получении целей");
     } finally {
       setLoading(false);
     }
@@ -73,9 +70,9 @@ export const MyGoals = ({ navigation }) => {
 
       setUserInformation(response.data.data);
     } catch (error) {
-      console.log(error);
+      console.log("Ошибка в получении пользователя", error);
 
-      throw new Error("Ошибка в получении пользователя");
+      // throw new Error("Ошибка в получении пользователя");
     }
   }
   useEffect(() => {

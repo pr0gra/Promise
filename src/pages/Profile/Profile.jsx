@@ -62,11 +62,9 @@ export const Profile = ({ navigation }) => {
 
       return response.data.data;
     } catch (error) {
-      if (error.response) {
-      } else {
-        console.log("NO RESPONSE");
-      }
-      throw new Error("Ошибка в получении целей");
+      console.log("NO RESPONSE");
+
+      // throw new Error("Ошибка в получении целей");
     } finally {
       setLoading(false);
     }
