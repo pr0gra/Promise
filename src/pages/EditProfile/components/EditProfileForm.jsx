@@ -72,15 +72,15 @@ export const EditProfileForm = ({ navigation }) => {
 
   const handleSubmitForm = async () => {
     const user = {
-      city: city.trim(),
-      school: school.trim(),
-      faculty: faculty.trim(),
-      course: course.trim(),
+      city: city,
+      school: school,
+      faculty: faculty,
+      course: course,
       email: email == undefined ? userData.email.trim() : email.trim(),
-      first_name: firstName.trim(),
-      last_name: lastName.trim(),
-      city: city.trim(),
-      bio: about.trim(),
+      first_name: firstName,
+      last_name: lastName,
+      city: city,
+      bio: about,
     };
     try {
       setErrors(null);
