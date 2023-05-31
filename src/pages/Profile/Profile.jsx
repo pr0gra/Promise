@@ -77,41 +77,33 @@ export const Profile = ({ navigation }) => {
   useEffect(() => {
     getUserInfo();
     getPublicGoals();
+    noExpandMiniHeader();
   }, []);
 
   const scrollY = new Animated.Value(0);
-  const diffClampBigHeader = Animated.diffClamp(scrollY, 0, 300);
-  const translateYBigHeader = diffClampBigHeader.interpolate({
-    inputRange: [0, 300],
-    outputRange: [0, -300],
-  });
 
   const heightSize = useRef(new Animated.Value(0)).current;
   const expandMiniHeader = () => {
     Animated.timing(heightSize, {
       toValue: 0,
-      duration: 100,
+      duration: 300,
       useNativeDriver: true,
     }).start();
   };
   const noExpandMiniHeader = () => {
     Animated.timing(heightSize, {
-      toValue: -100,
-      duration: 0,
+      duration: 300,
+      toValue: -300,
       useNativeDriver: true,
     }).start();
   };
-  useEffect(() => {
-    translateYBigHeader.addListener(({ value }) => {
-      if (value < -190) {
-        expandMiniHeader();
-      } else {
-        noExpandMiniHeader();
-      }
-    });
-  }, [translateYBigHeader]);
 
   const handleScroll = (event) => {
+    if (event.contentOffset.y > 190) {
+      expandMiniHeader();
+    } else {
+      noExpandMiniHeader();
+    }
     const contentOffset = event.contentOffset;
     const layoutMeasurement = event.layoutMeasurement;
     const contentSize = event.contentSize;
@@ -131,60 +123,16 @@ export const Profile = ({ navigation }) => {
         />
       )}
       <View style={[styles.container]}>
-        <Animated.View
+        <Animated.View //miniHeader
           style={{
-            transform: [{ translateY: translateYBigHeader }],
-            zIndex: 10,
-          }}
-        >
-          <View
-            style={{
-              position: "absolute",
-              paddingBottom: 20,
-              right: 0,
-              left: 0,
-              paddingTop: Platform.OS === "ios" ? 64 : 32,
-              marginTop: Platform.OS === "ios" ? -64 : -32,
-              backgroundColor: COLORS.Background,
-            }}
-          >
-            {userData?.first_name && userData?.last_name ? (
-              <ProfileImageContainer
-                navigation={navigation}
-                firstName={userData?.first_name}
-                lastName={userData?.last_name}
-                scrollY={scrollY}
-                setModalIsVisible={setModalIsVisible}
-              />
-            ) : (
-              <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <SkeletonLoading width={100} height={100} borderRadius={100} />
-              </View>
-            )}
-            {userData?.first_name && userData?.last_name ? (
-              <Text
-                style={[styles.name]}
-              >{`${userData?.first_name} ${userData?.last_name}`}</Text>
-            ) : (
-              <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <SkeletonLoading
-                  width={200}
-                  height={25}
-                  borderRadius={20}
-                  marginTop={20}
-                />
-              </View>
-            )}
-
-            <InteractionButtons />
-          </View>
-        </Animated.View>
-
-        <Animated.View
-          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
             flexDirection: "row",
             justifyContent: "space-between",
             paddingHorizontal: 20,
+            paddingTop: 32,
             transform: [{ translateY: heightSize }],
             zIndex: 4,
             alignItems: "center",
@@ -229,7 +177,7 @@ export const Profile = ({ navigation }) => {
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
-            paddingTop: 189,
+            // paddingTop: 189,
           }}
           showsVerticalScrollIndicator={true}
           indicatorStyle={COLORS.Accent}
@@ -248,6 +196,63 @@ export const Profile = ({ navigation }) => {
           style={{ zIndex: 1 }}
         >
           <>
+            <Animated.View
+              style={{
+                // transform: [{ translateY: translateYBigHeader }],
+                zIndex: 10,
+              }}
+            >
+              <View
+                style={{
+                  // position: "absolute",
+                  paddingBottom: 20,
+                  // right: 0,
+                  // left: 0,
+                  paddingTop: Platform.OS === "ios" ? 64 : 32,
+                  marginTop: Platform.OS === "ios" ? -64 : -32,
+                  backgroundColor: COLORS.Background,
+                }}
+              >
+                {userData?.first_name && userData?.last_name ? (
+                  <ProfileImageContainer
+                    navigation={navigation}
+                    firstName={userData?.first_name}
+                    lastName={userData?.last_name}
+                    scrollY={scrollY}
+                    setModalIsVisible={setModalIsVisible}
+                  />
+                ) : (
+                  <View
+                    style={{ justifyContent: "center", alignItems: "center" }}
+                  >
+                    <SkeletonLoading
+                      width={100}
+                      height={100}
+                      borderRadius={100}
+                    />
+                  </View>
+                )}
+                {userData?.first_name && userData?.last_name ? (
+                  <Text
+                    style={[styles.name]}
+                  >{`${userData?.first_name} ${userData?.last_name}`}</Text>
+                ) : (
+                  <View
+                    style={{ justifyContent: "center", alignItems: "center" }}
+                  >
+                    <SkeletonLoading
+                      width={200}
+                      height={25}
+                      borderRadius={20}
+                      marginTop={20}
+                    />
+                  </View>
+                )}
+
+                <InteractionButtons />
+              </View>
+            </Animated.View>
+
             {goals?.length === 0 && loading ? (
               <SkeletonLoading
                 width="100%"
