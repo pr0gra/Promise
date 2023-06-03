@@ -126,15 +126,14 @@ export const Navigation = ({ navigation, handleRefresh }) => {
 
         {!isGoalVisible && (
           <TouchableWithoutFeedback
-            onPress={
-              () => {}
-              // navigation.navigate("Advices")
-            }
+            onPress={() => {
+              navigation.navigate("NewsTape");
+            }}
           >
             <View style={styles.buttonContainer}>
               <View
                 style={
-                  route.name == "Advices" &&
+                  route.name == "NewsTape" &&
                   !isMenuVisible &&
                   styles.paramsStyle
                 }
@@ -150,7 +149,7 @@ export const Navigation = ({ navigation, handleRefresh }) => {
                   {
                     color: COLORS.Accent,
                     marginTop:
-                      route.name == "Advices" && !isMenuVisible ? 4 : 8,
+                      route.name == "NewsTape" && !isMenuVisible ? 4 : 8,
                   },
                 ]}
               >

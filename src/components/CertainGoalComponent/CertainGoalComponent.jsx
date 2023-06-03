@@ -19,7 +19,12 @@ import { PostButtons } from "../../pages/CertainGoal/components/PostButtons";
 import { FONTS } from "../../constants/FONTS/FONTS";
 import { userInformationStore } from "../../../store";
 
-export const CertainGoalComponent = ({ goalId, token, unwrap = false }) => {
+export const CertainGoalComponent = ({
+  goalId,
+  token,
+  userId,
+  unwrap = false,
+}) => {
   const [loading, setLoading] = useState(true);
   const [currentGoal, setCurrentGoal] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
@@ -171,7 +176,7 @@ export const CertainGoalComponent = ({ goalId, token, unwrap = false }) => {
                       flexDirection: "row",
                       flexWrap: "wrap",
 
-                      maxWidth: windowWidth - 40 - 20 - 20,
+                      maxWidth: windowWidth - 80,
                     }}
                   >
                     <Text
@@ -307,7 +312,12 @@ export const CertainGoalComponent = ({ goalId, token, unwrap = false }) => {
               />
             </View>
 
-            <PostsArray fullName={fullName} goalId={goalId} unwrap={unwrap} />
+            <PostsArray
+              fullName={fullName}
+              goalId={goalId}
+              unwrap={unwrap}
+              userId={userId}
+            />
           </>
         )}
       </View>

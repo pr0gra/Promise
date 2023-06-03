@@ -61,7 +61,7 @@ export const MenuNavigation = memo(
 
           <TouchableWithoutFeedback
             onPress={() => {
-              navigation.navigate("Profile");
+              navigation.navigate("Profile", { id: userInformation.id });
               setIsMenuVisible(false);
             }}
           >

@@ -74,7 +74,7 @@ export const CertainGoal = ({ navigation }) => {
       )}
       <View
         style={{
-          paddingTop: Platform.OS === "ios" ? 62 : 32,
+          paddingTop: 62,
           backgroundColor: COLORS.Background,
           flex: 1,
         }}

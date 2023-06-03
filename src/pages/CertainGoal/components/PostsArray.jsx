@@ -9,7 +9,7 @@ import { RefreshControl } from "react-native-gesture-handler";
 import { Post } from "./Post";
 import { AddingPostInput } from "./AddingPostInput";
 
-export function PostsArray({ fullName, goalId, unwrap }) {
+export function PostsArray({ fullName, goalId, unwrap, userId }) {
   const [loading, setLoading] = useState(false);
   const [postsArray, setPostsArray] = useState([]);
   const [postsLimit, setPostsLimit] = useState(true);
@@ -33,7 +33,7 @@ export function PostsArray({ fullName, goalId, unwrap }) {
 
       setPostsArray(sortedData);
     } catch (error) {
-      console.log("Ошибка в получении постов", error);
+      console.log("Ошибка в получении постов", error.response.data);
 
       // throw new Error("Ошибка в получении постов");
     } finally {
@@ -69,63 +69,7 @@ export function PostsArray({ fullName, goalId, unwrap }) {
       ) : (
         unwrap && <View style={{ height: 10 }} />
       )}
-      {/* {unwrap ? (
-        unwrap ? (
-          postsArray.slice(0, postsLimit ? 1 : postsArray.length).map((e) => {
-            return (
-              <Post
-                key={e.id}
-                fullName={fullName}
-                text={e.text}
-                postId={e.id}
-                inserted_at={e.inserted_at}
-              />
-            );
-          })
-        ) : (
-          postsArray.map((e) => {
-            return (
-              <Post
-                key={e.id}
-                fullName={fullName}
-                text={e.text}
-                postId={e.id}
-                inserted_at={e.inserted_at}
-              />
-            );
-          })
-        )
-      ) : ( */}
-      {/* <FlatList
-        data={
-          unwrap
-            ? postsArray.slice(0, postsLimit ? 1 : postsArray.length)
-            : postsArray
-        }
-        renderItem={({ item }) => (
-          <Post
-            key={item.id}
-            fullName={fullName}
-            text={item.text}
-            postId={item.id}
-            goalId={goalId}
-            token={token}
-            handleRefreshPosts={handleRefresh}
-            inserted_at={item.inserted_at}
-          />
-        )}
-        keyExtractor={(item) => item.id}
-        showsVerticalScrollIndicator={true}
-        indicatorStyle={COLORS.Accent}
-        refreshControl={
-          <RefreshControl
-            onRefresh={handleRefresh}
-            colors={[COLORS.Accent]}
-            refreshing={loading}
-          />
-        }
-        style={{ flexGrow: 0 }}
-      /> */}
+
       {unwrap
         ? postsArray.slice(0, postsLimit ? 1 : postsArray.length).map((e) => {
             return (
@@ -137,6 +81,7 @@ export function PostsArray({ fullName, goalId, unwrap }) {
                 goalId={goalId}
                 token={token}
                 handleRefreshPosts={handleRefresh}
+                userId={userId}
                 inserted_at={e.inserted_at}
               />
             );
@@ -149,6 +94,7 @@ export function PostsArray({ fullName, goalId, unwrap }) {
                 text={e.text}
                 postId={e.id}
                 goalId={goalId}
+                userId={userId}
                 token={token}
                 handleRefreshPosts={handleRefresh}
                 inserted_at={e.inserted_at}

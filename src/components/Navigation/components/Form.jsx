@@ -40,7 +40,7 @@ export const Form = ({ time, setIsGoalVisible, noExpand, handleRefresh }) => {
 
         {
           goal: {
-            title: title,
+            title: title.trim(),
             deadline: deadline,
             is_public: checkedNormal,
           },
