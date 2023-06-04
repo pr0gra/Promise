@@ -7,6 +7,8 @@ import {
   Text,
   View,
 } from "react-native";
+import { Keyboard } from "react-native";
+
 import React, { useCallback, useEffect, useState } from "react";
 import { COLORS } from "../../../src/constants/Colors/Colors";
 import { GlobalStyles } from "../../constants/GlobalStyles";
@@ -42,6 +44,7 @@ export const NewsTape = ({ navigation }) => {
       setLoading(false);
     }
   });
+
   useEffect(() => {
     getListOfAllGoals();
   }, []);
@@ -103,7 +106,11 @@ export const NewsTape = ({ navigation }) => {
         )}
       </ScrollView>
 
-      <Navigation navigation={navigation} handleRefresh={() => {}} />
+      <Navigation
+        navigation={navigation}
+        handleRefresh={() => {}}
+        setLoading={setLoading}
+      />
     </View>
   );
 };

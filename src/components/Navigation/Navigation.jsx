@@ -1,44 +1,46 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
   Dimensions,
-  KeyboardAvoidingView,
-  Platform,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
 import { COLORS } from "../../constants/Colors/Colors";
+import { MiniButtonNavigation } from "./Components/MiniButtonNavigation";
+import imageTarget from "../../../assets/icons/target-04.png";
+import imageRows from "../../../assets/icons/rows-01.png";
+import imageMessageSquare from "../../../assets/icons/message-square-01.png";
+import imageMenu from "../../../assets/icons/menu-01.png";
+import { MenuComponent } from "./Components/MenuComponent";
+import { SlideUpContainer } from "../SlideUpContainer/SlideUpContainer";
+import { IconButton } from "react-native-paper";
+import { Animated } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { Image, Animated } from "react-native";
-import { TouchableWithoutFeedback } from "react-native";
-import {
-  Surface,
-  IconButton,
-  Menu,
-  Divider,
-  Provider,
-} from "react-native-paper";
-import { MenuNavigation } from "./components/MenuNavigation";
-import { CreateGoal } from "./components/CreateGoal";
+import { CreateGoalComponent } from "./Components/CreateGoalComponent";
 import axios from "axios";
 import { tokenStore } from "../../../store";
-import { set } from "react-native-reanimated";
 
-export const Navigation = ({ navigation, handleRefresh }) => {
+export const Navigation = ({ navigation, handleRefresh = () => {} }) => {
   const route = useRoute();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
-  const [stateNavigation, setStateNavigation] = useState("");
-  const token = tokenStore((state) => state.token);
-  const [userData, setUserData] = useState(null);
-  const widthSize = useRef(new Animated.Value(70)).current;
-  const leftPosition = useRef(new Animated.Value(0)).current;
-  const windowWidth = Dimensions.get("window").width;
   const [isGoalVisible, setIsGoalVisible] = useState(false);
-
+  const [checked, setChecked] = useState(true);
+  const [title, setTitle] = useState("");
+  const widthSize = useRef(new Animated.Value(70)).current;
+  const windowWidth = Dimensions.get("window").width;
+  const token = tokenStore((state) => state.token);
+  const [posted, setPosted] = useState(false);
+  const [selected, setSelected] = useState("");
+  const [errorLengthOfTitle, setErrorLengthOfTitle] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [dateError, setDateError] = useState(false);
   const expand = () => {
     Animated.timing(widthSize, {
       toValue: windowWidth - 30,
-      duration: 500,
+      duration: 200,
       useNativeDriver: false,
     }).start();
   };
@@ -49,206 +51,220 @@ export const Navigation = ({ navigation, handleRefresh }) => {
       useNativeDriver: false,
     }).start();
   };
+  useEffect(() => {
+    if (!isGoalVisible) {
+      noExpand();
+    }
+  }, [isGoalVisible]);
+  function getFormattedDate(tomorrow = 0) {
+    const today = new Date();
+    const year = today.getFullYear();
+    let month = today.getMonth() + 1;
+    let day = today.getDate() + tomorrow;
 
-  const getUserInfo = useMemo(
-    () =>
-      async function getUserInfo() {
-        try {
-          const response = await axios.get("/api/profile", {
-            headers: { Authorization: `bearer ${token}` },
-          });
+    if (month < 10) {
+      month = "0" + month;
+    }
 
-          setUserData(JSON.stringify(response.data.data));
-          return response.data.data;
-        } catch (error) {
-          console.log(error);
-        }
-      },
-    [userData]
-  );
+    if (day < 10) {
+      day = "0" + day;
+    }
 
+    const formattedToday = year + "-" + month + "-" + day;
+    return formattedToday;
+  }
+
+  async function createGoal() {
+    setErrorLengthOfTitle(false);
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "/api/goals",
+
+        {
+          goal: {
+            title: title.trim(),
+            deadline: selected
+              ? selected + "T23:59"
+              : getFormattedDate(1) + "T23:59",
+            is_public: checked,
+          },
+        },
+        { headers: { Authorization: `bearer ${token}` } }
+      );
+      setIsGoalVisible(false);
+      console.log("Отправлено");
+      setPosted(true);
+      setDateError(false);
+      setErrorLengthOfTitle(false);
+      setTitle("");
+      handleRefresh();
+      return response.data;
+    } catch (error) {
+      setDateError(true);
+      console.log(
+        "Не удалось создать цель, ошибка: ",
+        error.response.data.errors.deadline[0]
+      );
+
+      return error;
+    } finally {
+      setLoading(false);
+    }
+  }
+  useEffect(() => {
+    setTimeout(() => {
+      setPosted(false);
+    }, 2000);
+  }, [posted]);
   return (
     <>
-      {isMenuVisible && (
-        <MenuNavigation
-          userData={userData}
-          navigation={navigation}
-          isMenuVisible={isMenuVisible}
+      <SlideUpContainer
+        isVisible={isMenuVisible}
+        setIsVisible={setIsMenuVisible}
+      >
+        <MenuComponent
           setIsMenuVisible={setIsMenuVisible}
-          noExpand={noExpand}
+          isMenuVisible={isMenuVisible}
+          navigation={navigation}
         />
-      )}
-      {isGoalVisible && (
-        <CreateGoal
-          isGoalVisible={isGoalVisible}
-          setIsGoalVisible={setIsGoalVisible}
-          noExpand={noExpand}
-          expand={expand}
-          handleRefresh={handleRefresh}
+      </SlideUpContainer>
+      <SlideUpContainer
+        isVisible={isGoalVisible}
+        setIsVisible={setIsGoalVisible}
+      >
+        <CreateGoalComponent
+          checked={checked}
+          setChecked={setChecked}
+          title={title}
+          setTitle={setTitle}
+          selected={selected}
+          setSelected={setSelected}
+          errorLengthOfTitle={errorLengthOfTitle}
+          dateError={dateError}
         />
-      )}
-
+      </SlideUpContainer>
       <View style={styles.container}>
         {!isGoalVisible && (
-          <TouchableWithoutFeedback
+          <TouchableOpacity
             onPress={() => {
               setIsMenuVisible(false);
+
               navigation.navigate("MyGoals");
             }}
           >
-            <View style={styles.buttonContainer}>
-              <View
-                style={
-                  route.name == "MyGoals" &&
-                  !isMenuVisible &&
-                  styles.paramsStyle
-                }
-              >
-                <Image
-                  source={require("../../../assets/icons/target-04.png")}
-                  style={styles.image}
-                />
-              </View>
-              <Text
-                style={[
-                  styles.text,
-                  {
-                    color: COLORS.Accent,
-                    marginTop: route.name == "MyGoals" ? 4 : 8,
-                  },
-                ]}
-              >
-                Мои цели
-              </Text>
-            </View>
-          </TouchableWithoutFeedback>
+            <MiniButtonNavigation
+              image={imageTarget}
+              text={"Мои цели"}
+              selected={route.name == "MyGoals" && !isMenuVisible}
+              marginTop={route.name !== "MyGoals"}
+              styleText={{
+                fontWeight: "600",
+                fontSize: 10,
+                color: COLORS.Accent,
+              }}
+            />
+          </TouchableOpacity>
         )}
-
         {!isGoalVisible && (
-          <TouchableWithoutFeedback
+          <TouchableOpacity
             onPress={() => {
               navigation.navigate("NewsTape");
             }}
           >
-            <View style={styles.buttonContainer}>
-              <View
-                style={
-                  route.name == "NewsTape" &&
-                  !isMenuVisible &&
-                  styles.paramsStyle
-                }
-              >
-                <Image
-                  source={require("../../../assets/icons/rows-01.png")}
-                  style={styles.image}
-                />
-              </View>
-              <Text
-                style={[
-                  styles.text,
-                  {
-                    color: COLORS.Accent,
-                    marginTop:
-                      route.name == "NewsTape" && !isMenuVisible ? 4 : 8,
-                  },
-                ]}
-              >
-                Лента
-              </Text>
+            <View style={[styles.miniButton, {}]}>
+              <MiniButtonNavigation
+                image={imageRows}
+                text={"Лента"}
+                marginTop={route.name !== "NewsTape"}
+                selected={route.name == "NewsTape" && !isMenuVisible}
+                styleText={{
+                  fontWeight: "600",
+                  fontSize: 10,
+                  color: COLORS.Accent,
+                }}
+              />
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         )}
 
-        {/* <Surface style={[styles.surface, shadowStyle]}> */}
         <Animated.View
           style={{
-            alignTimes: "center",
-            flexDirection: "row",
-            justifyContent: "center",
+            width: widthSize,
           }}
         >
           <IconButton
             onPress={() => {
-              setStateNavigation("CreateGoal");
               setIsGoalVisible(true);
-              expand();
               setIsMenuVisible(false);
+              expand();
+              if (isGoalVisible) {
+                if (title.trim().length > 7) {
+                  createGoal();
+                } else {
+                  setErrorLengthOfTitle(true);
+                }
+              }
             }}
             size={30}
             mode="contained"
             style={[
-              styles.button,
               {
-                width: widthSize,
-                left: leftPosition,
+                backgroundColor: COLORS.Accent,
+                marginTop: -17,
+                borderRadius: 30,
+                height: 70,
+                zIndex: 5,
+                minWidth: 70,
+                width: "100%",
+                marginLeft: -1,
               },
             ]}
+            labelStyle={{ paddingHorizontal: 20, paddingVertical: 20 }}
             iconColor={COLORS.LowAccent}
-            icon={require("../../../assets/icons/plus.png")}
+            icon={
+              // require("../../../assets/icons/plus.png")
+              posted
+                ? require("../../../assets/icons/check.png")
+                : require("../../../assets/icons/plus.png")
+            }
+            disabled={loading}
           />
         </Animated.View>
-        {/* </Surface> */}
 
         {!isGoalVisible && (
-          <TouchableWithoutFeedback
-            onPress={
-              () => {}
-              //  navigation.navigate("Chats")
-            }
-          >
-            <View style={styles.buttonContainer}>
-              <View
-                style={
-                  route.name == "Chats" && !isMenuVisible && styles.paramsStyle
-                }
-              >
-                <Image
-                  source={require("../../../assets/icons/message-square-01.png")}
-                  style={styles.image}
-                />
-              </View>
-              <Text
-                style={[
-                  styles.text,
-                  {
-                    color: COLORS.Accent,
-                    marginTop: route.name == "Chats" && !isMenuVisible ? 4 : 8,
-                  },
-                ]}
-              >
-                Чаты
-              </Text>
-            </View>
-          </TouchableWithoutFeedback>
+          <TouchableOpacity onPress={() => {}}>
+            <MiniButtonNavigation
+              image={imageMessageSquare}
+              text={"Чаты"}
+              marginTop={route.name !== "Chats"}
+              selected={route.name == "Chats" && !isMenuVisible}
+              styleText={{
+                fontWeight: "600",
+                fontSize: 10,
+                color: COLORS.Accent,
+              }}
+            />
+          </TouchableOpacity>
         )}
         {!isGoalVisible && (
-          <TouchableWithoutFeedback
+          <TouchableOpacity
             onPress={() => {
-              setStateNavigation("Menu");
-              getUserInfo();
               setIsMenuVisible((state) => !state);
             }}
           >
-            <View style={styles.buttonContainer}>
-              <View style={isMenuVisible && styles.paramsStyle}>
-                <Image
-                  source={require("../../../assets/icons/menu-01.png")}
-                  style={styles.image}
-                />
-              </View>
-              <Text
-                style={[
-                  styles.text,
-                  {
-                    color: COLORS.Accent,
-                    marginTop: isMenuVisible ? 4 : 8,
-                  },
-                ]}
-              >
-                Меню
-              </Text>
-            </View>
-          </TouchableWithoutFeedback>
+            <MiniButtonNavigation
+              image={imageMenu}
+              text={"Меню"}
+              marginTop={!isMenuVisible}
+              selected={isMenuVisible}
+              styleText={{
+                fontWeight: "600",
+                fontSize: 10,
+                color: COLORS.Accent,
+              }}
+            />
+          </TouchableOpacity>
         )}
       </View>
     </>
@@ -263,11 +279,17 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
+
     gap: 17,
     flexDirection: "row",
     paddingLeft: 16,
     paddingRight: 16,
     zIndex: 10,
+  },
+  miniButton: {
+    flexDirection: "column",
+    gap: 4,
+    alignItems: "center",
   },
   buttonContainer: {
     alignItems: "center",

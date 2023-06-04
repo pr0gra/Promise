@@ -150,40 +150,58 @@ export const Profile = ({ navigation }) => {
             gap: 20,
           }}
         >
-          <IconButton
-            mode="contained"
-            onPress={() => navigation.goBack()}
-            size={24}
-            icon={require("../../../assets/icons/arrow-narrow-left.png")}
-            style={{ backgroundColor: "transparent", borderRadius: 20 }}
-            iconColor={COLORS.Accent}
-            zIndex={150}
-          />
+          <View
+            style={{
+              flex: 1,
+            }}
+          >
+            <IconButton
+              mode="contained"
+              onPress={() => navigation.goBack()}
+              size={24}
+              icon={require("../../../assets/icons/arrow-narrow-left.png")}
+              style={{ backgroundColor: "transparent", borderRadius: 20 }}
+              iconColor={COLORS.Accent}
+              zIndex={150}
+            />
+          </View>
 
-          {userData?.first_name && userData?.last_name ? (
-            <Text
-              style={[
-                styles.nameMiniHeader,
-                { marginTop: 0, maxWidth: windowWidth - 135, marginLeft: -16 },
-              ]}
-            >{`${userData?.first_name} ${userData?.last_name}`}</Text>
-          ) : (
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <SkeletonLoading
-                width={200}
-                height={25}
-                borderRadius={20}
-                marginTop={20}
-              />
-            </View>
-          )}
-          {userInformation.id === userData?.id && (
-            <View style={{}}>
+          <View
+            style={{
+              flex: 8,
+            }}
+          >
+            {userData?.first_name && userData?.last_name ? (
+              <Text
+                style={[
+                  styles.nameMiniHeader,
+                  {
+                    marginTop: 0,
+                  },
+                ]}
+              >{`${userData?.first_name} ${userData?.last_name}`}</Text>
+            ) : (
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <SkeletonLoading
+                  width={200}
+                  height={25}
+                  borderRadius={20}
+                  marginTop={20}
+                />
+              </View>
+            )}
+          </View>
+          <View
+            style={{
+              flex: 1,
+            }}
+          >
+            {userInformation.id === userData?.id && (
               <IconButton
                 mode="contained"
                 onPress={() => setModalIsVisible((state) => !state)}
@@ -195,14 +213,13 @@ export const Profile = ({ navigation }) => {
                 }}
                 iconColor={COLORS.Accent}
               />
-            </View>
-          )}
+            )}
+          </View>
         </Animated.View>
 
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
-            // paddingTop: 189,
           }}
           showsVerticalScrollIndicator={true}
           indicatorStyle={COLORS.Accent}
@@ -223,17 +240,13 @@ export const Profile = ({ navigation }) => {
           <>
             <Animated.View
               style={{
-                // transform: [{ translateY: translateYBigHeader }],
                 paddingTop: 32,
                 zIndex: 10,
               }}
             >
               <View
                 style={{
-                  // position: "absolute",
                   paddingBottom: 20,
-                  // right: 0,
-                  // left: 0,
                   paddingTop: Platform.OS === "ios" ? 64 : 32,
                   marginTop: Platform.OS === "ios" ? -64 : -32,
                   backgroundColor: COLORS.Background,
@@ -333,9 +346,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     ...FONTS.smallerSectionHeader,
     color: COLORS.Accent,
-    // fontWeight: "900",
-    // fontSize: 18,
-    // lineHeight: 33,
   },
   name: {
     textAlign: "center",
