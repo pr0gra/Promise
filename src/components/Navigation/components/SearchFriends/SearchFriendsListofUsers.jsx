@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { COLORS } from "../../../../constants/Colors/Colors";
-
+import UserAvatar from "react-native-user-avatar";
 export const SearchFriendsListofUsers = ({ listOfUsers, navigation }) => {
   const test = listOfUsers ? (
     listOfUsers?.map((e) => {
@@ -58,6 +58,12 @@ export const SearchFriendsListofUsers = ({ listOfUsers, navigation }) => {
                   borderRadius: 20,
                 }}
               >
+                <UserAvatar
+                  style={{ width: 20 }}
+                  size={20}
+                  name={`${e.first_name} ${e.last_name}`}
+                  bgColor={COLORS.Accent}
+                />
                 <Text>
                   {e.first_name} {e.last_name}
                 </Text>

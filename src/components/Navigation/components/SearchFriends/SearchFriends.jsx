@@ -32,7 +32,7 @@ export const SearchFriends = ({ isVisible, setIsVisible, navigation }) => {
       );
 
       setListOfUsers(response.data.data);
-      console.log(listOfUsers);
+
       return response.data;
     } catch (error) {
       console.log("Ошибка в получении списка пользователей", error);
@@ -47,8 +47,8 @@ export const SearchFriends = ({ isVisible, setIsVisible, navigation }) => {
     <View style={{ flexDirection: "column", gap: 20 }}>
       <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
         <TextInput
-          label="Найти пользователя"
-          placeholder="Найти пользователя"
+          label="Введите имя"
+          placeholder="Введите имя"
           value={title}
           onChangeText={(e) => {
             setTitle(e);
@@ -71,14 +71,13 @@ export const SearchFriends = ({ isVisible, setIsVisible, navigation }) => {
           icon={require("../../../../../assets/icons/lupa.png")}
           size={24}
           onPress={() => {
-            console.log(title);
             getListOfUsers(title);
           }}
           iconColor={COLORS.Accent}
         />
       </View>
       <ScrollView
-        style={{ maxHeight: 300 }}
+        style={{ maxHeight: 450 }}
         contentContainerStyle={{
           backgroundColor: COLORS.LowAccent,
           paddingHorizontal: 5,
