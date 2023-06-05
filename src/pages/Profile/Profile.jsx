@@ -79,8 +79,10 @@ export const Profile = ({ navigation }) => {
 
   const handleRefresh = () => {
     getPublicGoals();
+    getUserInfo();
     console.log("refresh");
   };
+
   useEffect(() => {
     getUserInfo();
     getPublicGoals();

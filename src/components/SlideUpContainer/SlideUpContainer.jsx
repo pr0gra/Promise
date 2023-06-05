@@ -6,31 +6,40 @@ import {
   Dimensions,
   StyleSheet,
   View,
+  ScrollView,
 } from "react-native";
 import { COLORS } from "../../constants/Colors/Colors";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-
+import { findNodeHandle, UIManager } from "react-native";
 export const SlideUpContainer = ({ isVisible, setIsVisible, children }) => {
   const { height } = Dimensions.get("window");
   const containerHeight = height * 0.8; // Высота контейнера
-
   const pan = useRef(new Animated.ValueXY()).current;
+  const yourComponentRef = useRef(null);
+
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
-      onPanResponderMove: (_, gestureState) => {
-        // Двигаем контейнер только если он видимый
+      onMoveShouldSetPanResponderCapture: (_, gestureState) => {
+        const targetComponentNode = findNodeHandle(yourComponentRef.current);
 
+        const isTouchOverTargetComponent = UIManager.measureInWindow(
+          targetComponentNode,
+          (x, y, width, height) => {
+            const touchY = gestureState.y0;
+            return touchY >= y && touchY <= y + height;
+          }
+        );
+
+        return isTouchOverTargetComponent;
+      },
+      onPanResponderMove: (_, gestureState) => {
         pan.setValue({ x: 0, y: gestureState.dy });
       },
-
       onPanResponderRelease: (_, gestureState) => {
-        // Если пользователь сдвинул контейнер вниз или быстро потянул вниз, скрываем его
-
         if (gestureState.dy > 100 || gestureState.vy > 1) {
           hideContainer();
         } else {
-          // Возвращаем контейнер на исходную позицию
           Animated.spring(pan, {
             toValue: { x: 0, y: 0 },
             useNativeDriver: false,
@@ -87,15 +96,19 @@ export const SlideUpContainer = ({ isVisible, setIsVisible, children }) => {
         }}
         style={[styles.menuContainer]}
       >
-        <View
-          style={{
-            borderRadius: 100,
-            height: 4,
-            width: 50,
-            backgroundColor: COLORS.Accent,
-            marginBottom: 20,
-          }}
-        ></View>
+        <View style={{ alignItems: "center" }}>
+          <View
+            ref={yourComponentRef}
+            style={{
+              borderRadius: 100,
+              height: 4,
+              width: 50,
+              backgroundColor: COLORS.Accent,
+              marginBottom: 20,
+            }}
+          ></View>
+        </View>
+
         <View>{children}</View>
       </LinearGradient>
     </Animated.View>
@@ -125,7 +138,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     // flexDirection: "column",
-    alignItems: "center",
+    // alignItems: "center",
     // gap: 20,
   },
 });

@@ -22,6 +22,7 @@ import { useRoute } from "@react-navigation/native";
 import { CreateGoalComponent } from "./Components/CreateGoalComponent";
 import axios from "axios";
 import { tokenStore } from "../../../store";
+import { SearchFriends } from "./Components/SearchFriends/SearchFriends";
 
 export const Navigation = ({ navigation, handleRefresh = () => {} }) => {
   const route = useRoute();
@@ -37,6 +38,7 @@ export const Navigation = ({ navigation, handleRefresh = () => {} }) => {
   const [errorLengthOfTitle, setErrorLengthOfTitle] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dateError, setDateError] = useState(false);
+  const [isFriendsVisible, setIsFriendsVisible] = useState(false);
   const expand = () => {
     Animated.timing(widthSize, {
       toValue: windowWidth - 30,
@@ -126,6 +128,17 @@ export const Navigation = ({ navigation, handleRefresh = () => {} }) => {
         <MenuComponent
           setIsMenuVisible={setIsMenuVisible}
           isMenuVisible={isMenuVisible}
+          navigation={navigation}
+          setIsFriendsVisible={setIsFriendsVisible}
+        />
+      </SlideUpContainer>
+      <SlideUpContainer
+        isVisible={isFriendsVisible}
+        setIsVisible={setIsFriendsVisible}
+      >
+        <SearchFriends
+          isVisible={isFriendsVisible}
+          setIsVisible={setIsFriendsVisible}
           navigation={navigation}
         />
       </SlideUpContainer>
@@ -251,6 +264,7 @@ export const Navigation = ({ navigation, handleRefresh = () => {} }) => {
           <TouchableOpacity
             onPress={() => {
               setIsMenuVisible((state) => !state);
+              setIsFriendsVisible(false);
             }}
           >
             <MiniButtonNavigation
