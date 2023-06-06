@@ -81,6 +81,7 @@ export const EditProfileForm = ({ navigation }) => {
       last_name: lastName,
       city: city,
       bio: about,
+      id: userData.id,
     };
     try {
       setErrors(null);
@@ -156,7 +157,7 @@ export const EditProfileForm = ({ navigation }) => {
             <TextInput
               label="Расскажи о себе"
               placeholder="Расскажи о себе"
-              value={about == null ? "123" : about}
+              value={about == null ? "" : about}
               onChangeText={handleAboutChange}
               multiline
               numberOfLines={4}
@@ -294,7 +295,7 @@ export const EditProfileForm = ({ navigation }) => {
       >
         <IconButton
           onPress={() => {
-            navigation.navigate("Profile");
+            navigation.navigate("Profile", { id: userData.id });
           }}
           size={24}
           mode="contained"

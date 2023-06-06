@@ -15,6 +15,7 @@ import { useState } from "react";
 import { CertainGoal } from "./src/pages/CertainGoal/CertainGoal";
 import { Profile } from "./src/pages/Profile/Profile";
 import { EditProfile } from "./src/pages/EditProfile/EditProfile";
+import { NewsTape } from "./src/pages/NewsTape/NewsTape";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -63,6 +64,11 @@ export default function App() {
               name="EditProfile"
               component={EditProfile}
               options={{ title: "Редактировать профиль", headerShown: false }}
+            />
+            <Stack.Screen
+              name="NewsTape"
+              component={NewsTape}
+              options={{ title: "Лента целей", headerShown: false }}
             />
           </Stack.Navigator>
         </NavigationContainer>

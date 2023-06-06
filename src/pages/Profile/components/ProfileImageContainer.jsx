@@ -11,6 +11,8 @@ export const ProfileImageContainer = ({
   lastName,
   scrollY,
   setModalIsVisible,
+  userInformationId,
+  userDataId,
 }) => {
   const diffClamp = Animated.diffClamp(scrollY, 0, 150);
   const translateY = diffClamp.interpolate({
@@ -24,39 +26,49 @@ export const ProfileImageContainer = ({
   });
   return (
     <View style={[styles.imageContainer]}>
-      <IconButton
-        mode="contained"
-        onPress={() => navigation.goBack()}
-        size={24}
-        icon={require("../../../../assets/icons/arrow-narrow-left.png")}
-        style={[styles.buttonBack]}
-        iconColor={COLORS.Accent}
-        zIndex={150}
-      />
+      <View style={{ flex: 1 }}>
+        <IconButton
+          mode="contained"
+          onPress={() => navigation.goBack()}
+          size={24}
+          icon={require("../../../../assets/icons/arrow-narrow-left.png")}
+          style={[styles.buttonBack]}
+          iconColor={COLORS.Accent}
+          zIndex={150}
+        />
+      </View>
 
       {firstName && lastName && (
-        <UserAvatar
-          size={100}
-          // imageStyle={{ borderRadius: 100 }}
-          name={`${firstName} ${lastName}`}
-          style={{
-            borderRadius: 100,
-            width: 100,
-            // marginLeft: -50
-          }}
-          // src={"https://dummyimage.com/100x100/000/fff"}
-          bgColor={COLORS.Accent}
-        />
+        <View style={{ flex: 1 }}>
+          <UserAvatar
+            size={100}
+            // imageStyle={{ borderRadius: 100 }}
+            name={`${firstName} ${lastName}`}
+            style={{
+              borderRadius: 100,
+              width: 100,
+              // marginLeft: -50
+            }}
+            // src={"https://dummyimage.com/100x100/000/fff"}
+            bgColor={COLORS.Accent}
+          />
+        </View>
       )}
 
-      <IconButton
-        mode="contained"
-        onPress={() => setModalIsVisible((state) => !state)}
-        size={24}
-        icon={require("../../../../assets/icons/dots-vertical.png")}
-        style={[styles.buttonBack]}
-        iconColor={COLORS.Accent}
-      />
+      {userInformationId === userDataId ? (
+        <View style={{ flex: 1, alignItems: "flex-end" }}>
+          <IconButton
+            mode="contained"
+            onPress={() => setModalIsVisible((state) => !state)}
+            size={24}
+            icon={require("../../../../assets/icons/dots-vertical.png")}
+            style={[styles.buttonBack]}
+            iconColor={COLORS.Accent}
+          />
+        </View>
+      ) : (
+        <View style={{ flex: 1 }}></View>
+      )}
     </View>
   );
 };

@@ -7,6 +7,7 @@ import {
   Text,
   View,
   Animated,
+  Dimensions,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { COLORS } from "../../constants/Colors/Colors";
@@ -23,18 +24,24 @@ import { CertainGoalComponent } from "../../components/CertainGoalComponent/Cert
 
 import { Button, IconButton } from "react-native-paper";
 import { ProfileModalContainer } from "./components/ProfileModalContainer";
-
+import { useRoute } from "@react-navigation/native";
+import { userInformationStore } from "../../../store";
 export const Profile = ({ navigation }) => {
   const token = tokenStore((state) => state.token);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [goals, setGoals] = useState([]);
   const [isModalVisible, setModalIsVisible] = useState(false);
-
+  const route = useRoute();
+  const windowWidth = Dimensions.get("window").width;
+  const userId = route.params.id;
+  const userInformation = userInformationStore(
+    (state) => state.userInformation
+  );
   async function getUserInfo() {
     setLoading(true);
     try {
-      const response = await axios.get("/api/profile", {
+      const response = await axios.get(`/api/users/${userId}`, {
         headers: { Authorization: `bearer ${token}` },
       });
 
@@ -42,7 +49,7 @@ export const Profile = ({ navigation }) => {
 
       return response.data.data;
     } catch (error) {
-      console.log(error);
+      console.log(error.response);
     } finally {
       setLoading(false);
     }
@@ -51,7 +58,7 @@ export const Profile = ({ navigation }) => {
     setLoading(true);
 
     try {
-      const response = await axios.get(`/api/goals`, {
+      const response = await axios.get(`/api/users/${userId}/goals`, {
         headers: { Authorization: `bearer ${token}` },
       });
 
@@ -62,7 +69,7 @@ export const Profile = ({ navigation }) => {
 
       return response.data.data;
     } catch (error) {
-      console.log("NO RESPONSE");
+      console.log(error);
 
       // throw new Error("Ошибка в получении целей");
     } finally {
@@ -72,13 +79,16 @@ export const Profile = ({ navigation }) => {
 
   const handleRefresh = () => {
     getPublicGoals();
+    getUserInfo();
     console.log("refresh");
   };
+
   useEffect(() => {
     getUserInfo();
     getPublicGoals();
+
     noExpandMiniHeader();
-  }, []);
+  }, [userId]);
 
   const scrollY = new Animated.Value(0);
 
@@ -113,6 +123,7 @@ export const Profile = ({ navigation }) => {
       event.preventDefault();
     }
   };
+
   return (
     <>
       {isModalVisible && (
@@ -130,54 +141,87 @@ export const Profile = ({ navigation }) => {
             left: 0,
             right: 0,
             flexDirection: "row",
-            justifyContent: "space-between",
+            justifyContent: "flex-start",
             paddingHorizontal: 20,
             paddingTop: 32,
             transform: [{ translateY: heightSize }],
             zIndex: 4,
             alignItems: "center",
-            justifyContent: "center",
+
             backgroundColor: COLORS.Background,
             gap: 20,
           }}
         >
-          <IconButton
-            mode="contained"
-            onPress={() => navigation.goBack()}
-            size={24}
-            icon={require("../../../assets/icons/arrow-narrow-left.png")}
-            style={{ backgroundColor: "transparent", borderRadius: 20 }}
-            iconColor={COLORS.Accent}
-            zIndex={150}
-          />
-          {userData?.first_name && userData?.last_name ? (
-            <Text
-              style={[styles.name, { marginTop: 0 }]}
-            >{`${userData?.first_name} ${userData?.last_name}`}</Text>
-          ) : (
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <SkeletonLoading
-                width={200}
-                height={25}
-                borderRadius={20}
-                marginTop={20}
+          <View
+            style={{
+              flex: 1,
+            }}
+          >
+            <IconButton
+              mode="contained"
+              onPress={() => navigation.goBack()}
+              size={24}
+              icon={require("../../../assets/icons/arrow-narrow-left.png")}
+              style={{ backgroundColor: "transparent", borderRadius: 20 }}
+              iconColor={COLORS.Accent}
+              zIndex={150}
+            />
+          </View>
+
+          <View
+            style={{
+              flex: 8,
+            }}
+          >
+            {userData?.first_name && userData?.last_name ? (
+              <Text
+                style={[
+                  styles.nameMiniHeader,
+                  {
+                    marginTop: 0,
+                  },
+                ]}
+              >{`${userData?.first_name} ${userData?.last_name}`}</Text>
+            ) : (
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <SkeletonLoading
+                  width={200}
+                  height={25}
+                  borderRadius={20}
+                  marginTop={20}
+                />
+              </View>
+            )}
+          </View>
+          <View
+            style={{
+              flex: 1,
+            }}
+          >
+            {userInformation.id === userData?.id && (
+              <IconButton
+                mode="contained"
+                onPress={() => setModalIsVisible((state) => !state)}
+                size={24}
+                icon={require("../../../assets/icons/dots-vertical.png")}
+                style={{
+                  backgroundColor: "transparent",
+                  borderRadius: 20,
+                }}
+                iconColor={COLORS.Accent}
               />
-            </View>
-          )}
-          <IconButton
-            mode="contained"
-            onPress={() => setModalIsVisible((state) => !state)}
-            size={24}
-            icon={require("../../../assets/icons/dots-vertical.png")}
-            style={{ backgroundColor: "transparent", borderRadius: 20 }}
-            iconColor={COLORS.Accent}
-          />
+            )}
+          </View>
         </Animated.View>
 
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
-            // paddingTop: 189,
           }}
           showsVerticalScrollIndicator={true}
           indicatorStyle={COLORS.Accent}
@@ -198,16 +242,13 @@ export const Profile = ({ navigation }) => {
           <>
             <Animated.View
               style={{
-                // transform: [{ translateY: translateYBigHeader }],
+                paddingTop: 32,
                 zIndex: 10,
               }}
             >
               <View
                 style={{
-                  // position: "absolute",
                   paddingBottom: 20,
-                  // right: 0,
-                  // left: 0,
                   paddingTop: Platform.OS === "ios" ? 64 : 32,
                   marginTop: Platform.OS === "ios" ? -64 : -32,
                   backgroundColor: COLORS.Background,
@@ -220,6 +261,8 @@ export const Profile = ({ navigation }) => {
                     lastName={userData?.last_name}
                     scrollY={scrollY}
                     setModalIsVisible={setModalIsVisible}
+                    userInformationId={userInformation.id}
+                    userDataId={userData?.id}
                   />
                 ) : (
                   <View
@@ -249,7 +292,7 @@ export const Profile = ({ navigation }) => {
                   </View>
                 )}
 
-                <InteractionButtons />
+                {userInformation.id !== userData?.id && <InteractionButtons />}
               </View>
             </Animated.View>
 
@@ -278,8 +321,10 @@ export const Profile = ({ navigation }) => {
                   <CertainGoalComponent
                     key={e.id}
                     goalId={e.id}
+                    userId={e.user_id}
                     token={token}
                     unwrap={true}
+                    navigation={navigation}
                   />
                 );
               })
@@ -298,6 +343,12 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === "ios" ? 64 : 32,
     backgroundColor: COLORS.Background,
     flex: 1,
+  },
+  nameMiniHeader: {
+    textAlign: "center",
+    marginTop: 20,
+    ...FONTS.smallerSectionHeader,
+    color: COLORS.Accent,
   },
   name: {
     textAlign: "center",

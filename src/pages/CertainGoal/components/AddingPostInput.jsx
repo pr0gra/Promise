@@ -34,7 +34,7 @@ export function AddingPostInput({
       handleRefresh();
       return response.data;
     } catch (error) {
-      console.log("Ошибка в создании Поста", error);
+      console.log("Ошибка в создании Поста", error.response.data.errors);
 
       // throw new Error("Ошибка в создании Поста");
     } finally {

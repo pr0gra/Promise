@@ -26,6 +26,7 @@ export const MyGoals = ({ navigation }) => {
   const [errorState, setErrorState] = useState(null);
   const [goals, setGoals] = useState([]);
   const token = tokenStore((state) => state.token);
+
   const setUserInformation = userInformationStore(
     (state) => state.setUserInformation
   );
@@ -82,7 +83,7 @@ export const MyGoals = ({ navigation }) => {
   return (
     <View
       style={{
-        paddingTop: Platform.OS === "ios" ? 62 : 32,
+        paddingTop: 62,
         backgroundColor: COLORS.Background,
         flex: 1,
       }}

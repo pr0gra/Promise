@@ -11,17 +11,36 @@ import { Button, Dialog, IconButton, Portal } from "react-native-paper";
 import { useRoute } from "@react-navigation/native";
 import { CertainGoalComponent } from "../../components/CertainGoalComponent/CertainGoalComponent";
 import { FONTS } from "../../constants/FONTS/FONTS";
-import { ScrollView } from "react-native-gesture-handler";
 
 export const CertainGoal = ({ navigation }) => {
   const token = tokenStore((state) => state.token);
-
+  const [isDone, setIsDone] = useState(false);
   const [modalIsVisible, setModalIsVisible] = useState(false);
 
   const route = useRoute();
 
   const goalId = route.params.goalId;
+  const setGoalIsDone = async (goalId, doneStatus) => {
+    try {
+      const response = await axios.put(
+        `/api/goals/${goalId}`,
+        {
+          goal: {
+            done: doneStatus,
+          },
+        },
+        {
+          headers: { Authorization: `bearer ${token}` },
+        }
+      );
+      setIsDone(true);
+      return response;
+    } catch (error) {
+      console.log("Ошибка в отправке формы", error.response.data.errors);
 
+      // throw new Error("Ошибка в отправке формы");
+    }
+  };
   return (
     <>
       {modalIsVisible && (
@@ -74,7 +93,7 @@ export const CertainGoal = ({ navigation }) => {
       )}
       <View
         style={{
-          paddingTop: Platform.OS === "ios" ? 62 : 32,
+          paddingTop: 62,
           backgroundColor: COLORS.Background,
           flex: 1,
         }}
@@ -96,17 +115,48 @@ export const CertainGoal = ({ navigation }) => {
             Цель
           </Text>
 
-          <IconButton
-            mode="contained"
-            onPress={() => setModalIsVisible(true)}
-            size={24}
-            icon={require("../../../assets/icons/dots-vertical.png")}
-            style={[{ backgroundColor: "transparent" }]}
-            iconColor={COLORS.Accent}
-          />
+          <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+            {!isDone && (
+              <Button
+                style={{
+                  backgroundColor: COLORS.Accent,
+                  borderRadius: 20,
+                  // paddingHorizontal: 10,
+                  // paddingVertical: 3
+                }}
+                onPress={() => {
+                  setGoalIsDone(goalId, true);
+                }}
+                labelStyle={{ paddingHorizontal: 10 }}
+              >
+                <Text
+                  style={{
+                    color: "white",
+                    ...FONTS.buttonText,
+                  }}
+                >
+                  Я достиг!
+                </Text>
+              </Button>
+            )}
+            <IconButton
+              mode="contained"
+              onPress={() => setModalIsVisible(true)}
+              size={24}
+              icon={require("../../../assets/icons/dots-vertical.png")}
+              style={[{ backgroundColor: "transparent" }]}
+              iconColor={COLORS.Accent}
+            />
+          </View>
         </View>
 
-        {goalId && <CertainGoalComponent goalId={goalId} token={token} />}
+        {goalId && (
+          <CertainGoalComponent
+            goalId={goalId}
+            token={token}
+            setIsDone={setIsDone}
+          />
+        )}
       </View>
       <Navigation navigation={navigation} handleRefresh={() => {}} />
     </>

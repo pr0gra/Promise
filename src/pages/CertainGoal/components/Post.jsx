@@ -10,18 +10,20 @@ import SkeletonLoading from "../../../components/SkeletonLoading/SkeletonLoading
 import axios from "axios";
 import { useState } from "react";
 import { FONTS } from "../../../constants/FONTS/FONTS";
-import { tokenStore } from "../../../../store";
+import { tokenStore, userInformationStore } from "../../../../store";
 export function Post({
   text,
   postId,
   fullName,
   inserted_at = "",
   goalId,
-
+  userId,
   handleRefreshPosts,
 }) {
   const [showModal, setShowModal] = useState(false);
   const token = tokenStore((state) => state.token);
+  const userData = userInformationStore((state) => state.userInformation);
+
   async function deletePost() {
     try {
       const response = await axios.delete(
@@ -115,12 +117,14 @@ export function Post({
             />
           )}
         </View>
-        <ButtonReaction
-          image={require("../../../../assets/icons/dots-vertical.png")}
-          onPress={() => {
-            setShowModal((state) => !state);
-          }}
-        />
+        {userId == userData.id && (
+          <ButtonReaction
+            image={require("../../../../assets/icons/dots-vertical.png")}
+            onPress={() => {
+              setShowModal((state) => !state);
+            }}
+          />
+        )}
       </View>
       <Text>{text}</Text>
       <View style={{ flexDirection: "row", gap: 10 }}>

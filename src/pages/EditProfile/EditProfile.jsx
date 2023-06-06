@@ -16,7 +16,7 @@ export const EditProfile = ({ navigation }) => {
   return (
     <SafeAreaView
       style={{
-        paddingTop: Platform.OS === "ios" ? 0 : 28,
+        paddingTop: 62,
         backgroundColor: COLORS.Background,
         flex: 1,
         flexDirection: "column",
