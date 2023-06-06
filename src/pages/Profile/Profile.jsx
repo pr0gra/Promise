@@ -292,7 +292,7 @@ export const Profile = ({ navigation }) => {
                   </View>
                 )}
 
-                <InteractionButtons />
+                {userInformation.id !== userData?.id && <InteractionButtons />}
               </View>
             </Animated.View>
 
@@ -324,6 +324,7 @@ export const Profile = ({ navigation }) => {
                     userId={e.user_id}
                     token={token}
                     unwrap={true}
+                    navigation={navigation}
                   />
                 );
               })

@@ -25,6 +25,7 @@ export const CertainGoalComponent = ({
   userId,
   unwrap = false,
   setIsDone,
+  navigation,
 }) => {
   const [loading, setLoading] = useState(true);
   const [currentGoal, setCurrentGoal] = useState(null);
@@ -309,8 +310,8 @@ export const CertainGoalComponent = ({
                 goalId={goalId}
                 deadline={currentGoal?.deadline}
                 isPublic={currentGoal?.is_public}
-                currentGoalTitle={currentGoal?.title}
                 isJoined={currentGoal?.is_joined}
+                navigation={navigation}
               />
             </View>
 

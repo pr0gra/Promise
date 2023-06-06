@@ -5,7 +5,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Button } from "react-native-paper";
 import { COLORS } from "../../../constants/Colors/Colors";
 import { ButtonReaction } from "./ButtonReaction";
@@ -20,12 +20,14 @@ export const PostButtons = ({
   goalId,
   deadline,
   isPublic,
-  currentGoalTitle,
+  // currentGoalTitle,
   isJoined,
 }) => {
   const token = tokenStore((state) => state.token);
   const [isError, setIsError] = useState(false);
   const [isJoinedState, setIsJoinedState] = useState(isJoined);
+  const [joinsCounter, setJoinsCounter] = useState(0);
+
   const joinGoal = useCallback(async function joinGoal() {
     try {
       const response = await axios.post(
@@ -42,6 +44,7 @@ export const PostButtons = ({
           },
         }
       );
+      setJoinsCounter((state) => state + 1);
       setIsJoinedState(true);
       return response.data.data;
     } catch (error) {
@@ -71,6 +74,7 @@ export const PostButtons = ({
         }
       );
       console.log("Ушел");
+      setJoinsCounter((state) => state - 1);
       setIsJoinedState(false);
       return response.data.data;
     } catch (error) {
@@ -84,6 +88,31 @@ export const PostButtons = ({
       }, 3000);
     }
   });
+  const joinsGoalInfo = useCallback(async function joinsGoalInfo() {
+    try {
+      const response = await axios.get(
+        `/api/goals/${goalId}/joins`,
+
+        {
+          headers: {
+            Authorization: `bearer ${token}`,
+          },
+        }
+      );
+      setJoinsCounter(response.data.data.length);
+
+      return response.data.data;
+    } catch (error) {
+      setIsError(true);
+
+      console.log(
+        `Не получилось узнак количество присоединившихся, ошибка ${error.response.data.errors}`
+      );
+    }
+  });
+  useEffect(() => {
+    joinsGoalInfo();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -92,10 +121,10 @@ export const PostButtons = ({
           image={isJoinedState ? messageSquare : plus}
           onPress={
             isJoinedState
-              ? () => console.log("Тут логика открытия чата")
+              ? () => console.log("Тут логика показа присоединившихся")
               : () => joinGoal()
           }
-          text={isJoinedState ? "Открыть чат" : "Присоединиться"}
+          text={JSON.stringify(joinsCounter)}
         />
 
         {isJoinedState && (

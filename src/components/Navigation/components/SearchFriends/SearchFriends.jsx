@@ -92,7 +92,7 @@ export const SearchFriends = ({ isVisible, setIsVisible, navigation }) => {
         ></LinearGradient>
       )}
       <ScrollView
-        style={{ maxHeight: 450 }}
+        style={{ maxHeight: 300 }}
         contentContainerStyle={{
           // backgroundColor: COLORS.LowAccent,
           gap: 20,

@@ -10,6 +10,7 @@ import { PostsArray } from "../../CertainGoal/components/PostsArray";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { Button } from "react-native-paper";
 import { UserAvatarButton } from "./UserAvatarButton";
+import { PostButtons } from "../../CertainGoal/components/PostButtons";
 
 export const NewsTapeGoalComponent = ({
   navigation,
@@ -19,6 +20,8 @@ export const NewsTapeGoalComponent = ({
   userId,
   goalId,
   unwrap = false,
+  isPublic,
+  isJoined,
 }) => {
   const [progress, setProgress] = useState(0);
   const [result, setResult] = useState("");
@@ -117,22 +120,8 @@ export const NewsTapeGoalComponent = ({
             gap: 10,
             alignItems: "center",
             marginBottom: 15,
-            // flexWrap: "wrap",
-            // maxWidth: windowWidth - 40 - 20 - 20,
           }}
         >
-          {/* <TouchableWithoutFeedback
-            onPress={() =>
-              navigation.navigate("Profile", { id: userInfo.user_id })
-            }
-          >
-            <UserAvatar
-              style={{ width: 20 }}
-              size={20}
-              name={fullName !== "undefined undefined" ? fullName : ""}
-              bgColor={COLORS.Accent}
-            />
-          </TouchableWithoutFeedback> */}
           <UserAvatarButton
             id={userId}
             navigation={navigation}
@@ -232,6 +221,12 @@ export const NewsTapeGoalComponent = ({
         >
           {title}
         </Text>
+        <PostButtons
+          goalId={goalId}
+          deadline={deadline}
+          isPublic={isPublic}
+          isJoined={isJoined}
+        />
       </View>
       <PostsArray
         fullName={fullName}

@@ -23,11 +23,15 @@ import { CreateGoalComponent } from "./Components/CreateGoalComponent";
 import axios from "axios";
 import { tokenStore } from "../../../store";
 import { SearchFriends } from "./Components/SearchFriends/SearchFriends";
+import { ListOfJoinsOfGoal } from "./Components/ListOfJoinsOfGoal/ListOfJoinsOfGoal";
 
 export const Navigation = ({ navigation, handleRefresh = () => {} }) => {
   const route = useRoute();
+
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [isGoalVisible, setIsGoalVisible] = useState(false);
+  // const [isListOfJoinsOfGoalVisible, setIsListOfJoinsOfGoalVisible] =
+  //   useState(showJoinsInGoal);
   const [checked, setChecked] = useState(true);
   const [title, setTitle] = useState("");
   const widthSize = useRef(new Animated.Value(70)).current;
@@ -61,6 +65,7 @@ export const Navigation = ({ navigation, handleRefresh = () => {} }) => {
   function getFormattedDate(tomorrow = 0) {
     const today = new Date();
     const year = today.getFullYear();
+
     let month = today.getMonth() + 1;
     let day = today.getDate() + tomorrow;
 
@@ -73,6 +78,7 @@ export const Navigation = ({ navigation, handleRefresh = () => {} }) => {
     }
 
     const formattedToday = year + "-" + month + "-" + day;
+
     return formattedToday;
   }
 
@@ -142,6 +148,16 @@ export const Navigation = ({ navigation, handleRefresh = () => {} }) => {
           navigation={navigation}
         />
       </SlideUpContainer>
+      {/* <SlideUpContainer
+        isVisible={isListOfJoinsOfGoalVisible}
+        setIsVisible={setShowJoinsInGoal}
+      >
+        <ListOfJoinsOfGoal
+          isVisible={isListOfJoinsOfGoalVisible}
+          setIsVisible={setShowJoinsInGoal}
+          navigation={navigation}
+        />
+      </SlideUpContainer> */}
       <SlideUpContainer
         isVisible={isGoalVisible}
         setIsVisible={setIsGoalVisible}

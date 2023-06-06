@@ -78,7 +78,7 @@ export const NewsTape = ({ navigation }) => {
           Лента
         </Text>
         {listOfAllGoals ? (
-          listOfAllGoals.map((e, index) => {
+          listOfAllGoals.map((e) => {
             return (
               <NewsTapeGoalComponent
                 goalId={e.id}
@@ -89,6 +89,8 @@ export const NewsTape = ({ navigation }) => {
                 userId={e.user_id}
                 unwrap={true}
                 navigation={navigation}
+                isPublic={e.is_public}
+                isJoined={e.is_joined}
               />
             );
           })
