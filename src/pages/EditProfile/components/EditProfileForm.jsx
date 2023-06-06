@@ -157,7 +157,7 @@ export const EditProfileForm = ({ navigation }) => {
             <TextInput
               label="Расскажи о себе"
               placeholder="Расскажи о себе"
-              value={about == null ? "123" : about}
+              value={about == null ? "" : about}
               onChangeText={handleAboutChange}
               multiline
               numberOfLines={4}

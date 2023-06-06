@@ -14,7 +14,7 @@ import { FONTS } from "../../constants/FONTS/FONTS";
 
 export const CertainGoal = ({ navigation }) => {
   const token = tokenStore((state) => state.token);
-
+  const [isDone, setIsDone] = useState(false);
   const [modalIsVisible, setModalIsVisible] = useState(false);
 
   const route = useRoute();
@@ -33,7 +33,7 @@ export const CertainGoal = ({ navigation }) => {
           headers: { Authorization: `bearer ${token}` },
         }
       );
-
+      setIsDone(true);
       return response;
     } catch (error) {
       console.log("Ошибка в отправке формы", error.response.data.errors);
@@ -116,27 +116,29 @@ export const CertainGoal = ({ navigation }) => {
           </Text>
 
           <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
-            <Button
-              style={{
-                backgroundColor: COLORS.Accent,
-                borderRadius: 20,
-                // paddingHorizontal: 10,
-                // paddingVertical: 3
-              }}
-              onPress={() => {
-                setGoalIsDone(goalId, true);
-              }}
-              labelStyle={{ paddingHorizontal: 10 }}
-            >
-              <Text
+            {!isDone && (
+              <Button
                 style={{
-                  color: "white",
-                  ...FONTS.buttonText,
+                  backgroundColor: COLORS.Accent,
+                  borderRadius: 20,
+                  // paddingHorizontal: 10,
+                  // paddingVertical: 3
                 }}
+                onPress={() => {
+                  setGoalIsDone(goalId, true);
+                }}
+                labelStyle={{ paddingHorizontal: 10 }}
               >
-                Я достиг!
-              </Text>
-            </Button>
+                <Text
+                  style={{
+                    color: "white",
+                    ...FONTS.buttonText,
+                  }}
+                >
+                  Я достиг!
+                </Text>
+              </Button>
+            )}
             <IconButton
               mode="contained"
               onPress={() => setModalIsVisible(true)}
@@ -148,7 +150,13 @@ export const CertainGoal = ({ navigation }) => {
           </View>
         </View>
 
-        {goalId && <CertainGoalComponent goalId={goalId} token={token} />}
+        {goalId && (
+          <CertainGoalComponent
+            goalId={goalId}
+            token={token}
+            setIsDone={setIsDone}
+          />
+        )}
       </View>
       <Navigation navigation={navigation} handleRefresh={() => {}} />
     </>

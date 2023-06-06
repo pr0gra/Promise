@@ -13,6 +13,7 @@ import { FONTS } from "../../../../constants/FONTS/FONTS";
 import { SearchFriendsListofUsers } from "./SearchFriendsListofUsers";
 import { tokenStore } from "../../../../../store";
 import axios from "axios";
+import { LinearGradient } from "expo-linear-gradient";
 
 export const SearchFriends = ({ isVisible, setIsVisible, navigation }) => {
   const windowWidth = Dimensions.get("window").width;
@@ -76,19 +77,47 @@ export const SearchFriends = ({ isVisible, setIsVisible, navigation }) => {
           iconColor={COLORS.Accent}
         />
       </View>
+      {listOfUsers.length !== 0 && (
+        <LinearGradient
+          colors={["rgba(0,0, 0, 0)", "#E6EAFE"]}
+          start={{
+            x: 1,
+            y: 1,
+          }}
+          end={{
+            x: 1,
+            y: 0,
+          }}
+          style={{ height: 10, marginBottom: -30, zIndex: 100 }}
+        ></LinearGradient>
+      )}
       <ScrollView
         style={{ maxHeight: 450 }}
         contentContainerStyle={{
-          backgroundColor: COLORS.LowAccent,
+          // backgroundColor: COLORS.LowAccent,
+          gap: 20,
           paddingHorizontal: 5,
           paddingVertical: 5,
           borderRadius: 20,
         }}
       >
-        <SearchFriendsListofUsers
-          listOfUsers={listOfUsers}
-          navigation={navigation}
-        />
+        <LinearGradient
+          colors={["rgba(0,0,0,0)", "rgba(0,0,0,0)"]}
+          start={{
+            x: 1,
+            y: 0,
+          }}
+          end={{
+            x: 1,
+            y: 1,
+          }}
+          style={{ borderRadius: 20 }}
+        >
+          <SearchFriendsListofUsers
+            listOfUsers={listOfUsers}
+            navigation={navigation}
+          />
+        </LinearGradient>
       </ScrollView>
     </View>
   );

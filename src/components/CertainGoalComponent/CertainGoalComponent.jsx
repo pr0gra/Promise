@@ -24,6 +24,7 @@ export const CertainGoalComponent = ({
   token,
   userId,
   unwrap = false,
+  setIsDone,
 }) => {
   const [loading, setLoading] = useState(true);
   const [currentGoal, setCurrentGoal] = useState(null);
@@ -93,6 +94,7 @@ export const CertainGoalComponent = ({
       });
       setCurrentGoal(response.data.data);
 
+      setIsDone && setIsDone(response.data.data.done);
       const progress = getPercentage(
         response.data.data.inserted_at,
         response.data.data.deadline
