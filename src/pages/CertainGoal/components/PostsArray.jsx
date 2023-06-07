@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { KeyboardAvoidingView, Platform, Text, View } from "react-native";
-import { tokenStore } from "../../../../store";
+import { tokenStore, userInformationStore } from "../../../../store";
 import axios from "axios";
 import { Button } from "react-native-paper";
 import { COLORS } from "../../../constants/Colors/Colors";
@@ -43,6 +43,7 @@ export function PostsArray({ fullName, goalId, unwrap, userId }) {
   useEffect(() => {
     getGoalPosts(goalId);
   }, []);
+  const yourId = userInformationStore((state) => state.userInformation);
 
   return (
     <>
@@ -103,11 +104,13 @@ export function PostsArray({ fullName, goalId, unwrap, userId }) {
           })}
       {/* )} */}
 
-      <AddingPostInput
-        fullName={fullName}
-        currentGoalId={goalId}
-        handleRefresh={handleRefresh}
-      />
+      {yourId.id === userId && (
+        <AddingPostInput
+          fullName={fullName}
+          currentGoalId={goalId}
+          handleRefresh={handleRefresh}
+        />
+      )}
     </>
   );
 }

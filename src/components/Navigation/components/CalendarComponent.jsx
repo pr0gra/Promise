@@ -29,7 +29,7 @@ export const CalendarComponent = ({
     const formattedToday = year + "-" + month + "-" + day;
     return formattedToday;
   }
-  console.log(getFormattedDate(1));
+
   return (
     <Portal>
       <Dialog

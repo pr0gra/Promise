@@ -13,21 +13,22 @@ import Rocket from "../../../../assets/icons/Rocket.png";
 import Bell from "../../../../assets/icons/bell-01.png";
 import messageSquare from "../../../../assets/icons/message-square-01.png";
 import plus from "../../../../assets/icons/plus.png";
-import { tokenStore } from "../../../../store";
+import { goalJoins, tokenStore } from "../../../../store";
 import axios from "axios";
 import { FONTS } from "../../../constants/FONTS/FONTS";
 export const PostButtons = ({
   goalId,
   deadline,
   isPublic,
-  // currentGoalTitle,
+
   isJoined,
 }) => {
   const token = tokenStore((state) => state.token);
   const [isError, setIsError] = useState(false);
   const [isJoinedState, setIsJoinedState] = useState(isJoined);
   const [joinsCounter, setJoinsCounter] = useState(0);
-
+  const setGoalId = goalJoins((state) => state.setGoalId);
+  const setIsShowJoins = goalJoins((state) => state.setIsShowJoins);
   const joinGoal = useCallback(async function joinGoal() {
     try {
       const response = await axios.post(
@@ -46,6 +47,7 @@ export const PostButtons = ({
       );
       setJoinsCounter((state) => state + 1);
       setIsJoinedState(true);
+
       return response.data.data;
     } catch (error) {
       setIsError(true);
@@ -113,6 +115,11 @@ export const PostButtons = ({
   useEffect(() => {
     joinsGoalInfo();
   }, []);
+  function handleShowJoins(state, goalId) {
+    setIsShowJoins(state);
+
+    setGoalId(goalId);
+  }
 
   return (
     <View style={styles.container}>
@@ -121,7 +128,7 @@ export const PostButtons = ({
           image={isJoinedState ? messageSquare : plus}
           onPress={
             isJoinedState
-              ? () => console.log("Тут логика показа присоединившихся")
+              ? () => handleShowJoins(true, goalId)
               : () => joinGoal()
           }
           text={JSON.stringify(joinsCounter)}

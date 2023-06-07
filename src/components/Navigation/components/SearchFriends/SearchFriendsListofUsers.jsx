@@ -41,13 +41,7 @@ export const SearchFriendsListofUsers = ({ listOfUsers, navigation }) => {
   ) : (
     <Text>Никого нет</Text>
   );
-  return (
-    <>
-      {list}
-      {list}
-      {list}
-    </>
-  );
+  return <>{list}</>;
 };
 
 const styles = StyleSheet.create({});

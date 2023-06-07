@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import { COLORS } from "../../constants/Colors/Colors";
 import { MiniButtonNavigation } from "./Components/MiniButtonNavigation";
 import imageTarget from "../../../assets/icons/target-04.png";
@@ -21,17 +21,19 @@ import { Animated } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { CreateGoalComponent } from "./Components/CreateGoalComponent";
 import axios from "axios";
-import { tokenStore } from "../../../store";
+import { goalJoins, tokenStore } from "../../../store";
 import { SearchFriends } from "./Components/SearchFriends/SearchFriends";
 import { ListOfJoinsOfGoal } from "./Components/ListOfJoinsOfGoal/ListOfJoinsOfGoal";
 
-export const Navigation = ({ navigation, handleRefresh = () => {} }) => {
+export const Navigation = memo(({ navigation, handleRefresh = () => {} }) => {
   const route = useRoute();
 
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [isGoalVisible, setIsGoalVisible] = useState(false);
-  // const [isListOfJoinsOfGoalVisible, setIsListOfJoinsOfGoalVisible] =
-  //   useState(showJoinsInGoal);
+  const isShowJoins = goalJoins((state) => state.isShowJoins);
+
+  const setIsShowJoins = goalJoins((state) => state.setIsShowJoins);
+
   const [checked, setChecked] = useState(true);
   const [title, setTitle] = useState("");
   const widthSize = useRef(new Animated.Value(70)).current;
@@ -148,16 +150,13 @@ export const Navigation = ({ navigation, handleRefresh = () => {} }) => {
           navigation={navigation}
         />
       </SlideUpContainer>
-      {/* <SlideUpContainer
-        isVisible={isListOfJoinsOfGoalVisible}
-        setIsVisible={setShowJoinsInGoal}
-      >
+      <SlideUpContainer isVisible={isShowJoins} setIsVisible={setIsShowJoins}>
         <ListOfJoinsOfGoal
-          isVisible={isListOfJoinsOfGoalVisible}
-          setIsVisible={setShowJoinsInGoal}
+          isVisible={isShowJoins}
+          setIsVisible={setIsShowJoins}
           navigation={navigation}
         />
-      </SlideUpContainer> */}
+      </SlideUpContainer>
       <SlideUpContainer
         isVisible={isGoalVisible}
         setIsVisible={setIsGoalVisible}
@@ -299,7 +298,7 @@ export const Navigation = ({ navigation, handleRefresh = () => {} }) => {
       </View>
     </>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
