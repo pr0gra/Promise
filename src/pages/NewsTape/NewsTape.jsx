@@ -61,7 +61,7 @@ export const NewsTape = ({ navigation }) => {
       }}
     >
       <ScrollView
-        contentContainerStyle={[styles.content, { gap: 20 }]}
+        contentContainerStyle={[styles.content, { gap: 20, paddingBottom: 20 }]}
         showsVerticalScrollIndicator={true}
         indicatorStyle={COLORS.Accent}
         refreshControl={

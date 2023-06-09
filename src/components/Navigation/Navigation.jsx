@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import React, { memo, useEffect, useRef, useState } from "react";
+import React, { memo, useContext, useEffect, useRef, useState } from "react";
 import { COLORS } from "../../constants/Colors/Colors";
 import { MiniButtonNavigation } from "./Components/MiniButtonNavigation";
 import imageTarget from "../../../assets/icons/target-04.png";
@@ -24,15 +24,13 @@ import axios from "axios";
 import { goalJoins, tokenStore } from "../../../store";
 import { SearchFriends } from "./Components/SearchFriends/SearchFriends";
 import { ListOfJoinsOfGoal } from "./Components/ListOfJoinsOfGoal/ListOfJoinsOfGoal";
+import { NavigationContext } from "../../../NavigationContext";
 
 export const Navigation = memo(({ navigation, handleRefresh = () => {} }) => {
   const route = useRoute();
 
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [isGoalVisible, setIsGoalVisible] = useState(false);
-  const isShowJoins = goalJoins((state) => state.isShowJoins);
-
-  const setIsShowJoins = goalJoins((state) => state.setIsShowJoins);
 
   const [checked, setChecked] = useState(true);
   const [title, setTitle] = useState("");
@@ -127,6 +125,7 @@ export const Navigation = memo(({ navigation, handleRefresh = () => {} }) => {
       setPosted(false);
     }, 2000);
   }, [posted]);
+  const { isShowJoins, setIsShowJoins } = useContext(NavigationContext);
   return (
     <>
       <SlideUpContainer
@@ -177,7 +176,7 @@ export const Navigation = memo(({ navigation, handleRefresh = () => {} }) => {
           <TouchableOpacity
             onPress={() => {
               setIsMenuVisible(false);
-
+              setIsShowJoins(false);
               navigation.navigate("MyGoals");
             }}
           >
@@ -198,6 +197,7 @@ export const Navigation = memo(({ navigation, handleRefresh = () => {} }) => {
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("NewsTape");
+              setIsShowJoins(false);
             }}
           >
             <View style={[styles.miniButton, {}]}>
@@ -225,6 +225,7 @@ export const Navigation = memo(({ navigation, handleRefresh = () => {} }) => {
             onPress={() => {
               setIsGoalVisible(true);
               setIsMenuVisible(false);
+              setIsShowJoins(false);
               expand();
               if (isGoalVisible) {
                 if (title.trim().length > 7) {
@@ -261,7 +262,11 @@ export const Navigation = memo(({ navigation, handleRefresh = () => {} }) => {
         </Animated.View>
 
         {!isGoalVisible && (
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity
+            onPress={() => {
+              setIsShowJoins(false);
+            }}
+          >
             <MiniButtonNavigation
               image={imageMessageSquare}
               text={"Чаты"}
@@ -280,6 +285,7 @@ export const Navigation = memo(({ navigation, handleRefresh = () => {} }) => {
             onPress={() => {
               setIsMenuVisible((state) => !state);
               setIsFriendsVisible(false);
+              setIsShowJoins(false);
             }}
           >
             <MiniButtonNavigation

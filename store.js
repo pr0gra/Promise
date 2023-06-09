@@ -8,12 +8,12 @@ export const goalStore = create((set) => ({
   goalId: null,
   setGoalId: (newId) => set({ goalId: newId }),
 }));
-export const goalJoins = create((set) => ({
-  isShowJoins: false,
-  goalId: null,
-  setGoalId: (newId) => set({ goalId: newId }),
-  setIsShowJoins: (newShow) => set({ isShowJoins: newShow }),
-}));
+// export const goalJoins = create((set) => ({
+//   isShowJoins: false,
+//   goalId: null,
+//   setGoalId: (newId) => set({ goalId: newId }),
+//   setIsShowJoins: (newShow) => set({ isShowJoins: newShow }),
+// }));
 
 export const userInformationStore = create((set) => ({
   userInformation: {
