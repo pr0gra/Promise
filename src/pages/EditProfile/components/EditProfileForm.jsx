@@ -103,8 +103,6 @@ export const EditProfileForm = ({ navigation }) => {
     } catch (error) {
       console.log("Ошибка в отправке формы", error.response.data.errors);
       setErrors(error.response.data.errors);
-
-      // throw new Error("Ошибка в отправке формы");
     } finally {
       setLoading(false);
     }
