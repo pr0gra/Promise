@@ -5,7 +5,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Button } from "react-native-paper";
 import { COLORS } from "../../../constants/Colors/Colors";
 import { ButtonReaction } from "./ButtonReaction";
@@ -13,9 +13,10 @@ import Rocket from "../../../../assets/icons/Rocket.png";
 import Bell from "../../../../assets/icons/bell-01.png";
 import messageSquare from "../../../../assets/icons/message-square-01.png";
 import plus from "../../../../assets/icons/plus.png";
-import { goalJoins, tokenStore } from "../../../../store";
+import { tokenStore } from "../../../../store";
 import axios from "axios";
 import { FONTS } from "../../../constants/FONTS/FONTS";
+import { NavigationContext } from "../../../../NavigationContext";
 export const PostButtons = ({
   goalId,
   deadline,
@@ -27,8 +28,9 @@ export const PostButtons = ({
   const [isError, setIsError] = useState(false);
   const [isJoinedState, setIsJoinedState] = useState(isJoined);
   const [joinsCounter, setJoinsCounter] = useState(0);
-  const setGoalId = goalJoins((state) => state.setGoalId);
-  const setIsShowJoins = goalJoins((state) => state.setIsShowJoins);
+
+  const { isShowJoins, setGoalIdState, setIsShowJoins } =
+    useContext(NavigationContext);
   const joinGoal = useCallback(async function joinGoal() {
     try {
       const response = await axios.post(
@@ -115,10 +117,9 @@ export const PostButtons = ({
   useEffect(() => {
     joinsGoalInfo();
   }, []);
-  function handleShowJoins(state, goalId) {
-    setIsShowJoins(state);
-
-    setGoalId(goalId);
+  function handleShowJoins(goalId) {
+    setIsShowJoins(true);
+    setGoalIdState(goalId);
   }
 
   return (
@@ -127,9 +128,7 @@ export const PostButtons = ({
         <ButtonReaction
           image={isJoinedState ? messageSquare : plus}
           onPress={
-            isJoinedState
-              ? () => handleShowJoins(true, goalId)
-              : () => joinGoal()
+            isJoinedState ? () => handleShowJoins(goalId) : () => joinGoal()
           }
           text={JSON.stringify(joinsCounter)}
         />

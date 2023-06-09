@@ -17,8 +17,11 @@ import { Profile } from "./src/pages/Profile/Profile";
 import { EditProfile } from "./src/pages/EditProfile/EditProfile";
 import { NewsTape } from "./src/pages/NewsTape/NewsTape";
 
+import { NavigationContext } from "./NavigationContext";
 export default function App() {
   const Stack = createNativeStackNavigator();
+  const [goalIdState, setGoalIdState] = useState(null);
+  const [isShowJoins, setIsShowJoins] = useState(false);
   const [fontsLoaded] = useFonts({
     RobotoFlex: require("./assets/fonts/RobotoFlex.ttf"),
   });
@@ -27,52 +30,64 @@ export default function App() {
 
   return (
     fontsLoaded && (
-      <Provider>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="SignIn">
-            <Stack.Screen
-              name="SignIn"
-              component={SignInPage}
-              options={{ title: "Страница Входа", headerShown: false }}
-            />
-            <Stack.Screen
-              name="SignUp"
-              component={RegistatrionPage}
-              options={{ title: "Страница Входа", headerShown: false }}
-            />
-            <Stack.Screen
-              name="WelcomePage"
-              component={WelcomePage}
-              options={{ title: "Приветственная страница", headerShown: false }}
-            />
-            <Stack.Screen
-              name="MyGoals"
-              component={MyGoals}
-              options={{ title: "Мои цели", headerShown: false }}
-            />
-            <Stack.Screen
-              name="CertainGoal"
-              component={CertainGoal}
-              options={{ title: "Мои цели", headerShown: false }}
-            />
-            <Stack.Screen
-              name="Profile"
-              component={Profile}
-              options={{ title: "Профиль", headerShown: false }}
-            />
-            <Stack.Screen
-              name="EditProfile"
-              component={EditProfile}
-              options={{ title: "Редактировать профиль", headerShown: false }}
-            />
-            <Stack.Screen
-              name="NewsTape"
-              component={NewsTape}
-              options={{ title: "Лента целей", headerShown: false }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </Provider>
+      <NavigationContext.Provider
+        value={{
+          goalIdState: goalIdState,
+          setGoalIdState: setGoalIdState,
+          isShowJoins: isShowJoins,
+          setIsShowJoins: setIsShowJoins,
+        }}
+      >
+        <Provider>
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName="SignIn">
+              <Stack.Screen
+                name="SignIn"
+                component={SignInPage}
+                options={{ title: "Страница Входа", headerShown: false }}
+              />
+              <Stack.Screen
+                name="SignUp"
+                component={RegistatrionPage}
+                options={{ title: "Страница Входа", headerShown: false }}
+              />
+              <Stack.Screen
+                name="WelcomePage"
+                component={WelcomePage}
+                options={{
+                  title: "Приветственная страница",
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="MyGoals"
+                component={MyGoals}
+                options={{ title: "Мои цели", headerShown: false }}
+              />
+              <Stack.Screen
+                name="CertainGoal"
+                component={CertainGoal}
+                options={{ title: "Мои цели", headerShown: false }}
+              />
+              <Stack.Screen
+                name="Profile"
+                component={Profile}
+                options={{ title: "Профиль", headerShown: false }}
+              />
+              <Stack.Screen
+                name="EditProfile"
+                component={EditProfile}
+                options={{ title: "Редактировать профиль", headerShown: false }}
+              />
+              <Stack.Screen
+                name="NewsTape"
+                component={NewsTape}
+                options={{ title: "Лента целей", headerShown: false }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </Provider>
+      </NavigationContext.Provider>
     )
   );
 }
