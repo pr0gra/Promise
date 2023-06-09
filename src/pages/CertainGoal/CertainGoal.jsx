@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Text, View } from "react-native";
 import { COLORS } from "../../constants/Colors/Colors";
 import { GlobalStyles } from "../../constants/GlobalStyles";
-import { tokenStore } from "../../../store";
+import { tokenStore, userInformationStore } from "../../../store";
 import axios from "axios";
 import { Navigation } from "../../components/Navigation/Navigation";
 
@@ -41,6 +41,8 @@ export const CertainGoal = ({ navigation }) => {
       // throw new Error("Ошибка в отправке формы");
     }
   };
+  const yourId = userInformationStore((state) => state.userInformation.id);
+
   return (
     <>
       {modalIsVisible && (
@@ -155,6 +157,7 @@ export const CertainGoal = ({ navigation }) => {
             goalId={goalId}
             token={token}
             setIsDone={setIsDone}
+            userId={yourId}
           />
         )}
       </View>
