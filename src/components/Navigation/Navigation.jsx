@@ -9,22 +9,23 @@ import {
 } from "react-native";
 import React, { memo, useContext, useEffect, useRef, useState } from "react";
 import { COLORS } from "../../constants/Colors/Colors";
-import { MiniButtonNavigation } from "./Components/MiniButtonNavigation";
+// import { MiniButtonNavigation } from "./Components/MiniButtonNavigation";
+import { MiniButtonNavigation } from "./components/MiniButtonNavigation.jsx";
 import imageTarget from "../../../assets/icons/target-04.png";
 import imageRows from "../../../assets/icons/rows-01.png";
 import imageMessageSquare from "../../../assets/icons/message-square-01.png";
 import imageMenu from "../../../assets/icons/menu-01.png";
-import { MenuComponent } from "./Components/MenuComponent";
-import { SlideUpContainer } from "../SlideUpContainer/SlideUpContainer";
+import { MenuComponent } from "./components/MenuComponent.jsx";
+import { SlideUpContainer } from "../SlideUpContainer/SlideUpContainer.jsx";
 import { IconButton } from "react-native-paper";
 import { Animated } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { CreateGoalComponent } from "./Components/CreateGoalComponent";
+import { CreateGoalComponent } from "./components/CreateGoalComponent.jsx";
 import axios from "axios";
 import { goalJoins, tokenStore } from "../../../store";
-import { SearchFriends } from "./Components/SearchFriends/SearchFriends";
-import { ListOfJoinsOfGoal } from "./Components/ListOfJoinsOfGoal/ListOfJoinsOfGoal";
-import { NavigationContext } from "../../../NavigationContext";
+import { SearchFriends } from "./components/SearchFriends/SearchFriends.jsx";
+import { ListOfJoinsOfGoal } from "./components/ListOfJoinsOfGoal/ListOfJoinsOfGoal.jsx";
+import { NavigationContext } from "../../../NavigationContext.jsx";
 
 export const Navigation = memo(({ navigation, handleRefresh = () => {} }) => {
   const route = useRoute();
