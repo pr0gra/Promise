@@ -17,7 +17,7 @@ import { COLORS } from "../../constants/Colors/Colors";
 import { GlobalStyles } from "../../constants/GlobalStyles";
 import rocketImg from "../../../assets/images/rocket-illustration-3d-render.png";
 import { FONTS } from "../../constants/FONTS/FONTS";
-import { VKLoginComponent } from "./components/VKLoginCOmponent/VKLoginComponent.js";
+
 import axios from "axios";
 import SecureStore from "expo-secure-store";
 import { tokenStore } from "../../../store.js";

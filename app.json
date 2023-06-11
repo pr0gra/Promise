@@ -18,6 +18,9 @@
       "supportsTablet": true
     },
     "android": {
+      "defaultConfig": {
+        "applicationId": "com.promiseApp.myapp"
+      },
       "package": "com.promise.promiseApp"
     },
     "web": {
