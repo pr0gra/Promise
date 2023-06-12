@@ -13,9 +13,7 @@
       "width": 100,
       "height": 400
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -27,9 +25,7 @@
     },
     "scheme": "mycoolredirect",
     "extra": {
-      "eas": {
-        "projectId": ""
-      }
+      "eas": {}
     }
   }
 }
