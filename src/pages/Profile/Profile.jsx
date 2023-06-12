@@ -33,8 +33,9 @@ export const Profile = ({ navigation }) => {
   const [goals, setGoals] = useState([]);
   const [isModalVisible, setModalIsVisible] = useState(false);
   const route = useRoute();
-  const windowWidth = Dimensions.get("window").width;
+
   const userId = route.params.id;
+  const [isSubscribed, setIsSubscribed] = useState(false);
   const userInformation = userInformationStore(
     (state) => state.userInformation
   );
@@ -123,7 +124,32 @@ export const Profile = ({ navigation }) => {
       event.preventDefault();
     }
   };
+  async function getSubscribed(id) {
+    setLoading(true);
 
+    try {
+      const response = await axios.get(`/api/users/${id}/subscription`, {
+        headers: { Authorization: `bearer ${token}` },
+      });
+
+      response.status === 200 ? setIsSubscribed(true) : setIsSubscribed(false);
+
+      return response.status;
+    } catch (error) {
+      setIsSubscribed(false);
+      console.log(
+        "Ошибка в проверке подписки к пользователю",
+        error.response.data
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+  useEffect(() => {
+    if (userInformation.id !== userData?.id) {
+      userData?.id && userInformation.id && getSubscribed(userData?.id);
+    }
+  }, [userData?.id]);
   return (
     <>
       {isModalVisible && (
@@ -292,7 +318,15 @@ export const Profile = ({ navigation }) => {
                   </View>
                 )}
 
-                {userInformation.id !== userData?.id && <InteractionButtons />}
+                {userInformation.id !== userData?.id && (
+                  <InteractionButtons
+                    id={userData?.id}
+                    token={token}
+                    isSubscribed={isSubscribed}
+                    setIsSubscribed={setIsSubscribed}
+                    isProfileLoading={loading}
+                  />
+                )}
               </View>
             </Animated.View>
 

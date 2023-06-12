@@ -29,8 +29,7 @@ export const PostButtons = ({
   const [isJoinedState, setIsJoinedState] = useState(isJoined);
   const [joinsCounter, setJoinsCounter] = useState(0);
 
-  const { isShowJoins, setGoalIdState, setIsShowJoins } =
-    useContext(NavigationContext);
+  const { setGoalIdState, setIsShowJoins } = useContext(NavigationContext);
   const joinGoal = useCallback(async function joinGoal() {
     try {
       const response = await axios.post(
@@ -64,34 +63,34 @@ export const PostButtons = ({
       }, 3000);
     }
   });
-  // const deleteGoal = useCallback(async function deleteGoal() {
-  //   setIsError(false);
+  const deleteGoal = useCallback(async function deleteGoal() {
+    setIsError(false);
 
-  //   try {
-  //     const response = await axios.delete(
-  //       `/api/goals/${goalId}/join`,
+    try {
+      const response = await axios.delete(
+        `/api/goals/${goalId}/join`,
 
-  //       {
-  //         headers: {
-  //           Authorization: `bearer ${token}`,
-  //         },
-  //       }
-  //     );
-  //     console.log("Ушел");
-  //     setJoinsCounter((state) => state - 1);
-  //     setIsJoinedState(false);
-  //     return response.data.data;
-  //   } catch (error) {
-  //     setIsError(true);
-  //     console.log(
-  //       `Не получилось присоединиться, ошибка ${error.response.data.errors.user_id}`
-  //     );
-  //   } finally {
-  //     setTimeout(() => {
-  //       setIsError(false);
-  //     }, 3000);
-  //   }
-  // });
+        {
+          headers: {
+            Authorization: `bearer ${token}`,
+          },
+        }
+      );
+      console.log("Ушел");
+      setJoinsCounter((state) => state - 1);
+      setIsJoinedState(false);
+      return response.data.data;
+    } catch (error) {
+      setIsError(true);
+      console.log(
+        `Не получилось присоединиться, ошибка ${error.response.data.errors.user_id}`
+      );
+    } finally {
+      setTimeout(() => {
+        setIsError(false);
+      }, 3000);
+    }
+  });
   const joinsGoalInfo = useCallback(async function joinsGoalInfo() {
     try {
       const response = await axios.get(
@@ -133,13 +132,13 @@ export const PostButtons = ({
           text={JSON.stringify(joinsCounter)}
         />
 
-        {/* {isJoinedState && (
+        {isJoinedState && (
           <ButtonReaction
             image={plus}
             onPress={() => deleteGoal()}
             text={"Уйти"}
           />
-        )} */}
+        )}
       </View>
       {isError && (
         <Text style={{ ...FONTS.postButtonText, color: "red" }}>
