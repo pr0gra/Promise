@@ -4,7 +4,7 @@ import {
   TouchableHighlightComponent,
   View,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-native-paper";
 import { COLORS } from "../../../constants/Colors/Colors";
 import { FONTS } from "../../../constants/FONTS/FONTS";
@@ -13,37 +13,90 @@ import {
   TouchableWithoutFeedback,
   TouchableHighlight,
 } from "react-native-gesture-handler";
+import axios from "axios";
 
-export const InteractionButtons = () => {
+export const InteractionButtons = ({
+  id,
+  token,
+
+  isSubscribed,
+  setIsSubscribed,
+  isProfileLoading,
+}) => {
+  const [loading, setLoading] = useState(false);
+
+  async function subscribe() {
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        `/api/users/${id}/subscription`,
+        {},
+        {
+          headers: { Authorization: `bearer ${token}` },
+        }
+      );
+
+      setIsSubscribed(true);
+      return response.data.data;
+    } catch (error) {
+      console.log("Ошибка в подписке к пользователю", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+  async function unsubscribe() {
+    setLoading(true);
+
+    try {
+      const response = await axios.delete(`/api/users/${id}/subscription`, {
+        headers: { Authorization: `bearer ${token}` },
+      });
+
+      // return response.data.data;
+      setIsSubscribed(false);
+    } catch (error) {
+      console.log("Ошибка в отписке от пользователя", error.response.data);
+    } finally {
+      setLoading(false);
+    }
+  }
+  // console.log(token);
+
   return (
     <View style={styles.container}>
-      <Button
-        onPress={() => console.log("Подписаться")}
-        mode="contained-tonal"
-        style={styles.firstButton}
-        labelStyle={{
-          color: COLORS.White,
-          // paddingHorizontal: 20,
-          // paddingVertical: 10,
-        }}
-      >
-        <Text style={styles.firstButtonText}>Подписаться</Text>
-      </Button>
-      <Button
-        onPress={() => console.log("написать сообщение")}
-        mode="outlined"
-        style={styles.secondButton}
-        labelStyle={{ color: COLORS.White, marginHorizontal: 0 }}
-      >
-        <Text
-          style={[
-            styles.secondButtonText,
-            { flexWrap: "wrap", alignSelf: "stretch" },
-          ]}
+      <>
+        <Button
+          onPress={() => (isSubscribed ? unsubscribe() : subscribe())}
+          mode="contained-tonal"
+          style={styles.firstButton}
+          labelStyle={{
+            color: COLORS.White,
+            // paddingHorizontal: 20,
+            // paddingVertical: 10,
+          }}
+          disabled={loading || isProfileLoading}
         >
-          Написать сообщение
-        </Text>
-      </Button>
+          <Text style={styles.firstButtonText}>
+            {isSubscribed ? "Отписаться" : "Подписаться"}
+          </Text>
+        </Button>
+
+        <Button
+          onPress={() => console.log("написать сообщение")}
+          mode="outlined"
+          style={styles.secondButton}
+          labelStyle={{ color: COLORS.White, marginHorizontal: 0 }}
+        >
+          <Text
+            style={[
+              styles.secondButtonText,
+              { flexWrap: "wrap", alignSelf: "stretch" },
+            ]}
+          >
+            Написать сообщение
+          </Text>
+        </Button>
+      </>
     </View>
   );
 };
