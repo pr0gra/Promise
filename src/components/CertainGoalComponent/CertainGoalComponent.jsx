@@ -61,7 +61,6 @@ export const CertainGoalComponent = ({
   ) {
     const [date, time] = dateTimeString.split("T");
     const [year, month, day] = date.split("-");
-
     const monthNames = [
       "января",
       "февраля",
@@ -77,14 +76,23 @@ export const CertainGoalComponent = ({
       "декабря",
     ];
     const monthName = monthNames[parseInt(month) - 1];
-    let result;
-    if (Number(day) < 10) {
-      result = `${day[1]} ${monthName}`;
-    } else {
-      result = `${day} ${monthName}`;
+
+    const fullData = [year, month, day].join("-");
+    const newDate = new Date();
+    const currentYear = newDate.getFullYear();
+    if (year - currentYear >= 1) {
+      const date = fullData.replace(/-/g, ".");
+      return date.split(".").reverse().join(".");
     }
 
-    return result;
+    let result;
+    if (Number(day) < 10) {
+      return (result = `${day[1]} ${monthName}`);
+    } else {
+      return (result = `${day} ${monthName}`);
+    }
+
+    // return result;
   });
 
   async function getGoalById(goalId, token) {
