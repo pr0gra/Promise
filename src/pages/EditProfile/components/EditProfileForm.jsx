@@ -78,8 +78,8 @@ export const EditProfileForm = ({ navigation }) => {
       email: email == undefined ? userData.email.trim() : email.trim(),
       first_name: firstName,
       last_name: lastName,
-      city: city,
-      bio: about,
+      city: city.trim(),
+      bio: about.trim(),
       id: userData.id,
     };
     try {
