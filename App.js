@@ -16,6 +16,7 @@ import { CertainGoal } from "./src/pages/CertainGoal/CertainGoal";
 import { Profile } from "./src/pages/Profile/Profile";
 import { EditProfile } from "./src/pages/EditProfile/EditProfile";
 import { NewsTape } from "./src/pages/NewsTape/NewsTape";
+import {NotificationsPage} from "./src/pages/NotificationsPage/NotificationsPage"
 
 import { NavigationContext } from "./NavigationContext";
 export default function App() {
@@ -83,6 +84,11 @@ export default function App() {
                 name="NewsTape"
                 component={NewsTape}
                 options={{ title: "Лента целей", headerShown: false }}
+              />
+              <Stack.Screen
+                name="NotificationsPage"
+                component={NotificationsPage}
+                options={{ title: "Уведомления", headerShown: false }}
               />
             </Stack.Navigator>
           </NavigationContainer>
