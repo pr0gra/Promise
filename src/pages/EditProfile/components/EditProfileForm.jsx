@@ -72,7 +72,6 @@ export const EditProfileForm = ({ navigation }) => {
 
   const handleSubmitForm = async () => {
     const user = {
-      city: city,
       school: school,
       faculty: faculty,
       course: course,
@@ -168,9 +167,9 @@ export const EditProfileForm = ({ navigation }) => {
                 { height: "auto", textAlign: "auto" },
               ]}
             />
-            {errors?.about && (
+            {errors?.bio && (
               <Text style={{ color: COLORS.Red, marginTop: -20 }}>
-                {errors.about}
+                {errors.bio}
               </Text>
             )}
             <TextInput

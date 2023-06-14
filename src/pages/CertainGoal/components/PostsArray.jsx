@@ -9,7 +9,7 @@ import { RefreshControl } from "react-native-gesture-handler";
 import { Post } from "./Post";
 import { AddingPostInput } from "./AddingPostInput";
 
-export function PostsArray({ fullName, goalId, unwrap, userId }) {
+export function PostsArray({ fullName, goalId, unwrap, userId, navigation }) {
   const [loading, setLoading] = useState(false);
   const [postsArray, setPostsArray] = useState([]);
   const [postsLimit, setPostsLimit] = useState(true);
@@ -84,6 +84,7 @@ export function PostsArray({ fullName, goalId, unwrap, userId }) {
                 handleRefreshPosts={handleRefresh}
                 userId={userId}
                 inserted_at={e.inserted_at}
+                navigation={navigation}
               />
             );
           })
@@ -99,6 +100,7 @@ export function PostsArray({ fullName, goalId, unwrap, userId }) {
                 token={token}
                 handleRefreshPosts={handleRefresh}
                 inserted_at={e.inserted_at}
+                navigation={navigation}
               />
             );
           })}
