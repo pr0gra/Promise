@@ -30,6 +30,7 @@ export const MyGoals = ({ navigation }) => {
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
   const [goals, setGoals] = useState([]);
+  const [notificationMessage, setNotificationMessage] = useState({})
   const token = tokenStore((state) => state.token);
   const notificationListener = useRef();
   const responseListener = useRef();
@@ -110,7 +111,9 @@ export const MyGoals = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    SendEveryDayPushNotification(expoPushToken).then(data=>{console.log(data)})
+    SendEveryDayPushNotification(expoPushToken).then(data=>{
+
+      console.log(data)})
   }, [expoPushToken]);
 
   // Notifications code
