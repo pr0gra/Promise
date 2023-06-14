@@ -26,6 +26,7 @@ export const CertainGoalComponent = ({
   unwrap = false,
   setIsDone,
   navigation,
+  isDone,
 }) => {
   const [loading, setLoading] = useState(true);
   const [currentGoal, setCurrentGoal] = useState(null);
@@ -61,7 +62,6 @@ export const CertainGoalComponent = ({
   ) {
     const [date, time] = dateTimeString.split("T");
     const [year, month, day] = date.split("-");
-
     const monthNames = [
       "января",
       "февраля",
@@ -77,14 +77,23 @@ export const CertainGoalComponent = ({
       "декабря",
     ];
     const monthName = monthNames[parseInt(month) - 1];
-    let result;
-    if (Number(day) < 10) {
-      result = `${day[1]} ${monthName}`;
-    } else {
-      result = `${day} ${monthName}`;
+
+    const fullData = [year, month, day].join("-");
+    const newDate = new Date();
+    const currentYear = newDate.getFullYear();
+    if (year - currentYear >= 1) {
+      const date = fullData.replace(/-/g, ".");
+      return date.split(".").reverse().join(".");
     }
 
-    return result;
+    let result;
+    if (Number(day) < 10) {
+      return (result = `${day[1]} ${monthName}`);
+    } else {
+      return (result = `${day} ${monthName}`);
+    }
+
+    // return result;
   });
 
   async function getGoalById(goalId, token) {
@@ -103,6 +112,7 @@ export const CertainGoalComponent = ({
       const result = formattedDeadline(response.data.data.deadline);
       setProgress(progress);
       setResult(result);
+
       getUserInfo(response.data.data.user_id, token);
     } catch (error) {
       console.log("Ошибка в получении подпостов к цели", error);
@@ -131,7 +141,7 @@ export const CertainGoalComponent = ({
   }
   useEffect(() => {
     getGoalById(goalId, token);
-  }, []);
+  }, [isDone]);
 
   const colors = {
     1: "rgba(153, 204, 145, 1)",
@@ -297,6 +307,7 @@ export const CertainGoalComponent = ({
                     </Text>
                   </View>
                 </View>
+
                 <Text
                   style={{
                     ...FONTS.goalTime,
@@ -306,13 +317,32 @@ export const CertainGoalComponent = ({
                   {currentGoal?.title}
                 </Text>
               </View>
-              <PostButtons
-                goalId={goalId}
-                deadline={currentGoal?.deadline}
-                isPublic={currentGoal?.is_public}
-                isJoined={currentGoal?.is_joined}
-                navigation={navigation}
-              />
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <PostButtons
+                  goalId={goalId}
+                  deadline={currentGoal?.deadline}
+                  isPublic={currentGoal?.is_public}
+                  isJoined={currentGoal?.is_joined}
+                  navigation={navigation}
+                />
+                {currentGoal?.done && (
+                  <Text
+                    style={{
+                      color: COLORS.Accent,
+                      ...FONTS.goalTime,
+                      textAlign: "right",
+                    }}
+                  >
+                    Я достиг!
+                  </Text>
+                )}
+              </View>
             </View>
 
             <PostsArray
@@ -320,6 +350,7 @@ export const CertainGoalComponent = ({
               goalId={goalId}
               unwrap={unwrap}
               userId={userId}
+              navigation={navigation}
             />
           </>
         )}

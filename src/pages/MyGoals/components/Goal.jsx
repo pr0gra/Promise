@@ -70,6 +70,13 @@ export const Goal = ({
           "декабря",
         ];
         const monthName = monthNames[parseInt(month) - 1];
+        const fullData = [year, month, day].join("-");
+        const newDate = new Date();
+        const currentYear = newDate.getFullYear();
+        if (year - currentYear >= 1) {
+          const date = fullData.replace(/-/g, ".");
+          return date.split(".").reverse().join(".");
+        }
         let result;
         if (Number(day) < 10) {
           result = `${day[1]} ${monthName}`;
@@ -158,7 +165,7 @@ const styles = StyleSheet.create({
   top: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 14,
+    marginBottom: 2,
   },
   image: {
     width: 24,

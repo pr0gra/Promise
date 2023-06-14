@@ -157,6 +157,8 @@ export const CertainGoal = ({ navigation }) => {
             token={token}
             setIsDone={setIsDone}
             userId={yourId}
+            navigation={navigation}
+            isDone={isDone}
           />
         )}
       </View>

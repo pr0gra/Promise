@@ -17,7 +17,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "y"
     },
     "android": {
       "package": "com.promise.promiseApp"
@@ -28,7 +29,6 @@
     "scheme": "mycoolredirect",
     "extra": {
       "eas": {
-        "projectId": "d4cab692-6a6e-4bfb-9a89-ce118688dadc"
       }
     }
   }
