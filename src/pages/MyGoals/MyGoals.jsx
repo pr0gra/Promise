@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import {
   Image,
   Platform,
@@ -8,7 +8,7 @@ import {
   View,
   RefreshControl,
 } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, IconButton } from "react-native-paper";
 import { COLORS } from "../../constants/Colors/Colors";
 import { GlobalStyles } from "../../constants/GlobalStyles";
 import { FONTS } from "../../constants/FONTS/FONTS";
@@ -20,12 +20,19 @@ import { Navigation } from "../../components/Navigation/Navigation";
 import SkeletonLoading from "../../components/SkeletonLoading/SkeletonLoading";
 import { useRoute } from "@react-navigation/native";
 import { useFocusEffect } from "@react-navigation/native";
+import { SendEveryDayPushNotification } from "../../constants/Functions/SendEveryDayPushNotification";
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
 
 export const MyGoals = ({ navigation }) => {
   const [Loading, setLoading] = useState(false);
   const [errorState, setErrorState] = useState(null);
+  const [expoPushToken, setExpoPushToken] = useState("");
+  const [notification, setNotification] = useState(false);
   const [goals, setGoals] = useState([]);
   const token = tokenStore((state) => state.token);
+  const notificationListener = useRef();
+  const responseListener = useRef();
 
   const setUserInformation = userInformationStore(
     (state) => state.setUserInformation
@@ -77,9 +84,76 @@ export const MyGoals = ({ navigation }) => {
     }
   }
   useEffect(() => {
+    registerForPushNotificationsAsync().then((token) =>
+      setExpoPushToken(token)
+    );
+
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification);
+      });
+
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response);
+      });
+
     getGoals();
     getUserInfo();
+
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
   }, []);
+
+  useEffect(() => {
+    SendEveryDayPushNotification(expoPushToken).then(data=>{console.log(data)})
+  }, [expoPushToken]);
+
+  // Notifications code
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+    }),
+  });
+
+  async function registerForPushNotificationsAsync() {
+    let token;
+    if (Device.isDevice) {
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== "granted") {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== "granted") {
+        alert("Failed to get push token for push notification!");
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token);
+    } else {
+      alert("Must use physical device for Push Notifications");
+    }
+
+    if (Platform.OS === "android") {
+      Notifications.setNotificationChannelAsync("default", {
+        name: "default",
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: "#FF231F7C",
+      });
+    }
+
+    return token;
+  }
+
   return (
     <View
       style={{
@@ -104,9 +178,10 @@ export const MyGoals = ({ navigation }) => {
         >
           Мои цели
         </Text>
-        <Image
-          source={require("../../../assets/icons/bell-01.png")}
-          style={{ width: 24, height: 24 }}
+        <IconButton
+          iconColor={COLORS.Accent}
+          icon={require("../../../assets/icons/bell-01.png")}
+          onPress={() => navigation.navigate("NotificationsPage")}
         />
       </View>
       {goals.length === 0 && Loading ? (
