@@ -72,9 +72,9 @@ export const EditProfileForm = ({ navigation }) => {
 
   const handleSubmitForm = async () => {
     const user = {
-      school: school.trim(),
-      faculty: faculty.trim(),
-      course: course.trim(),
+      school: school,
+      faculty: faculty,
+      course: course,
       email: email == undefined ? userData.email.trim() : email.trim(),
       first_name: firstName,
       last_name: lastName,
