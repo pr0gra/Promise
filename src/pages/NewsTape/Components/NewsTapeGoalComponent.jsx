@@ -22,6 +22,7 @@ export const NewsTapeGoalComponent = ({
   unwrap = false,
   isPublic,
   isJoined,
+  isDone,
 }) => {
   const [progress, setProgress] = useState(0);
   const [result, setResult] = useState("");
@@ -220,6 +221,7 @@ export const NewsTapeGoalComponent = ({
             </Text>
           </View>
         </View>
+
         <Text
           style={{
             ...FONTS.goalTime,
@@ -228,18 +230,39 @@ export const NewsTapeGoalComponent = ({
         >
           {title}
         </Text>
-        <PostButtons
-          goalId={goalId}
-          deadline={deadline}
-          isPublic={isPublic}
-          isJoined={isJoined}
-        />
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <PostButtons
+            goalId={goalId}
+            deadline={deadline}
+            isPublic={isPublic}
+            isJoined={isJoined}
+            navigation={navigation}
+          />
+          {isDone && (
+            <Text
+              style={{
+                color: COLORS.Accent,
+                ...FONTS.goalTime,
+                textAlign: "right",
+              }}
+            >
+              Я достиг!
+            </Text>
+          )}
+        </View>
       </View>
       <PostsArray
         fullName={fullName}
         goalId={goalId}
         unwrap={unwrap}
         userId={userId}
+        navigation={navigation}
       />
     </View>
   );

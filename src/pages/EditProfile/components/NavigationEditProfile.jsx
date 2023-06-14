@@ -12,7 +12,11 @@ export const NavigationEditProfile = ({ navigation }) => {
         onPress={() => navigation.goBack()}
         size={24}
         icon={require("../../../../assets/icons/arrow-narrow-left.png")}
-        style={{ backgroundColor: "transparent", borderRadius: 20 }}
+        style={{
+          backgroundColor: "transparent",
+          borderRadius: 20,
+          marginLeft: 20,
+        }}
         iconColor={COLORS.Accent}
         zIndex={150}
       />

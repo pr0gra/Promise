@@ -1,4 +1,9 @@
-import { Image, TouchableHighlight, View } from "react-native";
+import {
+  Image,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Text } from "react-native";
 import UserAvatar from "react-native-user-avatar";
 import { COLORS } from "../../../constants/Colors/Colors";
@@ -19,6 +24,7 @@ export function Post({
   goalId,
   userId,
   handleRefreshPosts,
+  navigation,
 }) {
   const [showModal, setShowModal] = useState(false);
   const token = tokenStore((state) => state.token);
@@ -54,7 +60,7 @@ export function Post({
         flexDirection: "column",
         paddingHorizontal: 20,
         paddingVertical: 15,
-        gap: 15,
+        gap: 5,
         marginBottom: 10,
         position: "relative",
       }}
@@ -90,12 +96,16 @@ export function Post({
       >
         <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
           {fullName !== "undefined undefined" ? (
-            <UserAvatar
-              style={{ width: 20, height: 20 }}
-              size={25}
-              name={fullName}
-              bgColor={COLORS.Accent}
-            />
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Profile", { id: userId })}
+            >
+              <UserAvatar
+                style={{ width: 20, height: 20 }}
+                size={25}
+                name={fullName}
+                bgColor={COLORS.Accent}
+              />
+            </TouchableOpacity>
           ) : (
             <SkeletonLoading
               borderRadius={100}
@@ -127,7 +137,7 @@ export function Post({
         )}
       </View>
       <Text>{text}</Text>
-      <View style={{ flexDirection: "row", gap: 10 }}>
+      {/* <View style={{ flexDirection: "row", gap: 10 }}>
         <ButtonReaction
           image={Rocket}
           onPress={() => console.log("Rocket")}
@@ -137,7 +147,7 @@ export function Post({
           image={MessageSquare}
           onPress={() => console.log("Rocket")}
         />
-      </View>
+      </View> */}
     </View>
   );
 }
