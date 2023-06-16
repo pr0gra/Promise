@@ -94,7 +94,7 @@ export const CertainGoal = ({ navigation }) => {
       )}
       <View
         style={{
-          paddingTop: 62,
+          paddingTop: 32,
           backgroundColor: COLORS.Background,
           flex: 1,
         }}

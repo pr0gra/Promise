@@ -16,7 +16,7 @@ export const EditProfile = ({ navigation }) => {
   return (
     <SafeAreaView
       style={{
-        paddingTop: 62,
+        paddingTop: 32,
         backgroundColor: COLORS.Background,
         flex: 1,
         flexDirection: "column",

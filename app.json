@@ -13,7 +13,9 @@
       "width": 100,
       "height": 400
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "y"
@@ -26,7 +28,9 @@
     },
     "scheme": "mycoolredirect",
     "extra": {
-      "eas": {}
+      "eas": {
+        "projectId": "a880852b-a6fc-4f72-81b4-a290a3f71e92"
+      }
     }
   }
 }
