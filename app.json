@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Promise",
-    "slug": "promiseApp",
+    "slug": "Promise",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
