@@ -11,7 +11,7 @@ import { COLORS } from "../../../constants/Colors/Colors";
 import { ButtonReaction } from "./ButtonReaction";
 import Rocket from "../../../../assets/icons/Rocket.png";
 import Bell from "../../../../assets/icons/bell-01.png";
-import messageSquare from "../../../../assets/icons/message-square-01.png";
+import messageSquare from "../../../../assets/icons/users-01.png";
 import plus from "../../../../assets/icons/plus.png";
 import { tokenStore } from "../../../../store";
 import axios from "axios";
