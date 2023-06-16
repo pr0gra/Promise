@@ -117,17 +117,17 @@ export const MyGoals = ({ navigation }) => {
     });
   }, [expoPushToken]);
 
-  storeData = async () => {
-    try {
-      await AsyncStorage.setItem(
-        'everyDayNotificationMessage',
-        notificationMessage,
-      );
-    } catch (error) {
-      console.log(error, "У нас проблемы")
-    }
-  };
-  storeData()
+  // storeData = async () => {
+  //   try {
+  //     await AsyncStorage.setItem(
+  //       'everyDayNotificationMessage',
+  //       notificationMessage,
+  //     );
+  //   } catch (error) {
+  //     console.log(error, "У нас проблемы")
+  //   }
+  // };
+  // storeData()
   
 
   // Notifications code
