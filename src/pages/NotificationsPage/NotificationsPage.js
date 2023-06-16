@@ -7,6 +7,18 @@ import { COLORS } from "../../constants/Colors/Colors";
 import { GlobalStyles } from "../../constants/GlobalStyles";
 
 export function NotificationsPage() {
+  // retrieveData = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem('TASKS');
+  //     if (value !== null) {
+  //       // We have data!!
+  //       console.log(value);
+  //     }
+  //   } catch (error) {
+  //     // Error retrieving data
+  //   }
+  // };
+  // retrieveData()
   return  <View
   style={{
     paddingTop: 62,
