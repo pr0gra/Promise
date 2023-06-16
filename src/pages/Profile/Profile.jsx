@@ -275,8 +275,8 @@ export const Profile = ({ navigation }) => {
               <View
                 style={{
                   paddingBottom: 20,
-                  paddingTop: Platform.OS === "ios" ? 64 : 32,
-                  marginTop: Platform.OS === "ios" ? -64 : -32,
+                  paddingTop: 32,
+                  marginTop: -32,
                   backgroundColor: COLORS.Background,
                 }}
               >

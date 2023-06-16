@@ -73,7 +73,7 @@ export const NewsTape = ({ navigation }) => {
         }
       >
         <Text
-          style={[GlobalStyles.pageTitle, { marginLeft: 20, paddingTop: 62 }]}
+          style={[GlobalStyles.pageTitle, { marginLeft: 20, paddingTop: 32 }]}
         >
           Лента
         </Text>

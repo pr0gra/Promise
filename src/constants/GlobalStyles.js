@@ -43,7 +43,7 @@ export const GlobalStyles = {
   },
 
   viewBasic: {
-    paddingTop: Platform.OS === "ios" ? 64 : 32,
+    paddingTop: 32,
     backgroundColor: COLORS.Background,
     flex: 1,
     justifyContent: "flex-end",
